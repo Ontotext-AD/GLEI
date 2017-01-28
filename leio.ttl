@@ -1,0 +1,191 @@
+leio: a owl:Ontology;
+  dct:title "Legal Entity Identifier ontology";
+  dct:description "Expresses both the LEI Common format (gmeiutility.org), and the Consolidated LEI info (c-lei.org)";
+  skos:scopeNote "Intended to be used together with the FIBO ontologies";
+  rdfs:seeAlso <https://www.gmeiutility.org/Attachments/LEIDatafile-20140415.xsd>, <TODO/LEIDatafile-20140415.rnc>;
+  skos:note "Corresponds to XML namespaces http://www.leiroc.org/data/schema/leidata/2014, http://ns.c-lei.org/leidata/1";
+  dct:creator <http://www.ontotext.com>, <mailto:vladimir.alexiev@ontotext.com>;
+  vann:preferredNamespacePrefix "leio";
+  vann:preferredNamespaceUri "http://data.ontotext.com/resource/leio/".
+  void:sparqlEndpoint <http://data.ontotext.com/sparql>;
+  dct:created "2016-11-22"^^xsd:date.
+
+leio:DownloadFile a owl:Class;
+  rdfs:isDefinedBy leio:;
+  rdfs:label "Download file";
+  rdfs:comment "Describes when and from where data about some LEI entities were downloaded".
+
+leio:associatedEntityFundFamily a owl:ObjectProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain fibo-be-le-lp:LegalEntity;
+  rdfs:range fibo-be-le-lp:LegalEntity;
+  rdfs:label "associated entity - fund family";
+  rdfs:comment "Entity that represents the fund family of this one".
+
+leio:associatedEntityFundFamilyName a owl:DatatypeProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain fibo-be-le-lp:LegalEntity;
+  rdfs:range rdf:langString;
+  rdfs:label "associated entity - fund family name";
+  rdfs:comment "Name of the entity that represents the fund family of this one (if not yet LEI registered)".
+
+leio:associatedEntityFundManager a owl:ObjectProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain fibo-be-le-lp:LegalEntity;
+  rdfs:range fibo-be-le-lp:LegalEntity;
+  rdfs:label "associated entity - fund manager";
+  rdfs:comment "Entity that manages this fund".
+
+leio:associatedEntityFundManagerName a owl:DatatypeProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain fibo-be-le-lp:LegalEntity;
+  rdfs:range rdf:langString;
+  rdfs:label "associated entity - fund manager name";
+  rdfs:comment "Name of the manager entity of this fund (if not yet LEI registered)".
+
+leio:autoAsciiTransliteratedLegalName a owl:DatatypeProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain fibo-be-le-lp:LegalEntity;
+  rdfs:range rdf:langString;
+  rdfs:label "auto ASCII transiterated legal name";
+  rdfs:comment "Auto ASCII transiterated legal name of this LEI entity";
+  rdfs:subPropertyOf fibo-fnd-rel-rel:hasName.
+
+leio:autoRomanizedLegalName a owl:DatatypeProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain fibo-be-le-lp:LegalEntity;
+  rdfs:range rdf:langString;
+  rdfs:label "auto romanized legal name";
+  rdfs:comment "Auto romanized legal name of this LEI entity";
+  rdfs:subPropertyOf fibo-fnd-rel-rel:hasName
+
+leio:contentDate a owl:DatatypeProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain leio:DownloadFile;
+  rdfs:range xsd:dateTime;
+  rdfs:label "content date";
+  rdfs:comment "Datetime of the content (last updated LEI) of this download file".
+
+leio:countryCode a owl:DatatypeProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain fibo-fbc-fct-breg:RegistrationAddress;
+  rdfs:range xsd:string;
+  rdfs:label "legal jurisdiction code";
+  rdfs:comment "ISO 3166-2 country code of this address";
+  skos:scopeNote "Used to lookup a country  and connect it with fibo-fbc-fct-breg:hasCountry".
+
+leio:downloadDate a owl:DatatypeProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain leio:DownloadFile;
+  rdfs:range xsd:dateTime;
+  rdfs:label "download date";
+  rdfs:comment "Datetime when the LEI Consolidator (c-lei.org) downloaded this file".
+
+leio:downloadFile a owl:ObjectProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain fibo-fbc-fct-breg:BusinessRegistrationAuthority;
+  rdfs:range leio:DownloadFile;
+  rdfs:label "download file";
+  rdfs:comment "Latest download file for this LOU. May have several, if the LOU's content came from several files".
+
+leio:expirationDate a owl:DatatypeProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain fibo-be-le-lp:LegalEntity;
+  rdfs:range xsd:dateTime;
+  rdfs:label "expiration date";
+  rdfs:comment "Datetime of legal expiration of this LEI entity (the time part is usually 00:00:00 but may carry timezone)".
+
+leio:expirationReason a owl:DatatypeProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain fibo-be-le-lp:LegalEntity;
+  rdfs:range xsd:string;
+  rdfs:label "expiration reason";
+  rdfs:comment "Reason for the legal expiration of this LEI entity: DISSOLVED, CORPORATE_ACTION".
+
+leio:legalJurisdictionCode a owl:DatatypeProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain fibo-be-le-lp:LegalEntity;
+  rdfs:range xsd:string;
+  rdfs:label "legal jurisdiction code";
+  rdfs:comment "ISO 3166-2 country or subdivision code representing the jurisdiction of this LEI entity";
+  skos:scopeNote "Used to lookup a fibo-fnd-law-jur:Jurisdiction and connect it with fibo-be-le-lp:isOrganizedIn".
+
+leio:nextRenewalDate a owl:DatatypeProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain fibo-fbc-fct-breg:BusinessRegistryEntry;
+  rdfs:range xsd:dateTime;
+  rdfs:label "next renewal date";
+  rdfs:comment "Datetime when this LEI registration should be renewed by the entity".
+
+leio:originator a owl:ObjectProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain leio:DownloadFile;
+  rdfs:range fibo-fbc-fct-breg:BusinessRegistrationAuthority;
+  rdfs:label "originator";
+  rdfs:comment "Originating LOU of a download file".
+
+leio:otherLegalName a owl:DatatypeProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain fibo-be-le-lp:LegalEntity;
+  rdfs:range rdf:langString;
+  rdfs:label "other legal name";
+  rdfs:comment "Other legal name of this LEI entity";
+  rdfs:subPropertyOf fibo-fnd-rel-rel:hasName.
+
+leio:preferredAsciiTransiteratedLegalName a owl:DatatypeProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain fibo-be-le-lp:LegalEntity;
+  rdfs:range rdf:langString;
+  rdfs:label "preferred ASCII transiterated legal name";
+  rdfs:comment "preferred ASCII transiterated legal name of this LEI entity";
+  rdfs:subPropertyOf fibo-fnd-rel-rel:hasName.
+
+leio:recordCount a owl:DatatypeProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain leio:DownloadFile;
+  rdfs:range xsd:integer;
+  rdfs:label "record count";
+  rdfs:comment "Number of LEI enity records in this download, or by this LOU (may have several counts if LOU data came from several files)".
+
+leio:isSchemaValid a owl:DatatypeProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain leio:DownloadFile;
+  rdfs:range xsd:boolean;
+  rdfs:label "is schema valid";
+  rdfs:comment "Whether the download file conformed to the LEI XSD schema".
+
+leio:status a owl:DatatypeProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain fibo-be-le-lp:LegalEntity;
+  rdfs:range xsd:string;
+  rdfs:label "status";
+  rdfs:comment "Legal status of the LEI entity: ACTIVE, INACTIVE".
+
+leio:subdivisionCode a owl:DatatypeProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain fibo-fbc-fct-breg:RegistrationAddress;
+  rdfs:range xsd:string;
+  rdfs:label "legal jurisdiction code";
+  rdfs:comment "ISO 3166-2 country subdivision code of this address";
+  skos:scopeNote "Used to lookup a subdivision and connect it with fibo-fbc-fct-breg:hasSubdivision".
+
+leio:successorEntity a owl:ObjectProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain fibo-be-le-lp:LegalEntity;
+  rdfs:range fibo-be-le-lp:LegalEntity;
+  rdfs:label "successor entity";
+  rdfs:comment "Successor entity of this one".
+
+leio:successorEntityName a owl:DatatypeProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain fibo-be-le-lp:LegalEntity;
+  rdfs:range xsd:string;
+  rdfs:label "successor entity name";
+  rdfs:comment "Name of the successor entity of this one (it not yet LEI registered)".
+
+leio:validationSources a owl:DatatypeProperty;
+  rdfs:isDefinedBy leio:;
+  rdfs:domain fibo-fbc-fct-breg:BusinessRegistryEntry;
+  rdfs:range xsd:string;
+  rdfs:label "validation sources";
+  rdfs:comment "Whether information sources for a LEI entity registration have been validated: PENDING, ENTITY_SUPPLIED_ONLY, PARTIALLY_CORROBORATED, FULLY_CORROBORATED".

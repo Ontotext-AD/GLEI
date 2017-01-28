@@ -1,0 +1,141 @@
+* GLEI Mapping to RDF
+** GLEI XML
+*** CLEI
+We capture Consolidated LEI data. Eg:
+#+BEGIN_SRC xml
+<lei:LEIData 
+    xmlns:lei="http://www.leiroc.org/data/schema/leidata/2014" 
+    xmlns:clei="http://ns.c-lei.org/leidata/1" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <lei:LEIHeader>
+    <lei:ContentDate>2016-11-21T04:11:23-06:00</lei:ContentDate>
+    <lei:Originator>52990034RLKT0WSOAM90</lei:Originator>
+    <lei:Extension>
+     <clei:LOUFiles>
+        <clei:LOUFile>
+          <clei:DownloadDate>2015-11-18T04:01:33-06:00</clei:DownloadDate>
+          <clei:DownloadURL>https://www.geiportal.org/customer/download_xml.php?file=GEI_Full_20151118_cf1.zip</clei:DownloadURL>
+          <clei:ContentDate>2015-11-18T01:30:08</clei:ContentDate>
+          <clei:Originator>5299000J2N45DDNE4Y28</clei:Originator>
+          <clei:RecordCount>62648</clei:RecordCount>
+          <clei:ManagingLOUCount managingLOU="5299000J2N45DDNE4Y28">62637</clei:ManagingLOUCount>
+          <clei:ManagingLOUCount managingLOU="EVK05KS7XY1DEII3R011">10</clei:ManagingLOUCount>
+          <clei:ManagingLOUCount managingLOU="213800D1EI4B9WTWWD28">1</clei:ManagingLOUCount>
+          <clei:SchemaValid>true</clei:SchemaValid>
+        </clei:LOUFile>
+     </clei:LOUFiles>
+    </lei:Extension>
+  </lei:LEIHeader>
+</lei:LEIData>
+#+END_SRC
+This fragment says that ~52990034RLKT0WSOAM90~ (the GLEI Foundation) 
+has aggregated a file from ~5299000J2N45DDNE4Y28~ (one Local Operating Unit or LOU)
+which includes info about 62637 companies from this LOU, as well as info from two others (10 from ~EVK05KS7XY1DEII3R011~ and 1 from ~213800D1EI4B9WTWWD28~).
+
+As of Dec 2016, LEIF has consolidated data on 500k companies .
+
+*** GLEI
+The GLEI data model is not very complex.
+- [[./LEIDatafile-20140415.rnc]]: GLEI XML schema in RelaxNG Compact syntax
+
+Sample company data:
+#+BEGIN_SRC xml
+<lei:LEIRecord>
+  <lei:LEI>78900008R6GNC1ZZ6Z58</lei:LEI>
+  <lei:Entity>
+    <lei:LegalName xml:lang="tr">TEB PORTFÖY YÖNETİMİ A.Ş.</lei:LegalName>
+    <lei:OtherEntityNames>
+      <lei:OtherEntityName xml:lang="en" type="OTHER_LEGAL">TEB PORTFOY YONETIMI A.S.</lei:OtherEntityName>
+    </lei:OtherEntityNames>
+    <lei:LegalAddress xml:lang="tr">
+      <lei:Line1>Gayrettepe mah. Yener sok. No:1 K:9 Gayrettepe- Besiktaş-Istanbul</lei:Line1>
+      <lei:City>İSTANBUL</lei:City>
+      <lei:Country>TR</lei:Country>
+      <lei:PostalCode>34349</lei:PostalCode>
+    </lei:LegalAddress>
+    <lei:HeadquartersAddress xml:lang="tr">
+      <lei:Line1>Gayrettepe mah. Yener sok. No:1 K:9 Gayrettepe- Besiktaş-Istanbul</lei:Line1>
+      <lei:City>İSTANBUL</lei:City>
+      <lei:Country>TR</lei:Country>
+      <lei:PostalCode>34349</lei:PostalCode>
+    </lei:HeadquartersAddress>
+    <lei:BusinessRegisterEntityID register="TR">428025</lei:BusinessRegisterEntityID>
+    <lei:LegalJurisdiction>TR</lei:LegalJurisdiction>
+    <lei:LegalForm xml:lang="tr">Portföy Yönetim Şirketleri</lei:LegalForm>
+    <lei:EntityStatus>ACTIVE</lei:EntityStatus>
+  </lei:Entity>
+  <lei:Registration>
+    <lei:InitialRegistrationDate>2014-04-25T14:56:58+02:00</lei:InitialRegistrationDate>
+    <lei:LastUpdateDate>2016-04-15T16:44:19+02:00</lei:LastUpdateDate>
+    <lei:RegistrationStatus>ISSUED</lei:RegistrationStatus>
+    <lei:NextRenewalDate>2017-05-26T00:00:00+02:00</lei:NextRenewalDate>
+    <lei:ManagingLOU>789000TVSB96MCOKSB52</lei:ManagingLOU>
+    <lei:ValidationSources>FULLY_CORROBORATED</lei:ValidationSources>
+  </lei:Registration>
+</lei:LEIRecord>
+#+END_SRC
+In addition to the above, GLEI data includes some relations (eg Funds of the same family, Fund manager, etc).
+
+* Semantic Mapping
+** FIBO
+FIBO includes several modules that are appropriate for implementing GLEI:
+- ~BusinessRegistries~ (prefix ~fibo-fbc-fct-breg:~) with classes like:
+  - ~BusinessRegistrationAuthority~: GLEIF and LOUs
+  - ~BusinessRegistry~: the GLEI registry
+  - ~BusinessRegistryEntry~: registry entry about an organization
+  - ~RegistrationAddress~ with payload fields like ~hasAddressLine1..4, hasCity, hasCountry~, etc
+- ~LEIEntities~ (prefix ~fibo-be-le-lp:~) with classes like
+  - ~LegalEntity~: the organization
+  - ~LegalEntityIdentifier~: its LEI identifier
+  - ~LegalEntityIdentifierScheme~: the GLEI scheme
+
+However, it has various shortcomings and defects as well, eg:
+- ~hasRegistrationStatus~ is a data property, instead of an object property inheriting from ~Classification/Reference~
+- doesn't have a property for ~legalStatus~
+- no property for ~legalForm~, only ~hasLegalFormAbbreviation~
+- ~hasRegistrationStatusRevisionDate~ overspecifies its range to ~Date~, while GLEI has full timestamps
+- Inappropriate use of custom datatypes (many of them declared ~equivalentClass~ with XSD datatypes), which makes practical indexing and reasoning (eg for date comparison) nearly impossible
+- ~hasExpirationDate~ only applies to documents but not to companies
+- Doesn't have datatype properties for ~legalJurisdictionCode, countryCode, subdivisionCode~. But LEI XM has such codes, and it's convenient to have them in RDF until they can be mapped to appropriate resources.
+- Confusing ~Address~ class hierarchy, eg What is Registered vs Registration address? Why should only Registered addresses have payload fields?
+- Different address props are not explained clearly, eg ~hasAddressOfLegalFormation~ vs ~hasHeadquartersAddress~ etc
+- No justification for having 4 fields ~hasAddressLine1..4~: 
+  - Some DnB data has 6 and 8 address lines so 4 is not enough
+  - It's better to have 1 field and can use ~\n~ in the RDF literal
+
+** LEIO
+In Nov 2016 the Polish company MakoLab made a proposal for extending FIBO to adequately represent GLEI: https://github.com/edmcouncil/fibo/pull/248. MakoLab is selected by EDC to develop schema.org extensions for some parts of FIBO.
+Ontotext did a detailed code review of this submission (see the above link).
+
+In Dec 2016 Ontotext developed a draft FIBO extension for GLEI that we called LEIO:
+- [[./prefixes.ttl]]
+- [[./leio.ttl]] (TODO: generate documentation)
+
+After discussions with MakoLab, the two companies agreed to work together to:
+- Harmonize the two FIBO GLEI extensions
+- Work with EDC to fix FIBO defects at the basic levels of representing company and person data
+- Get EDC's approval & engagement for this work
+
+** Semantic Mapping
+[[./GLEI-FIBO.ttl]]: mapping model using [[http://vladimiralexiev.github.io/pres/20161128-rdfpuml-rdf2rml/][rdfpuml]]\\
+[[./GLEI-FIBO.png]]
+
+Explanation:
+- top row: various addresses (only the top-left one is shown in full)
+- left: shared address data (country, country subdivision, jurisdiction, language)
+- center: ~LegalEntity~ and its ~BusinessRegistryEntry~
+- below it: ~LegalEntityIdentifier~ (the LEI number) 
+  and ~OrganizationIdentifier~ (registration number in a national registry).
+  Unfortunately ~BusinessRegisterEntityID/@register~ is not a controlled list: there are tens of thousands of values, so we map it to a mere comment.
+- also: the GLEI register and its contributing LOUs (~BusinessRegistrationAuthority~)
+- bottom right: CLEI info
+
+** Instance Matching
+[[./GLEI-lookup.ru]] is a SPARQL update that makes the dashed arrows in the above diagram. They use data props to lookup in appropriate datasets, and thus connect literals to resources, producing object props:
+- Lookup ~leio:legalJurisdictionCode~ to make ~fibo-be-le-lp:isOrganizedIn~.
+  Per-country logic is required,
+  eg US has 55 jurisdictions corresponding to the subdivisions (States),
+  but BG has a single jurisdiction.
+- Lookup ~dc:language~ to make ~dbo:language~
+- Lookup ~leio:subdivisionCode~ to make ~fibo-fbc-fct-breg:hasSubdivision~
+- Lookup ~leio:countryCode~ to make ~fibo-fbc-fct-breg:hasCountry~

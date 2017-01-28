@@ -1,0 +1,186 @@
+@base <http://data.ontotext.com/resource/glei/>.
+
+<(DownloadURL)>
+  puml:label "\n/lei:LEIHeader/lei:Extension/clei:LOUFiles/clei:LOUFile\n";
+  a leio:DownloadFile;
+  leio:downloadDate "(DownloadDate)"^^xsd:dateTime;
+  leio:contentDate  "(ContentDate)"^^xsd:dateTime;
+  leio:originator   <(Originator)>;
+  leio:recordCount  "(RecordCount)"^^xsd:integer;
+  leio:isSchemaValid "(SchemaValid)"^^xsd:boolean.
+
+<(ManagingLOUCount/@managingLOU)>
+  puml:label "\n/lei:LEIHeader/lei:Extension/clei:LOUFiles/clei:LOUFile\n";
+  a fibo-fbc-fct-breg:BusinessRegistrationAuthority;
+  fibo-fnd-rel-rel:manages glei:;
+  leio:downloadFile <(DownloadURL)>;
+  leio:recordCount  "(ManagingLOUCount)"^^xsd:integer.
+
+
+<(LEI)>
+  puml:label """
+/LEIData/LEIRecords/LEIRecord/
+""";
+  a fibo-be-le-lp:LegalEntity;
+  fibo-fnd-aap-agt:isIdentifiedBy <(LEI)/lei>;
+  fibo-fnd-rel-rel:hasDenotation <(LEI)/entry>;
+  fibo-fnd-rel-rel:hasLegalName "(LegalName)@(@xml:lang)";
+  leio:autoAsciiTransliteratedLegalName "(OtherEntityNames/OtherEntityName\n   [@type='AUTO_ASCII_TRANSLITERATED_LEGAL'])@(@xml:lang)";
+  leio:autoRomanizedLegalName "(OtherEntityNames/OtherEntityName\n   [@type='AUTO_ROMANIZED_LEGAL'])@(@xml:lang)";
+  leio:otherLegalName "(OtherEntityNames/OtherEntityName\n   [@type='OTHER_LEGAL'])@(@xml:lang)";
+  leio:preferredAsciiTransiteratedLegalName "(OtherEntityNames/OtherEntityName\n   [@type='PREFERRED_ASCII_TRANSLITERATED_LEGAL'])@(@xml:lang)";
+  fibo-be-le-lei:hasAddressOfLegalFormation <(LEI)/address/legal>, <(LEI)/address/legal/($n)>;
+  fibo-fbc-fct-breg:hasHeadquartersAddress <(LEI)/address/headquarters>, <(LEI)/address/headquarters/($n)>;
+  # fibo-fnd-plc-adr:hasAddress <(LEI)/address/other/($n)>;
+  fibo-fnd-aap-agt:isIdentifiedBy <(LEI)/id/($n)>;
+  leio:legalJurisdictionCode "(LegalJurisdiction) # !! LOOKUP for fibo-be-le-lp:isOrganizedIn";
+  fibo-be-le-lp:isOrganizedIn lcc-3166-2:Alaska;
+  fibo-be-corp-corp:hasLegalFormAbbreviation "(LegalForm[.!=('n/a','OTHER','Oher','NO APLICA')])";
+    # BUG https://jira.edmcouncil.org/browse/BE-141
+  leio:status "(EntityStatus)";
+  leio:expirationDate "(EntityExpirationDate)"^^xsd:dateTime;
+  leio:expirationReason "(EntityExpirationReason[.!='OTHER'])".
+
+<(LEI)/entry>
+  a fibo-fbc-fct-breg:BusinessRegistryEntry;
+  fibo-fnd-rel-rel:comprises <(LEI)/lei>;
+  fibo-be-corp-corp:hasDateOfRegistration             "(Registration/InitialRegistrationDate)"^^xsd:dateTime;
+  fibo-fbc-fct-breg:hasRegistrationStatusRevisionDate "(Registration/LastUpdateDate)"^^xsd:dateTime;
+  fibo-fbc-fct-breg:hasRegistrationStatus "(Registration/RegistrationStatus)";
+  leio:nextRenewalDate "(Registration/NextRenewalDate)"^^xsd:dateTime;
+  leio:validationSources "(Registration/ValidationSources)";
+  fibo-fbc-fct-ra:isRegisteredBy <(Registration/ManagingLOU)>.
+
+# BUG https://jira.edmcouncil.org/browse/FND-81
+#<(LEI)/date-registration> a fibo-fnd-dt-fd:Date; fibo-fnd-dt-fd:hasDateTimeValue "(Registration/InitialRegistrationDate)"^^xsd:dateTime.
+#<(LEI)/date-update>       a fibo-fnd-dt-fd:Date; fibo-fnd-dt-fd:hasDateTimeValue "(Registration/LastUpdateDate)"^^xsd:dateTime.
+
+<(Registration/ManagingLOU)>
+  a fibo-fbc-fct-breg:BusinessRegistrationAuthority;
+  fibo-fnd-rel-rel:manages glei:.
+
+<(LEI)/lei> a fibo-be-le-lei:LegalEntityIdentifier, fibo-fbc-fct-ra:RegistryIdentifier;
+  fibo-fnd-rel-rel:hasUniqueIdentifier "(LEI)";
+  fibo-fnd-arr-id:isIndexTo glei:.
+
+glei: a fibo-fbc-fct-breg:BusinessRegistry;
+  fibo-fnd-rel-rel:hasName "Global GLEI register".
+
+<(LEI)/id/($n)>
+  puml:label """
+BusinessRegisterEntityID at $n
+""";
+  a fibo-be-corp-corp:RegistrationIdentifier;
+  fibo-fnd-rel-rel:hasUniqueIdentifier "(.)";
+  rdfs:comment "(@register)".
+
+#<register/(@register)> a fibo-fbc-fct-breg:BusinessRegistry.
+# Too unclean to make a node for this. If it ws clean:
+# 1. Escape, 2. Add the country in the URL. 3. Add name and jurisdiction
+
+<(LEI)/address/headquarters>
+  puml:label """
+HeadquartersAddress
+""";
+  a fibo-fbc-fct-breg:RegistrationAddress;
+  dc:language "(@xml:lang) # !! LOOKUP for dbo:language";
+  dbo:language lcc-639-1:English;
+  fibo-fbc-fct-breg:hasAddressLine1 "(Line1)@(../@xml:lang)";
+  fibo-fbc-fct-breg:hasAddressLine2 "(Line2)@(../@xml:lang)";
+  fibo-fbc-fct-breg:hasAddressLine3 "(Line3)@(../@xml:lang)";
+  fibo-fbc-fct-breg:hasAddressLine4 "(Line4)@(../@xml:lang)";
+  fibo-fbc-fct-breg:hasCity "(City)@(../@xml:lang)";
+  leio:subdivisionCode "(Region) # !! LOOKUP for fibo-fbc-fct-breg:hasSubdivision";
+  fibo-fbc-fct-breg:hasSubdivision lcc-3166-2:Alaska;
+  leio:countryCode "(Country) # !! LOOKUP for fibo-fbc-fct-breg:hasCountry";
+  fibo-fbc-fct-breg:hasCountry lcc-3166-1:UnitedStates;
+  fibo-fbc-fct-breg:hasPostalCode "(PostalCode)".
+
+<(LEI)/address/headquarters/($n)>
+  a fibo-fbc-fct-breg:RegistrationAddress;
+  puml:label """
+OtherAddresses/OtherAddress
+[@type='HEADQUARTERS_ADDRESS'] at $n
+# (same data as HeadquartersAddress)
+""".
+
+<(LEI)/address/legal>
+  a fibo-fnd-plc-adr:RegisteredAddress;
+  puml:label """
+LegalAddress
+# (same data as HeadquartersAddress)
+""".
+
+<(LEI)/address/legal/($n)>
+  a fibo-fnd-plc-adr:RegisteredAddress;
+  puml:label """
+OtherAddresses/OtherAddress
+[@type='LEGAL_ADDRESS'] at $n
+# (same data as HeadquartersAddress)
+""".
+
+
+# None such
+# <(LEI)/address/other/($n)>
+#   a fibo-fnd-plc-adr:Address;
+#   puml:label """
+# OtherAddresses/OtherAddress
+# [@type!='LEGAL_ADDRESS' && 
+#  @type!='HEADQUARTERS_ADDRESS'] at $n
+# # (same data as HeadquartersAddress)
+# """.
+
+# <(LEI)> fibo-fnd-rel-rel:isClassifiedBy <status/(EntityStatus)>;
+# <status/(EntityStatus)> a fibo-fnd-rel-rel:Reference; fibo-fnd-rel-rel:hasUniqueIdentifier "(EntityStatus)"; fibo-fnd-rel-rel:isMemberOf <status>.
+# <status> a fibo-fnd-arr-cls:ClassificationScheme; fibo-fnd-rel-rel:hasName "LEI status".
+
+dbr:English_language dbo:iso6391Code "en".
+lcc-639-1:en a lcc-lr:Alpha2Code; lcc-lr:hasLanguageTag "en"; lcc-lr:identifies lcc-639-1:English.
+lcc-639-1:English owl:sameAs dbr:English_language.
+
+lcc-639-1:English  a              lcc-lr:LivingLanguage , lcc-lr:IndividualLanguage ;
+        rdfs:label                "English" ;
+        lcc-lr:hasEnglishName     "English" ;
+        lcc-lr:hasFrenchName      "anglais" ;
+        lcc-lr:hasGermanName      "Englisch" ;
+        lcc-lr:hasIndigenousName  "English" ;
+        skos:definition           "English language" .
+
+lcc-3166-2:US-AK a lcc-cr:SubdivisionCode; lcc-cr:hasSubdivisionTag "US-AK"; lcc-lr:identifies lcc-3166-2:Alaska;       lcc-lr:isMemberOf lcc-3166-2:ISO3166-2-CodeSet.
+lcc-3166-1:US    a lcc-cr:Alpha2Code;      lcc-cr:hasCountryTag     "US";    lcc-lr:identifies lcc-3166-1:UnitedStates; lcc-lr:isMemberOf lcc-3166-1:ISO3166-1-CodeSet.
+
+lcc-3166-2:Alaska a lcc-cr:CountrySubdivision, fibo-fnd-law-jur:Jurisdiction;
+  puml:label                  "# ISO3166-2-SubdivisionCodes.ttl has only US,CA,MX: POL-31";
+  rdfs:label                  "Alaska" ;
+  lcc-cr:hasEnglishShortName  "Alaska" ;
+  lcc-cr:hasLocalShortName    "Alaska" ;
+  lcc-cr:isClassifiedBy       lcc-3166-2:State ;
+  lcc-cr:isSubdivisionOf      lcc-3166-1:UnitedStates;
+  owl:sameAs                  dbr:Alaska.
+
+lcc-3166-1:UnitedStates a lcc-cr:Country;
+  rdfs:label                           "United States" ;
+  lcc-cr:hasEnglishFullName            "the United States of America" ;
+  lcc-cr:hasEnglishShortName           "United States" ;
+  lcc-cr:hasEnglishShortNameInCapitals "UNITED STATES" ;
+  lcc-cr:hasLocalShortName             "United States (the)" ;
+  lcc-cr:hasNumericCountryCode         "840" ;
+  lcc-cr:isIndependent                 true ;
+  lcc-cr:usesAdministrativeLanguage    lcc-639-1:English;
+  owl:sameAs                           dbr:United_States.
+
+<(ManagingLOUCount/@managingLOU)> owl:sameAs <(Registration/ManagingLOU)> .
+
+owl:sameAs                                puml:arrow puml:dashed-right-none.
+dbo:language                              puml:arrow puml:dashed.
+fibo-be-le-lp:isOrganizedIn               puml:arrow puml:dashed.
+fibo-fbc-fct-breg:hasSubdivision          puml:arrow puml:dashed.
+fibo-fbc-fct-breg:hasCountry              puml:arrow puml:dashed.
+fibo-be-le-lei:hasAddressOfLegalFormation puml:arrow puml:up.
+fibo-fbc-fct-breg:hasHeadquartersAddress  puml:arrow puml:up.
+fibo-fnd-plc-adr:hasAddress               puml:arrow puml:up.
+#fibo-fnd-aap-agt:isIdentifiedBy           puml:arrow puml:up.
+lcc-cr:isClassifiedBy                     a puml:InlineProperty.
+lcc-lr:isMemberOf                         a puml:InlineProperty.
+leio:originator                           a puml:InlineProperty.
+

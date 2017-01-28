@@ -1,0 +1,137 @@
+@startuml
+hide empty methods
+hide empty attributes
+hide circle
+skinparam classAttributeIconSize 0
+class glei_ManagingLOUCount_managingLOU_ as "glei:(ManagingLOUCount/@managingLOU)"
+glei_ManagingLOUCount_managingLOU_ : a fibo-fbc-fct-breg:BusinessRegistrationAuthority
+class glei_DownloadURL_ as "glei:(DownloadURL)"
+glei_ManagingLOUCount_managingLOU_ --> glei_DownloadURL_ : leio:downloadFile
+class glei_ as "glei:"
+glei_ManagingLOUCount_managingLOU_ --> glei_ : fibo-fnd-rel-rel:manages
+class glei_Registration_ManagingLOU_ as "glei:(Registration/ManagingLOU)"
+glei_ManagingLOUCount_managingLOU_ .right. glei_Registration_ManagingLOU_ : owl:sameAs
+glei_ManagingLOUCount_managingLOU_ :  "\n/lei:LEIHeader/lei:Extension/clei:LOUFiles/clei:LOUFile\n"
+glei_ManagingLOUCount_managingLOU_ : leio:recordCount "[ManagingLOUCount]"^^xsd:integer
+class lcc_3166_1_US as "lcc-3166-1:US"
+lcc_3166_1_US : a lcc-cr:Alpha2Code
+class lcc_3166_1_UnitedStates as "lcc-3166-1:UnitedStates"
+lcc_3166_1_US --> lcc_3166_1_UnitedStates : lcc-lr:identifies
+lcc_3166_1_US : lcc-cr:hasCountryTag "US"
+lcc_3166_1_US : lcc-lr:isMemberOf lcc-3166-1:ISO3166-1-CodeSet
+glei_ : a fibo-fbc-fct-breg:BusinessRegistry
+glei_ : fibo-fnd-rel-rel:hasName "Global GLEI register"
+class dbr_English_language as "dbr:English_language"
+dbr_English_language : dbo:iso6391Code "en"
+class glei_LEI_address_legal_n_ as "glei:(LEI)/address/legal/($n)"
+glei_LEI_address_legal_n_ : a fibo-fnd-plc-adr:RegisteredAddress
+glei_LEI_address_legal_n_ :  "\nOtherAddresses/OtherAddress\n[@type='LEGAL_ADDRESS'] at $n\n# [same data as HeadquartersAddress]\n"
+class lcc_3166_2_US_AK as "lcc-3166-2:US-AK"
+lcc_3166_2_US_AK : a lcc-cr:SubdivisionCode
+class lcc_3166_2_Alaska as "lcc-3166-2:Alaska"
+lcc_3166_2_US_AK --> lcc_3166_2_Alaska : lcc-lr:identifies
+lcc_3166_2_US_AK : lcc-cr:hasSubdivisionTag "US-AK"
+lcc_3166_2_US_AK : lcc-lr:isMemberOf lcc-3166-2:ISO3166-2-CodeSet
+class lcc_639_1_English as "lcc-639-1:English"
+lcc_639_1_English : a lcc-lr:LivingLanguage, lcc-lr:IndividualLanguage
+lcc_639_1_English .right. dbr_English_language : owl:sameAs
+lcc_639_1_English : lcc-lr:hasEnglishName "English"
+lcc_639_1_English : lcc-lr:hasFrenchName "anglais"
+lcc_639_1_English : lcc-lr:hasGermanName "Englisch"
+lcc_639_1_English : lcc-lr:hasIndigenousName "English"
+lcc_639_1_English : rdfs:label "English"
+lcc_639_1_English : skos:definition "English language"
+lcc_3166_2_Alaska : a lcc-cr:CountrySubdivision, fibo-fnd-law-jur:Jurisdiction
+class dbr_Alaska as "dbr:Alaska"
+lcc_3166_2_Alaska .right. dbr_Alaska : owl:sameAs
+lcc_3166_2_Alaska --> lcc_3166_1_UnitedStates : lcc-cr:isSubdivisionOf
+lcc_3166_2_Alaska :  "# ISO3166-2-SubdivisionCodes.ttl has only US,CA,MX: POL-31"
+lcc_3166_2_Alaska : lcc-cr:hasEnglishShortName "Alaska"
+lcc_3166_2_Alaska : lcc-cr:hasLocalShortName "Alaska"
+lcc_3166_2_Alaska : lcc-cr:isClassifiedBy lcc-3166-2:State
+lcc_3166_2_Alaska : rdfs:label "Alaska"
+class glei_LEI_address_headquarters_n_ as "glei:(LEI)/address/headquarters/($n)"
+glei_LEI_address_headquarters_n_ : a fibo-fbc-fct-breg:RegistrationAddress
+glei_LEI_address_headquarters_n_ :  "\nOtherAddresses/OtherAddress\n[@type='HEADQUARTERS_ADDRESS'] at $n\n# [same data as HeadquartersAddress]\n"
+class glei_LEI_entry as "glei:(LEI)/entry"
+glei_LEI_entry : a fibo-fbc-fct-breg:BusinessRegistryEntry
+class glei_LEI_lei as "glei:(LEI)/lei"
+glei_LEI_entry --> glei_LEI_lei : fibo-fnd-rel-rel:comprises
+glei_LEI_entry --> glei_Registration_ManagingLOU_ : fibo-fbc-fct-ra:isRegisteredBy
+glei_LEI_entry : fibo-be-corp-corp:hasDateOfRegistration "[Registration/InitialRegistrationDate]"^^xsd:dateTime
+glei_LEI_entry : fibo-fbc-fct-breg:hasRegistrationStatus "[Registration/RegistrationStatus]"
+glei_LEI_entry : fibo-fbc-fct-breg:hasRegistrationStatusRevisionDate "[Registration/LastUpdateDate]"^^xsd:dateTime
+glei_LEI_entry : leio:nextRenewalDate "[Registration/NextRenewalDate]"^^xsd:dateTime
+glei_LEI_entry : leio:validationSources "[Registration/ValidationSources]"
+class glei_LEI_address_legal as "glei:(LEI)/address/legal"
+glei_LEI_address_legal : a fibo-fnd-plc-adr:RegisteredAddress
+glei_LEI_address_legal :  "\nLegalAddress\n# [same data as HeadquartersAddress]\n"
+glei_DownloadURL_ : a leio:DownloadFile
+glei_DownloadURL_ :  "\n/lei:LEIHeader/lei:Extension/clei:LOUFiles/clei:LOUFile\n"
+glei_DownloadURL_ : leio:contentDate "[ContentDate]"^^xsd:dateTime
+glei_DownloadURL_ : leio:downloadDate "[DownloadDate]"^^xsd:dateTime
+glei_DownloadURL_ : leio:isSchemaValid "[SchemaValid]"^^xsd:boolean
+glei_DownloadURL_ : leio:originator glei:[Originator]
+glei_DownloadURL_ : leio:recordCount "[RecordCount]"^^xsd:integer
+class glei_LEI_address_headquarters as "glei:(LEI)/address/headquarters"
+glei_LEI_address_headquarters : a fibo-fbc-fct-breg:RegistrationAddress
+glei_LEI_address_headquarters ..> lcc_3166_1_UnitedStates : fibo-fbc-fct-breg:hasCountry
+glei_LEI_address_headquarters ..> lcc_3166_2_Alaska : fibo-fbc-fct-breg:hasSubdivision
+glei_LEI_address_headquarters ..> lcc_639_1_English : dbo:language
+glei_LEI_address_headquarters :  "\nHeadquartersAddress\n"
+glei_LEI_address_headquarters : dc:language "[@xml:lang] # !! LOOKUP for dbo:language"
+glei_LEI_address_headquarters : fibo-fbc-fct-breg:hasAddressLine1 "[Line1]@[../@xml:lang]"
+glei_LEI_address_headquarters : fibo-fbc-fct-breg:hasAddressLine2 "[Line2]@[../@xml:lang]"
+glei_LEI_address_headquarters : fibo-fbc-fct-breg:hasAddressLine3 "[Line3]@[../@xml:lang]"
+glei_LEI_address_headquarters : fibo-fbc-fct-breg:hasAddressLine4 "[Line4]@[../@xml:lang]"
+glei_LEI_address_headquarters : fibo-fbc-fct-breg:hasCity "[City]@[../@xml:lang]"
+glei_LEI_address_headquarters : fibo-fbc-fct-breg:hasPostalCode "[PostalCode]"
+glei_LEI_address_headquarters : leio:countryCode "[Country] # !! LOOKUP for fibo-fbc-fct-breg:hasCountry"
+glei_LEI_address_headquarters : leio:subdivisionCode "[Region] # !! LOOKUP for fibo-fbc-fct-breg:hasSubdivision"
+glei_Registration_ManagingLOU_ : a fibo-fbc-fct-breg:BusinessRegistrationAuthority
+glei_Registration_ManagingLOU_ --> glei_ : fibo-fnd-rel-rel:manages
+class glei_LEI_id_n_ as "glei:(LEI)/id/($n)"
+glei_LEI_id_n_ : a fibo-be-corp-corp:RegistrationIdentifier
+glei_LEI_id_n_ :  "\nBusinessRegisterEntityID at $n\n"
+glei_LEI_id_n_ : fibo-fnd-rel-rel:hasUniqueIdentifier "[.]"
+glei_LEI_id_n_ : rdfs:comment "[@register]"
+glei_LEI_lei : a fibo-fbc-fct-ra:RegistryIdentifier, fibo-be-le-lei:LegalEntityIdentifier
+glei_LEI_lei --> glei_ : fibo-fnd-arr-id:isIndexTo
+glei_LEI_lei : fibo-fnd-rel-rel:hasUniqueIdentifier "[LEI]"
+class lcc_639_1_en as "lcc-639-1:en"
+lcc_639_1_en : a lcc-lr:Alpha2Code
+lcc_639_1_en --> lcc_639_1_English : lcc-lr:identifies
+lcc_639_1_en : lcc-lr:hasLanguageTag "en"
+class glei_LEI_ as "glei:(LEI)"
+glei_LEI_ : a fibo-be-le-lp:LegalEntity
+glei_LEI_ --> glei_LEI_id_n_ : fibo-fnd-aap-agt:isIdentifiedBy
+glei_LEI_ --> glei_LEI_lei : fibo-fnd-aap-agt:isIdentifiedBy
+glei_LEI_ -up-> glei_LEI_address_headquarters_n_ : fibo-fbc-fct-breg:hasHeadquartersAddress
+glei_LEI_ ..> lcc_3166_2_Alaska : fibo-be-le-lp:isOrganizedIn
+glei_LEI_ -up-> glei_LEI_address_legal : fibo-be-le-lei:hasAddressOfLegalFormation
+glei_LEI_ -up-> glei_LEI_address_headquarters : fibo-fbc-fct-breg:hasHeadquartersAddress
+glei_LEI_ -up-> glei_LEI_address_legal_n_ : fibo-be-le-lei:hasAddressOfLegalFormation
+glei_LEI_ --> glei_LEI_entry : fibo-fnd-rel-rel:hasDenotation
+glei_LEI_ :  "\n/LEIData/LEIRecords/LEIRecord/\n"
+glei_LEI_ : fibo-be-corp-corp:hasLegalFormAbbreviation "[LegalForm[.!=['n/a','OTHER','Oher','NO APLICA']]]"
+glei_LEI_ : fibo-fnd-rel-rel:hasLegalName "[LegalName]@[@xml:lang]"
+glei_LEI_ : leio:autoAsciiTransliteratedLegalName "[OtherEntityNames/OtherEntityName\n   [@type='AUTO_ASCII_TRANSLITERATED_LEGAL']]@[@xml:lang]"
+glei_LEI_ : leio:autoRomanizedLegalName "[OtherEntityNames/OtherEntityName\n   [@type='AUTO_ROMANIZED_LEGAL']]@[@xml:lang]"
+glei_LEI_ : leio:expirationDate "[EntityExpirationDate]"^^xsd:dateTime
+glei_LEI_ : leio:expirationReason "[EntityExpirationReason[.!='OTHER']]"
+glei_LEI_ : leio:legalJurisdictionCode "[LegalJurisdiction] # !! LOOKUP for fibo-be-le-lp:isOrganizedIn"
+glei_LEI_ : leio:otherLegalName "[OtherEntityNames/OtherEntityName\n   [@type='OTHER_LEGAL']]@[@xml:lang]"
+glei_LEI_ : leio:preferredAsciiTransiteratedLegalName "[OtherEntityNames/OtherEntityName\n   [@type='PREFERRED_ASCII_TRANSLITERATED_LEGAL']]@[@xml:lang]"
+glei_LEI_ : leio:status "[EntityStatus]"
+lcc_3166_1_UnitedStates : a lcc-cr:Country
+lcc_3166_1_UnitedStates --> lcc_639_1_English : lcc-cr:usesAdministrativeLanguage
+class dbr_United_States as "dbr:United_States"
+lcc_3166_1_UnitedStates .right. dbr_United_States : owl:sameAs
+lcc_3166_1_UnitedStates : lcc-cr:hasEnglishFullName "the United States of America"
+lcc_3166_1_UnitedStates : lcc-cr:hasEnglishShortName "United States"
+lcc_3166_1_UnitedStates : lcc-cr:hasEnglishShortNameInCapitals "UNITED STATES"
+lcc_3166_1_UnitedStates : lcc-cr:hasLocalShortName "United States [the]"
+lcc_3166_1_UnitedStates : lcc-cr:hasNumericCountryCode "840"
+lcc_3166_1_UnitedStates : lcc-cr:isIndependent true
+lcc_3166_1_UnitedStates : rdfs:label "United States"
+@enduml

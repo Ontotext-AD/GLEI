@@ -1,0 +1,33 @@
+@prefix leio:              <http://data.ontotext.com/resource/leio/>.
+@prefix glei:              <http://data.ontotext.com/resource/glei/>.
+
+@prefix dbo:               <http://dbpedia.org/ontology/>.
+@prefix dbr:               <http://dbpedia.org/resource/>.
+@prefix dc:                <http://purl.org/dc/elements/1.1/>.
+@prefix fibo-be-corp-corp: <http://www.omg.org/spec/EDMC-FIBO/BE/Corporations/Corporations/> .
+@prefix fibo-be-le-fbo:    <http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/FormalBusinessOrganizations/> .
+@prefix fibo-be-le-lei:    <http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/LEIEntities/> .
+@prefix fibo-be-le-lp:     <http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/LegalPersons/> .
+@prefix fibo-fbc-fct-breg: <http://www.omg.org/spec/EDMC-FIBO/FBC/FunctionalEntities/BusinessRegistries/> .
+@prefix fibo-fbc-fct-ra:   <http://www.omg.org/spec/EDMC-FIBO/FBC/FunctionalEntities/RegistrationAuthorities/> .
+@prefix fibo-fnd-aap-agt:  <http://www.omg.org/spec/EDMC-FIBO/FND/AgentsAndPeople/Agents/> .
+@prefix fibo-fnd-arr-cls:  <http://www.omg.org/spec/EDMC-FIBO/FND/Arrangements/ClassificationSchemes/> .
+@prefix fibo-fnd-arr-id:   <http://www.omg.org/spec/EDMC-FIBO/FND/Arrangements/IdentifiersAndIndices/> .
+@prefix fibo-fnd-dt-fd:    <http://www.omg.org/spec/EDMC-FIBO/FND/DatesAndTimes/FinancialDates/> .
+@prefix fibo-fnd-plc-adr:  <http://www.omg.org/spec/EDMC-FIBO/FND/Places/Addresses/> .
+@prefix fibo-fnd-rel-rel:  <http://www.omg.org/spec/EDMC-FIBO/FND/Relations/Relations/> .
+@prefix fibo-fnd-law-jur:  <http://www.omg.org/spec/EDMC-FIBO/FND/Law/Jurisdiction/> .
+@prefix lcc-3166-1:        <http://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/> .
+@prefix lcc-3166-2:        <http://www.omg.org/spec/LCC/Countries/ISO3166-2-SubdivisionCodes/> .
+@prefix lcc-639-1:         <http://www.omg.org/spec/LCC/Languages/ISO639-1-LanguageCodes/> .
+@prefix lcc-639-2:         <http://www.omg.org/spec/LCC/Languages/ISO639-2-LanguageCodes/> .
+@prefix lcc-cr:            <http://www.omg.org/spec/LCC/Countries/CountryRepresentation/> .
+@prefix lcc-lr:            <http://www.omg.org/spec/LCC/Languages/LanguageRepresentation/> .
+@prefix owl:               <http://www.w3.org/2002/07/owl#> .
+@prefix puml:              <http://plantuml.com/ontology#>.
+@prefix rdf:               <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:              <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:              <http://www.w3.org/2004/02/skos/core#> .
+@prefix vann:              <http://purl.org/vocab/vann/> .
+@prefix void:              <http://rdfs.org/ns/void#> .
+@prefix xsd:               <http://www.w3.org/2001/XMLSchema#> .
