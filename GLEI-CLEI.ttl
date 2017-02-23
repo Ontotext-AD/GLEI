@@ -1,0 +1,18 @@
+<(DownloadURL)>
+  puml:label "\n/lei:LEIHeader/lei:Extension/clei:LOUFiles/clei:LOUFile\n";
+  a leio:DownloadFile;
+  leio:downloadDate "(DownloadDate)"^^xsd:dateTime;
+  leio:contentDate  "(ContentDate)"^^xsd:dateTime;
+  leio:originator   <(Originator)>;
+  leio:recordCount  "(RecordCount)"^^xsd:integer;
+  leio:isSchemaValid "(SchemaValid)"^^xsd:boolean.
+
+<(ManagingLOUCount/@managingLOU)>
+  puml:label "\n/lei:LEIHeader/lei:Extension/clei:LOUFiles/clei:LOUFile\n";
+  a fibo-fbc-fct-breg:BusinessRegistrationAuthority;
+  fibo-fnd-rel-rel:manages glei:;
+  leio:downloadFile <(DownloadURL)>;
+  leio:recordCount  "(ManagingLOUCount)"^^xsd:integer.
+
+leio:originator a puml:InlineProperty.
+fibo-fnd-rel-rel:manages a puml:InlineProperty.
