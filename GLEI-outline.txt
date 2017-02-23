@@ -1,0 +1,43 @@
+. element LEI {LEIType}
+. element Entity {EntityType}
+.   element LegalName {NameType}
+.     attribute xml:lang {xsd:language}
+.   element OtherEntityNames {OtherEntityNamesType}?
+.     element OtherEntityName
+.     attribute xml:lang {xsd:language}
+.     attribute type {EntityNameTypeEnum}: "OTHER_LEGAL" | "PREFERRED_ASCII_TRANSLITERATED_LEGAL" | "AUTO_ASCII_TRANSLITERATED_LEGAL"
+.   element LegalAddress {AddressType}
+.     element Line1 {Token500Type}
+.     element Line2 {Token500Type}?
+.     element Line3 {Token500Type}?
+.     element Line4 {Token500Type}?
+.     element City {Token500Type}
+.     element Region {RegionCodeType}?
+.     element Country {CountryCodeType}
+.     element PostalCode {Token500Type}?
+.     attribute xml:lang {xsd:language}
+.   element HeadquartersAddress {AddressType}
+.     <AddressType>
+.   element OtherAddresses {OtherAddressesType}?
+.     element OtherAddress {OtherAddressType}+
+.       <AddressType>
+.       attribute type {AddressTypeEnum}: "LEGAL_ADDRESS" | "HEADQUARTERS_ADDRESS"
+.   element BusinessRegisterEntityID {BusinessRegisterEntityIDType}?
+.     attribute register {BusinessRegisterEnum}?
+.   element LegalJurisdiction {JurisdictionCodeType}?
+.   element LegalForm {NameType}?  BUG https://jira.edmcouncil.org/browse/BE-141
+.   element EntityStatus {EntityStatusEnum}: "ACTIVE" | "INACTIVE"
+.   element EntityExpirationDate {xsd:dateTime}? BUG https://jira.edmcouncil.org/browse/BE-142
+.   element EntityExpirationReason {EntityExpirationReasonEnum}?: "DISSOLVED" | "CORPORATE_ACTION" | "OTHER"
+    element AssociatedEntity {AssociatedEntityType}?
+      (element AssociatedLEI {LEIType} | element AssociatedEntityName {NameType})
+       attribute type {AssociatedEntityTypeEnum}: "FUND_FAMILY"
+    element SuccessorEntity {SuccessorEntityType}?
+      element SuccessorLEI {LEIType} | element SuccessorEntityName {NameType}
+. element Registration {RegistrationType}
+.   element InitialRegistrationDate {xsd:dateTime} BUG https://jira.edmcouncil.org/browse/FND-81
+.   element LastUpdateDate {xsd:dateTime} BUG https://jira.edmcouncil.org/browse/FND-81
+.   element RegistrationStatus {RegistrationStatusEnum}: "PENDING_VALIDATION" | "ISSUED" | "DUPLICATE" | "LAPSED" | "MERGED" | "RETIRED" | "ANNULLED" | "CANCELLED" | "TRANSFERRED" | "PENDING_TRANSFER" | "PENDING_ARCHIVAL"
+.   element NextRenewalDate {xsd:dateTime}
+.   element ManagingLOU {LEIType}
+.   element ValidationSources {ValidationSourcesEnum}?: "PENDING" | "ENTITY_SUPPLIED_ONLY" | "PARTIALLY_CORROBORATED" | "FULLY_CORROBORATED"
