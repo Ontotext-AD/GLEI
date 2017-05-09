@@ -181,7 +181,7 @@ leio:successorEntityName a owl:DatatypeProperty;
   rdfs:domain fibo-be-le-lp:LegalEntity;
   rdfs:range xsd:string;
   rdfs:label "successor entity name";
-  rdfs:comment "Name of the successor entity of this one (it not yet LEI registered)".
+  rdfs:comment "Name of the successor entity of this one (if it is not yet LEI registered)".
 
 leio:validationSources a owl:DatatypeProperty;
   rdfs:isDefinedBy leio:;
