@@ -1,11 +1,10 @@
-namespace a = "http://relaxng.org/ns/compatibility/annotations/1.0"
 default namespace lei = "http://www.leiroc.org/data/schema/leidata/2014"
+namespace a = "http://relaxng.org/ns/compatibility/annotations/1.0"
 namespace rng = "http://relaxng.org/ns/structure/1.0"
 
-#  xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/
 start |= starting_LEIData
-
 starting_LEIData = element LEIData {LEIData}
+
 LEIData =
   element LEIHeader {LEIHeaderType}?,
   element LEIRecords {LEIRecordsType}
@@ -21,7 +20,9 @@ LEIHeaderType =
 HeaderNextVersionType = element * {text}*
 ExtensionType = element * {text}*
 
-LEIRecordsType = element LEIRecord {LEIRecordType}*
+LEIRecordsType =
+  element LEIRecord {LEIRecordType}*
+
 LEIRecordType =
   element LEI {LEIType},
   element Entity {EntityType},
@@ -112,49 +113,37 @@ LEIType =
 
 Token500Type = xsd:token {maxLength = "500"}
 
-# All enumeration types provide for forward compatibility by accepting any string as valid at the schema level.
-# The legal values for Version 1.0 are indicated in a 1.0-suffixed type which is unioned with xs:string to
-# form the complete enumeration type.
 FileContentEnum1.0 =
-  # Enumeration values for 1.0:
   "LOU_FULL_PUBLISHED" | "LOU_DELTA_PUBLISHED" | "COU_FULL_PUBLISHED" | "COU_DELTA_PUBLISHED" | "QUERY_RESPONSE"
 FileContentEnum = FileContentEnum1.0 | xsd:string
 
 BusinessRegisterEnum =
   xsd:string
-  # Enumeration values for 1.0 are maintained elsewhere
 
 EntityNameTypeEnum1.0 =
-  # Enumeration values for 1.0:
   "OTHER_LEGAL" | "PREFERRED_ASCII_TRANSLITERATED_LEGAL" | "AUTO_ASCII_TRANSLITERATED_LEGAL"
 EntityNameTypeEnum = EntityNameTypeEnum1.0 | xsd:string
 
 AddressTypeEnum1.0 =
-  # Enumeration values for 1.0:
   "LEGAL_ADDRESS" | "HEADQUARTERS_ADDRESS"
 AddressTypeEnum = AddressTypeEnum1.0 | xsd:string
 
 AssociatedEntityTypeEnum1.0 =
-  # Enumeration values for 1.0:
   "FUND_FAMILY"
 AssociatedEntityTypeEnum = AssociatedEntityTypeEnum1.0 | xsd:string
 
 EntityStatusEnum1.0 =
-  # Enumeration values for 1.0:
   "ACTIVE" | "INACTIVE"
 EntityStatusEnum = EntityStatusEnum1.0 | xsd:string
 
 EntityExpirationReasonEnum1.0 =
-  # Enumeration values for 1.0:
   "DISSOLVED" | "CORPORATE_ACTION" | "OTHER"
 EntityExpirationReasonEnum = EntityExpirationReasonEnum1.0 | xsd:string
 
 RegistrationStatusEnum1.0 =
-  # Enumeration values for 1.0:
   "PENDING_VALIDATION" | "ISSUED" | "DUPLICATE" | "LAPSED" | "MERGED" | "RETIRED" | "ANNULLED" | "CANCELLED" | "TRANSFERRED" | "PENDING_TRANSFER" | "PENDING_ARCHIVAL"
 RegistrationStatusEnum = RegistrationStatusEnum1.0 | xsd:string
 
 ValidationSourcesEnum1.0 =
-  # Enumeration values for 1.0:
   "PENDING" | "ENTITY_SUPPLIED_ONLY" | "PARTIALLY_CORROBORATED" | "FULLY_CORROBORATED"
 ValidationSourcesEnum = ValidationSourcesEnum1.0 | xsd:string

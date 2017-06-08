@@ -1,0 +1,687 @@
+<?xml version="1.0" encoding="UTF-8"?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:lei="http://www.gleif.org/data/schema/leidata/2016" elementFormDefault="qualified" targetNamespace="http://www.gleif.org/data/schema/leidata/2016">
+  
+  
+  <xs:element name="LEIData" type="lei:LEIData">
+    
+  </xs:element>
+  <xs:complexType name="LEIData">
+    <xs:sequence>
+      <xs:element name="LEIHeader" type="lei:LEIHeaderType">
+        
+      </xs:element>
+      <xs:element name="LEIRecords" type="lei:LEIRecordsType">
+        
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="LEIHeaderType">
+    <xs:sequence>
+      <xs:element name="ContentDate" type="lei:LEIDateTimeProfile">
+        
+      </xs:element>
+      <xs:element name="Originator" type="lei:LEIType" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="FileContent" type="lei:FileContentEnum">
+        
+      </xs:element>
+      <xs:element name="DeltaStart" type="lei:LEIDateTimeProfile" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="RecordCount" type="xs:nonNegativeInteger">
+
+        
+      </xs:element>
+      <xs:element name="NextVersion" type="lei:HeaderNextVersionType" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="Extension" type="lei:ExtensionType" minOccurs="0">
+        
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="HeaderNextVersionType">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" namespace="##targetNamespace"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="LEIRecordsType">
+    <xs:sequence>
+      <xs:element name="LEIRecord" type="lei:LEIRecordType" minOccurs="0" maxOccurs="unbounded">
+        
+      </xs:element>
+
+      <xs:element name="Extension" type="lei:ExtensionType" minOccurs="0">
+        
+      </xs:element>
+
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="LEIRecordType">
+    <xs:sequence>
+      <xs:element name="LEI" type="lei:LEIType">
+        
+      </xs:element>
+      <xs:element name="Entity" type="lei:EntityType">
+        
+      </xs:element>
+      <xs:element name="Registration" type="lei:RegistrationType">
+        
+      </xs:element>
+      <xs:element name="NextVersion" type="lei:LEIRecordNextVersionType" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="Extension" type="lei:ExtensionType" minOccurs="0">
+        
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="LEIRecordNextVersionType">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" namespace="##targetNamespace"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="EntityType">
+    <xs:sequence>
+      <xs:element name="LegalName" type="lei:NameType">
+        
+      </xs:element>
+      <xs:element name="OtherEntityNames" type="lei:OtherEntityNamesType" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="TransliteratedOtherEntityNames" type="lei:TransliteratedOtherEntityNamesType" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="LegalAddress" type="lei:AddressType">
+        
+      </xs:element>
+      <xs:element name="HeadquartersAddress" type="lei:AddressType">
+        
+      </xs:element>
+      <xs:element name="OtherAddresses" type="lei:OtherAddressesType" minOccurs="0">
+        
+      </xs:element>
+
+      <xs:element name="TransliteratedOtherAddresses" type="lei:TransliteratedOtherAddressesType" minOccurs="0">
+        
+      </xs:element>
+
+      <xs:element name="RegistrationAuthority" type="lei:RegistrationAuthorityType" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="LegalJurisdiction" type="lei:JurisdictionCodeType" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="EntityCategory" type="lei:EntityCategoryTypeEnum" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="LegalForm" type="lei:LegalFormType" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="AssociatedEntity" type="lei:AssociatedEntityType" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="EntityStatus" type="lei:EntityStatusEnum">
+        
+      </xs:element>
+      <xs:element name="EntityExpirationDate" type="lei:LEIDateTimeProfile" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="EntityExpirationReason" type="lei:EntityExpirationReasonEnum" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="SuccessorEntity" type="lei:SuccessorEntityType" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="NextVersion" type="lei:EntityNextVersionType" minOccurs="0">
+        
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="EntityNextVersionType">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" namespace="##targetNamespace"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RegistrationType">
+    <xs:sequence>
+      <xs:element name="InitialRegistrationDate" type="lei:LEIDateTimeProfile">
+        
+      </xs:element>
+      <xs:element name="LastUpdateDate" type="lei:LEIDateTimeProfile">
+        
+      </xs:element>
+      <xs:element name="RegistrationStatus" type="lei:RegistrationStatusEnum">
+        
+      </xs:element>
+      <xs:element name="NextRenewalDate" type="lei:LEIDateTimeProfile">
+        
+      </xs:element>
+      <xs:element name="ManagingLOU" type="lei:LEIType">
+        
+      </xs:element>
+      <xs:element name="ValidationSources" type="lei:ValidationSourcesEnum" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="ValidationAuthority" type="lei:ValidationAuthorityType" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="OtherValidationAuthorities" type="lei:OtherValidationAuthoritiesType" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="NextVersion" type="lei:RegistrationNextVersionType" minOccurs="0">
+        
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RegistrationNextVersionType">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" namespace="##targetNamespace"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ExtensionType">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" namespace="##other"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AddressType">
+    <xs:sequence>
+      <xs:element name="FirstAddressLine" type="lei:Tokenized500Type">
+        
+      </xs:element>
+      <!-- Optional, additional structured parts of Address Lines-->
+      <xs:element name="AddressNumber" type="lei:Tokenized500Type" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="AddressNumberWithinBuilding" type="lei:Tokenized500Type" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="MailRouting" type="lei:Tokenized500Type" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="AdditionalAddressLine" type="lei:Tokenized500Type" minOccurs="0" maxOccurs="3">
+        
+      </xs:element>
+
+
+      <xs:element name="City" type="lei:Tokenized500Type">
+        
+      </xs:element>
+      <xs:element name="Region" type="lei:RegionCodeType" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="Country" type="lei:CountryCodeType">
+        
+      </xs:element>
+      <xs:element name="PostalCode" type="lei:Tokenized500Type" minOccurs="0">
+        
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute ref="xml:lang" use="optional">
+      
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="TransliteratedAddressType">
+    <xs:sequence>
+      <xs:element name="FirstAddressLine" type="lei:TransliteratedStringType">
+        
+      </xs:element>
+      <!-- Optional, additional structured parts of Address Lines-->
+      <xs:element name="AddressNumber" type="lei:TransliteratedStringType" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="AddressNumberWithinBuilding" type="lei:TransliteratedStringType" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="MailRouting" type="lei:TransliteratedStringType" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="AdditionalAddressLine" type="lei:TransliteratedStringType" minOccurs="0" maxOccurs="3">
+        
+      </xs:element>
+
+
+      <xs:element name="City" type="lei:TransliteratedStringType">
+        
+      </xs:element>
+      <xs:element name="Region" type="lei:RegionCodeType" minOccurs="0">
+        
+      </xs:element>
+      <xs:element name="Country" type="lei:CountryCodeType">
+        
+      </xs:element>
+      <xs:element name="PostalCode" type="lei:TransliteratedStringType" minOccurs="0">
+        
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute ref="xml:lang" use="optional">
+      
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="AssociatedEntityType">
+    <xs:choice>
+      <xs:element name="AssociatedLEI" type="lei:LEIType">
+        
+      </xs:element>
+      <xs:element name="AssociatedEntityName" type="lei:NameType">
+        
+      </xs:element>
+    </xs:choice>
+    <xs:attribute name="type" type="lei:AssociatedEntityTypeEnum" use="required">
+      
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="RegistrationAuthorityType">
+    <xs:sequence>
+      <xs:element name="RegistrationAuthorityID" type="lei:RegistrationAuthorityEnum">
+        
+      </xs:element>
+
+      <xs:element name="OtherRegistrationAuthorityID" type="lei:Tokenized500Type" minOccurs="0">
+        
+      </xs:element>
+
+      <xs:element name="RegistrationAuthorityEntityID" type="lei:Tokenized500Type" minOccurs="0">
+        
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="OtherValidationAuthoritiesType">
+    <xs:sequence>
+      <xs:element name="OtherValidationAuthority" type="lei:ValidationAuthorityType" minOccurs="1" maxOccurs="unbounded">
+        
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ValidationAuthorityType">
+    <xs:sequence>
+      <xs:element name="ValidationAuthorityID" type="lei:RegistrationAuthorityEnum">
+        
+      </xs:element>
+
+      <xs:element name="OtherValidationAuthorityID" type="lei:Tokenized500Type" minOccurs="0">
+        
+      </xs:element>
+
+      <xs:element name="ValidationAuthorityEntityID" type="lei:Tokenized500Type" minOccurs="0">
+        
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="JurisdictionCodeType">
+    <xs:union memberTypes="lei:CountryCodeType lei:RegionCodeType"/>
+  </xs:simpleType>
+  <xs:complexType name="OtherAddressType">
+    <xs:complexContent>
+      <xs:extension base="lei:AddressType">
+        <xs:attribute name="type" type="lei:AddressTypeEnum" use="required">
+          
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="OtherAddressesType">
+    <xs:sequence>
+      <xs:element name="OtherAddress" type="lei:OtherAddressType" maxOccurs="unbounded">
+        
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="TransliteratedOtherAddressesType">
+    <xs:sequence>
+      <xs:element name="TransliteratedOtherAddress" type="lei:TransliteratedOtherAddressType" maxOccurs="unbounded">
+        
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="TransliteratedOtherAddressType">
+    <xs:complexContent>
+      <xs:extension base="lei:TransliteratedAddressType">
+        <xs:attribute name="type" type="lei:TransliteratedAddressTypeEnum" use="required">
+          
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OtherEntityNamesType">
+    <xs:sequence>
+      <xs:element name="OtherEntityName" type="lei:OtherEntityNameType" maxOccurs="unbounded">
+        
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="TransliteratedOtherEntityNamesType">
+    <xs:sequence>
+      <xs:element name="TransliteratedOtherEntityName" type="lei:TransliteratedOtherEntityNameType" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="OtherEntityNameType">
+    <xs:complexContent>
+      <xs:extension base="lei:NameType">
+        <xs:attribute name="type" type="lei:EntityNameTypeEnum" use="required">
+          
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="SuccessorEntityType">
+    <xs:choice>
+      <xs:element name="SuccessorLEI" type="lei:LEIType">
+        
+      </xs:element>
+      <xs:element name="SuccessorEntityName" type="lei:NameType">
+        
+      </xs:element>
+    </xs:choice>
+  </xs:complexType>
+  <xs:simpleType name="CountryCodeType">
+    
+    <xs:restriction base="xs:string">
+      <xs:minLength value="2"/>
+      <xs:maxLength value="2"/>
+      <xs:pattern value="([A-Z]{2})"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="RegionCodeType">
+    
+    <xs:restriction base="xs:string">
+      <xs:minLength value="4"/>
+      <xs:maxLength value="6"/>
+      <xs:pattern value="([A-Z]{2}-[A-Z0-9]{1,3})"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="LEIType">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="20"/>
+      <xs:maxLength value="20"/>
+      <xs:pattern value="([0-9A-Z]{18}[0-9]{2})"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Tokenized500Type">
+    
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="500"/>
+      <xs:minLength value="1"/>
+      <xs:pattern value="\S+( \S+)*"/>
+
+    </xs:restriction>
+  </xs:simpleType>
+  <!--
+    WARNING:
+     All enumeration types now accept only the specified values as valid at the schema level.
+
+     To propose a change or addition to any enumeration in the LEI-CDF please contact leidata@gleif.org and your request will be considered subject to change management.
+  -->
+  <xs:simpleType name="FileContentEnum">
+    <xs:restriction base="xs:string">
+      <!-- Enumeration values for LEI-CDF 2.0: -->
+      <xs:enumeration value="LOU_FULL_PUBLISHED">
+        
+      </xs:enumeration>
+      <xs:enumeration value="LOU_DELTA_PUBLISHED">
+        
+      </xs:enumeration>
+      <xs:enumeration value="GLEIF_FULL_PUBLISHED">
+        
+      </xs:enumeration>
+      <xs:enumeration value="GLEIF_DELTA_PUBLISHED">
+        
+      </xs:enumeration>
+      <xs:enumeration value="QUERY_RESPONSE">
+        
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="RegistrationAuthorityEnum">
+    <xs:restriction base="xs:string">
+      
+      <xs:pattern value="RA\d{6}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EntityCategoryTypeEnum">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="BRANCH">
+        
+      </xs:enumeration>
+      <xs:enumeration value="FUND">
+        
+      </xs:enumeration>
+      <xs:enumeration value="SOLE_PROPRIETOR">
+        
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="LegalFormType">
+    <xs:sequence>
+
+      <xs:element name="EntityLegalFormCode" type="lei:LegalFormEnum">
+        
+      </xs:element>
+
+      <xs:element name="OtherLegalForm" type="lei:Tokenized500Type" minOccurs="0">
+        
+      </xs:element>
+
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="LegalFormEnum">
+    
+    <xs:restriction base="xs:string">
+      <xs:pattern value="([A-Z][A-Z0-9]{3}|[A-Z0-9][A-Z][A-Z0-9]{2}|[A-Z0-9]{2}[A-Z][A-Z0-9]|[A-Z0-9]{3}[A-Z])"/>
+      <xs:pattern value="9999"/>
+      <xs:pattern value="8888"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="EntityNameTypeEnum">
+    <xs:restriction base="xs:string">
+      <!-- Enumeration values for LEI-CDF 2.0: -->
+      <xs:enumeration value="ALTERNATIVE_LANGUAGE_LEGAL_NAME">
+        
+      </xs:enumeration>
+      <xs:enumeration value="PREVIOUS_LEGAL_NAME">
+        
+      </xs:enumeration>
+      <xs:enumeration value="TRADING_OR_OPERATING_NAME">
+        
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="AddressTypeEnum">
+    <xs:restriction base="xs:string">
+      <!-- Enumeration values for LEI-CDF 2.0: -->
+      <xs:enumeration value="ALTERNATIVE_LANGUAGE_LEGAL_ADDRESS">
+        
+      </xs:enumeration>
+
+      <xs:enumeration value="ALTERNATIVE_LANGUAGE_HEADQUARTERS_ADDRESS">
+        
+      </xs:enumeration>
+
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TransliteratedAddressTypeEnum">
+    <xs:restriction base="xs:string">
+      <!-- Enumeration values for LEI-CDF 2.0: -->
+
+      <xs:enumeration value="AUTO_ASCII_TRANSLITERATED_LEGAL_ADDRESS">
+        
+      </xs:enumeration>
+
+      <xs:enumeration value="AUTO_ASCII_TRANSLITERATED_HEADQUARTERS_ADDRESS">
+        
+      </xs:enumeration>
+
+      <xs:enumeration value="PREFERRED_ASCII_TRANSLITERATED_LEGAL_ADDRESS">
+        
+      </xs:enumeration>
+
+      <xs:enumeration value="PREFERRED_ASCII_TRANSLITERATED_HEADQUARTERS_ADDRESS">
+        
+      </xs:enumeration>
+
+    </xs:restriction>
+  </xs:simpleType>
+
+
+
+  <xs:simpleType name="AssociatedEntityTypeEnum">
+    <xs:restriction base="xs:string">
+      <!-- Enumeration values for LEI-CDF 2.0: -->
+      <xs:enumeration value="FUND_FAMILY">
+        
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EntityStatusEnum">
+    <xs:restriction base="xs:string">
+      <!-- Enumeration values for LEI-CDF 2.0: -->
+      <xs:enumeration value="ACTIVE">
+        
+      </xs:enumeration>
+      <xs:enumeration value="INACTIVE">
+        
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EntityExpirationReasonEnum">
+    <xs:restriction base="xs:string">
+      <!-- Enumeration values for LEI-CDF 2.0: -->
+      <xs:enumeration value="DISSOLVED">
+        
+      </xs:enumeration>
+      <xs:enumeration value="CORPORATE_ACTION">
+        
+      </xs:enumeration>
+      <xs:enumeration value="OTHER">
+        
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="RegistrationStatusEnum">
+    <xs:restriction base="xs:string">
+      <!-- Enumeration values for LEI-CDF 2.0: -->
+      <xs:enumeration value="PENDING_VALIDATION">
+        
+      </xs:enumeration>
+      <xs:enumeration value="ISSUED">
+        
+      </xs:enumeration>
+      <xs:enumeration value="DUPLICATE">
+        
+      </xs:enumeration>
+      <xs:enumeration value="LAPSED">
+        
+      </xs:enumeration>
+      <xs:enumeration value="MERGED">
+        
+      </xs:enumeration>
+      <xs:enumeration value="RETIRED">
+        
+      </xs:enumeration>
+      <xs:enumeration value="ANNULLED">
+        
+      </xs:enumeration>
+      <xs:enumeration value="CANCELLED">
+        
+      </xs:enumeration>
+      <xs:enumeration value="TRANSFERRED">
+        
+      </xs:enumeration>
+      <xs:enumeration value="PENDING_TRANSFER">
+        
+      </xs:enumeration>
+      <xs:enumeration value="PENDING_ARCHIVAL">
+        
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ValidationSourcesEnum">
+    <xs:restriction base="xs:string">
+      <!-- Enumeration values for LEI-CDF 2.0: -->
+      <xs:enumeration value="PENDING">
+        
+      </xs:enumeration>
+      <xs:enumeration value="ENTITY_SUPPLIED_ONLY">
+        
+      </xs:enumeration>
+      <xs:enumeration value="PARTIALLY_CORROBORATED">
+        
+      </xs:enumeration>
+      <xs:enumeration value="FULLY_CORROBORATED">
+        
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="NameType">
+    <xs:simpleContent>
+      <xs:extension base="lei:Tokenized500Type">
+        <xs:attribute ref="xml:lang" use="optional">
+          
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="TransliteratedStringType">
+    
+    <xs:restriction base="lei:Tokenized500Type">
+      <xs:pattern value="(!|&#34;|%|&amp;|'|\(|\)|\*|\+|,|-|\.|/|0|1|2|3|4|5|6|7|8|9|:|;|&lt;|=|&gt;|\?|A|B|C|D|E|F|G|H|I|J|K|L| |M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|_|a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z)+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="TransliteratedOtherEntityNameType">
+    <xs:complexContent>
+      <xs:extension base="lei:TransliteratedNameType">
+        <xs:attribute name="type" type="lei:TransliteratedEntityNameTypeEnum" use="required">
+          
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="TransliteratedEntityNameTypeEnum">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME">
+        
+      </xs:enumeration>
+      <xs:enumeration value="AUTO_ASCII_TRANSLITERATED_LEGAL_NAME">
+        
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="TransliteratedNameType">
+    <xs:simpleContent>
+      <xs:extension base="lei:TransliteratedStringType">
+        <xs:attribute ref="xml:lang" use="optional">
+          
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="LEIDateTimeProfile">
+    <xs:restriction base="xs:dateTime">
+      
+      <xs:pattern value="([^\.]*|([^\.]*(\.((\d){1,3})){0,1}))(Z|\+([01][0-9]|2[0-3]):([0-5][0-9])|-([01][0-9]|2[0-3]):([0-5][0-9]))"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- 
+  <xs:simpleType name="CountType">
+    <xs:annotation>
+      <xs:documentation>A count must be a whole number, equal to zero or more.</xs:documentation>
+    </xs:annotation>
+      <xs:restriction base="xs:int">
+        <xs:minInclusive value="0"/>
+      </xs:restriction>    
+  </xs:simpleType>
+  -->
+</xs:schema>

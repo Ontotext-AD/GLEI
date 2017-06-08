@@ -1,0 +1,82 @@
+20140415-LEIDatafile.xsd is the same as 20150608-lei-data-file-format.xsd (CDF v1.0)
+20170321_lei-cdf-v2-1.xsd is much bigger as size, because it has internal documentation.
+So we ran it through nodoc.xsl transformation to remove the documentation.
+
+--
+
+Comparing 20140415-LEIDatafile.rnc and 20170321_lei-cdf-v2-1.rnc
+See 20170321_lei-cdf-v2-1.pdf p24 ff
+See 20170407_lei-cdf-v2-1-implementation-guide-v1-0.pdf, especially p20 ff
+
+- changed namespace to http://www.gleif.org/data/schema/leidata/2016
+
+- all datetime fields use LEIDateTimeProfile, which restructs xsd:dateTime with checks as per LEI-CDF V1.0 
+
+- LegalForm was a total mess (1100 unique values)
+-- It's moving to EntityLegalFormCode: mandatory, must conform to ISO 20275 Entity Legal Form (ELF) (code list maintained by GLEIF)
+-- the free text field is moved to OtherLegalForm
+-- The ELF code list does not exist yet.
+   https://www.iso.org/standard/67462.html: listed as stage code 60.60 "Standard under publication" as of 20170602, so should be published very soon
+   https://www.iso.org/obp/ui/#iso:std:iso:20275:dis:ed-1:v1:en "This document is now under preparation for its final publication."
+-- There will be a period of transition during which the LOUs will implement the ELF code list (likely until 1 year after the implementation date of LEI-CDF V2.1.)
+-- For now, they populate  EntityLegalFormCode with temporary code "8888"
+-- As of 20170608, Consolidated LEI has 
+  501120 entities with 8888 "temporary code" and the other 
+    4327 entities with 9999 "not available for this entity" ;-)
+
+- BusinessRegisterEntityID@register was a mess (11.5k unique values)
+-- converted to RegistrationAuthorityType that has 3 elements:
+-- mandatory RegistrationAuthorityID: from GLEIF Registration Authorities List (RAL) https://www.gleif.org/en/about-lei/gleif-registration-authorities-list
+   As of 20170608, Consolidated LEI has
+   287981 entities with specific RegistrationAuthority
+   200179 entities with RA999999 no registration authority available for this legal entity
+    17287 entities with RA888888 temporary code; new registration authority code requested
+-- optional OtherRegistrationAuthorityID: other code for the registration authority
+-- optional RegistrationAuthorityEntityID: code of the entity at the registration authority
+
+- Added EntityCategory "BRANCH" | "FUND" | "SOLE_PROPRIETOR" (or none)
+
+- Added TransliteratedOtherEntityNames and TransliteratedOtherAddresses
+- Added optional address fields: AddressNumber, AddressNumberWithinBuilding, MailRouting
+- Replaced Line1 by FirstAddressLine and Line2,3,4 by AdditionalAddressLine (0..3)
+
+- Added ValidationAuthority & OtherValidationAuthorities (same structure as RegistrationAuthority). 
+  May be theh same as RegistrationAuthority.
+  The authority that validated the entity's info, must be filled if ValidationSources is PARTIALLY or FULLY_COROBORATED
+
+- the following enums are now closed (strict): good, because otherwise I didn't know how to handle them
+  FileContentEnum EntityStatusEnum EntityExpirationReasonEnum RegistrationStatusEnum EntityNameTypeEnum AddressTypeEnum AssociatedEntityTypeEnum ValidationSourcesEnum 
+
+--
+
+Now includes Level2 data (beneficial ownership):
+- 20170316_relationship-record-cdf-v1-1.xsd
+-- NodeIDType: LEI vs ISO_17442_COMPATIBLE, but I thought that't the same standard?
+   (At present all 18094 instances are "LEI").
+   I think ISO_17442_COMPATIBLE means "issued LEI but no official LEI registration yet" (for parents)
+-- RelationshipQualifier: only ACCOUNTING_STANDARD is supported yet, with values US_GAAP, IFRS, OTHER
+          <rr:RelationshipQualifier>
+            <rr:QualifierDimension>ACCOUNTING_STANDARD</rr:QualifierDimension>
+            <rr:QualifierCategory>US_GAAP</rr:QualifierCategory>
+          </rr:RelationshipQualifier>
+-- RelationshipQuantifier: only ACCOUNTING_CONSOLIDATION and PERCENTAGE are defined yet
+          <rr:RelationshipQuantifier>
+            <rr:MeasurementMethod>ACCOUNTING_CONSOLIDATION</rr:MeasurementMethod>
+            <rr:QuantifierAmount>100.00</rr:QuantifierAmount>
+            <rr:QuantifierUnits>PERCENTAGE</rr:QuantifierUnits>
+          </rr:RelationshipQuantifier>
+- 20170316_parent_reference_data-format-v1-1.xsd
+  A reduced LEI format for info about parents that are not GLEI registered.
+  For some strange reason it's closer to LEI 1.0 than 2.1 (eg has Line1..4 in Address)
+- 20170316_reporting-exceptions-format-v1-1.xsd
+  Excuses why ownership is not reported
+There is no link or nesting between these files and Level1: they are independent data records, correlated by LEI
+
+As of 2017-06-07: 9k relations, 68k reporting exceptions. 
+No parent data, presumably all parents are GLEI registered
+
+
+--
+
+- NextVersion: structure for adding further elements in to the LEI data or header in anticipation of a new version, by nesting a series of XML elements NextVersion, NextVersion1, NextVersion2...
+-- (not sure why they need it given there's also ExtensionType)

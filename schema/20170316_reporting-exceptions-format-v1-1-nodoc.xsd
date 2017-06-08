@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:repex="http://www.gleif.org/data/schema/repex/2016" elementFormDefault="qualified" targetNamespace="http://www.gleif.org/data/schema/repex/2016">
+
+    
+
+    
+
+    <xs:element name="ReportingExceptionData" type="repex:ReportingExceptionDataType"/>
+
+    <xs:complexType name="ReportingExceptionDataType">
+        <xs:sequence>
+            <xs:element name="Header" type="repex:ExceptionHeaderType">
+                
+            </xs:element>
+            <xs:element name="ReportingExceptions" type="repex:ReportingExceptionsType">
+                
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ExceptionHeaderType">
+        <xs:sequence>
+
+            <xs:element name="ContentDate" type="repex:LEIDateTimeProfile">
+                
+            </xs:element>
+
+            <xs:element name="Originator" type="repex:LEIType" minOccurs="0">
+                
+            </xs:element>
+
+
+            <xs:element name="FileContent" type="repex:FileContentEnum">
+                
+            </xs:element>
+
+            <xs:element name="DeltaStart" type="repex:LEIDateTimeProfile" minOccurs="0">
+                
+            </xs:element>
+
+            <xs:element name="RecordCount" type="xs:nonNegativeInteger">
+                
+            </xs:element>
+
+            <xs:element name="NextVersion" type="repex:HeaderNextVersionType" minOccurs="0"/>
+
+            <xs:element name="Extension" type="repex:ExtensionType" minOccurs="0">
+                
+            </xs:element>
+
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="LEIType">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="20"/>
+            <xs:maxLength value="20"/>
+            <xs:pattern value="([0-9A-Z]{18}[0-9]{2})"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="FileContentEnum">
+        <xs:restriction base="xs:string">
+
+            <!-- WARNING: Enumeration values strictly validate-->
+
+            <xs:enumeration value="LOU_FULL_PUBLISHED">
+                
+            </xs:enumeration>
+            <xs:enumeration value="LOU_DELTA_PUBLISHED">
+                
+            </xs:enumeration>
+            <xs:enumeration value="GLEIF_FULL_PUBLISHED">
+                
+            </xs:enumeration>
+            <xs:enumeration value="GLEIF_DELTA_PUBLISHED">
+                
+            </xs:enumeration>
+            <xs:enumeration value="QUERY_RESPONSE">
+                
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="ExtensionType">
+        <xs:sequence>
+            <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" namespace="##other"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+
+    <xs:complexType name="ExceptionType">
+        <xs:sequence>
+
+            <xs:element name="LEI" type="repex:LEIType">
+                
+            </xs:element>
+
+            <xs:element name="ExceptionCategory" type="repex:ExceptionCategoryEnum">
+                
+            </xs:element>
+
+            <xs:element name="ExceptionReason" type="repex:ExceptionReasonEnum" maxOccurs="unbounded">
+                
+            </xs:element>
+
+
+            <xs:element name="ExceptionReference" type="repex:Tokenized500Type" minOccurs="0" maxOccurs="unbounded">
+                
+            </xs:element>
+
+            <xs:element name="NextVersion" type="repex:ReportingExceptionNextVersionType" minOccurs="0"/>
+
+            <xs:element name="Extension" type="repex:ExtensionType" minOccurs="0">
+                
+            </xs:element>
+
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="ReportingExceptionsType">
+        <xs:sequence>
+
+            <xs:element name="Exception" type="repex:ExceptionType" minOccurs="0" maxOccurs="unbounded">
+                
+            </xs:element>
+
+            <xs:element name="NextVersion" type="repex:ReportingExceptionsContainerNextVersionType" minOccurs="0"/>
+
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="ExceptionCategoryEnum">
+        <xs:restriction base="xs:string">
+            <!-- Enumeration values for LEI-CDF 2.0: -->
+            <xs:enumeration value="DIRECT_ACCOUNTING_CONSOLIDATION_PARENT">
+                
+            </xs:enumeration>
+
+            <xs:enumeration value="ULTIMATE_ACCOUNTING_CONSOLIDATION_PARENT">
+                
+            </xs:enumeration>
+
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="ExceptionReasonEnum">
+        <xs:restriction base="xs:string">
+            <!-- Enumeration values for LEI-CDF 2.0: -->
+
+            <xs:enumeration value="NO_LEI">
+                
+            </xs:enumeration>
+
+            <xs:enumeration value="NATURAL_PERSONS">
+                
+            </xs:enumeration>
+            <xs:enumeration value="NON_CONSOLIDATING">
+                
+            </xs:enumeration>
+            <xs:enumeration value="NO_KNOWN_PERSON">
+                
+            </xs:enumeration>
+            <xs:enumeration value="LEGAL_OBSTACLES">
+                
+            </xs:enumeration>
+            <xs:enumeration value="CONSENT_NOT_OBTAINED">
+                
+            </xs:enumeration>
+            <xs:enumeration value="BINDING_LEGAL_COMMITMENTS">
+                
+            </xs:enumeration>
+
+            <!-- this is not in itself a cause of opt out, but only one of the cumulative reasons for “detriment_not_excluded”
+                
+            <xs:enumeration value="PARENT_UNREACHABLE">
+                <xs:annotation>
+                    <xs:documentation>
+                        <ul>
+                            <li>The parent could not be informed via the GLEIS and have the
+                                possibility to correct the relationship information before
+                                publication (including raising a cause for opt out). The disclosure
+                                of this information would be detrimental to the legal entity or the
+                                relevant parent. This will include reasons generally accepted by
+                                public authorities in similar circumstances, based on a declaration
+                                by the entity.</li>
+                            <li>Business Rules: This exception reason applies to reporting
+                                requirements <code>ULTIMATE_ACCOUNTING_CONSOLIDATION_PARENT</code>
+                                and <code>DIRECT_ACCOUNTING_CONSOLIDATION_PARENT</code>.</li>
+                        </ul>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            -->
+            <!-- this is not in itself a cause of opt out, but only one of the cumulative reasons for “detriment_not_excluded”
+            <xs:enumeration value="RELATIONSHIP_NOT_PUBLIC">
+                <xs:annotation>
+                    <xs:documentation>
+                        <ul>
+                            <li>The relationship is not already in the public domain (information
+                                being in the public domain assumes here that the way the information
+                                came into the public domain did not infringe the applicable legal
+                                framework). The disclosure of this information would be detrimental
+                                to the legal entity or the relevant parent. This will include
+                                reasons generally accepted by public authorities in similar
+                                circumstances, based on a declaration by the entity.</li>
+                            <li>Business Rules: This exception reason applies to reporting
+                                requirements <code>ULTIMATE_ACCOUNTING_CONSOLIDATION_PARENT</code>
+                                and <code>DIRECT_ACCOUNTING_CONSOLIDATION_PARENT</code>.</li>
+                        </ul>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+-->
+            <!-- this is not in itself a cause of opt out, but only one of the cumulative reasons for “detriment_not_excluded”
+            <xs:enumeration value="DETRIMENT_CONCERN">
+                <xs:annotation>
+                    <xs:documentation>
+                        <ul>
+                            <li>The child entity has reasons to believe that the parent may consider
+                                disclosure to be detrimental. The disclosure of this information
+                                would be detrimental to the legal entity or the relevant parent.
+                                This will include reasons generally accepted by public authorities
+                                in similar circumstances, based on a declaration by the entity.</li>
+                            <li>Business Rules: This exception reason applies to reporting
+                                requirements <code>ULTIMATE_ACCOUNTING_CONSOLIDATION_PARENT</code>
+                                and <code>DIRECT_ACCOUNTING_CONSOLIDATION_PARENT</code>.</li>
+                        </ul>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+-->
+            <xs:enumeration value="DETRIMENT_NOT_EXCLUDED">
+                
+            </xs:enumeration>
+
+            <xs:enumeration value="DISCLOSURE_DETRIMENTAL">
+                
+            </xs:enumeration>
+
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="Tokenized500Type">
+        
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="500"/>
+            <xs:minLength value="1"/>
+            <xs:pattern value="\S+( \S+)*"/>
+
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="LEIDateTimeProfile">
+        <xs:restriction base="xs:dateTime">
+
+            
+
+            <xs:pattern value="([^\.]*|([^\.]*(\.((\d){1,3})){0,1}))(Z|\+([01][0-9]|2[0-3]):([0-5][0-9])|-([01][0-9]|2[0-3]):([0-5][0-9]))"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- NextVersion datatypes in analogy to LEI-CDF V1.0 -->
+
+    <xs:complexType name="ReportingExceptionsContainerNextVersionType">
+        <xs:sequence>
+            <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" namespace="##targetNamespace"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ReportingExceptionNextVersionType">
+        <xs:sequence>
+            <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" namespace="##targetNamespace"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="HeaderNextVersionType">
+        <xs:sequence>
+            <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" namespace="##targetNamespace"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

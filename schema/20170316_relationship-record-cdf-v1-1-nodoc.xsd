@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8"?><xs:schema xmlns:rr="http://www.gleif.org/data/schema/rr/2016" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.gleif.org/data/schema/rr/2016">
+    
+    
+    <xs:element name="RelationshipData" type="rr:RelationshipDataType">
+        
+    </xs:element>
+    <xs:complexType name="RelationshipDataType">
+        <xs:sequence>
+            <xs:element name="Header" type="rr:RRHeaderType">
+                
+            </xs:element>
+            <xs:element name="RelationshipRecords" type="rr:RelationshipRecordsType">
+                
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RRHeaderType">
+        <xs:sequence>
+            <xs:element name="ContentDate" type="rr:LEIDateTimeProfile">
+                
+            </xs:element>
+            <xs:element minOccurs="0" name="Originator" type="rr:LEIType">
+                
+            </xs:element>
+            <xs:element name="FileContent" type="rr:FileContentEnum">
+                
+            </xs:element>
+            <xs:element minOccurs="0" name="DeltaStart" type="rr:LEIDateTimeProfile">
+                
+            </xs:element>
+            <xs:element name="RecordCount" type="xs:nonNegativeInteger">
+                
+            </xs:element>
+            <xs:element minOccurs="0" name="NextVersion" type="rr:HeaderNextVersionType">
+                
+            </xs:element>
+            <xs:element minOccurs="0" name="Extension" type="rr:ExtensionType">
+                
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="LEIType">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="20"/>
+            <xs:maxLength value="20"/>
+            <xs:pattern value="([0-9A-Z]{18}[0-9]{2})"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Tokenized500Type">
+        
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="500"/>
+            <xs:minLength value="1"/>
+            <xs:pattern value="\S+( \S+)*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="FileContentEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <xs:enumeration value="LOU_FULL_INTERNAL">
+                
+            </xs:enumeration>
+            <xs:enumeration value="LOU_DELTA_INTERNAL">
+                
+            </xs:enumeration>
+            <xs:enumeration value="LOU_FULL_PUBLISHED">
+                
+            </xs:enumeration>
+            <xs:enumeration value="LOU_DELTA_PUBLISHED">
+                
+            </xs:enumeration>
+            <xs:enumeration value="GLEIF_FULL_INTERNAL">
+                
+            </xs:enumeration>
+            <xs:enumeration value="GLEIF_DELTA_INTERNAL">
+                
+            </xs:enumeration>
+            <xs:enumeration value="GLEIF_FULL_PUBLISHED">
+                
+            </xs:enumeration>
+            <xs:enumeration value="GLEIF_DELTA_PUBLISHED">
+                
+            </xs:enumeration>
+            <xs:enumeration value="QUERY_RESPONSE">
+                
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="ExtensionType">
+        <xs:sequence>
+            <xs:any maxOccurs="unbounded" minOccurs="0" namespace="##other" processContents="lax"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RelationshipRecordsType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="RelationshipRecord" type="rr:RelationshipRecordType">
+                
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RelationshipRecordType">
+        <xs:sequence>
+            <!-- WARNING: the XML type of Relationship is RelationshipContainerType so that internal XML names do not clash with rr:RelationshipType element. This does not affect the relationship data record file itself. -->
+            <xs:element name="Relationship" type="rr:RelationshipContainerType">
+                
+            </xs:element>
+            <xs:element name="Registration" type="rr:RegistrationContainerType">
+                
+            </xs:element>
+            <xs:element minOccurs="0" name="NextVersion" type="rr:RelationshipRecordNextVersionType">
+                
+            </xs:element>
+            <xs:element minOccurs="0" name="Extension" type="rr:ExtensionType">
+                
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RelationshipContainerType">
+        <xs:sequence>
+            <xs:element name="StartNode" type="rr:NodeType">
+                
+            </xs:element>
+            <xs:element name="EndNode" type="rr:NodeType">
+                
+            </xs:element>
+            <xs:element name="RelationshipType" type="rr:RelationshipTypeEnum">
+                
+            </xs:element>
+            <xs:element minOccurs="0" name="RelationshipPeriods" type="rr:RelationshipPeriodsType">
+                
+            </xs:element>
+            <xs:element name="RelationshipStatus" type="rr:RelationshipStatusEnum">
+                
+            </xs:element>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="RelationshipQualifiers" type="rr:RelationshipQualifiersType">
+                
+            </xs:element>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="RelationshipQuantifiers" type="rr:RelationshipQuantifiersType">
+                
+            </xs:element>
+            <xs:element minOccurs="0" name="NextVersion" type="rr:RelationshipNextVersionType">
+                
+            </xs:element>
+            <xs:element minOccurs="0" name="Extension" type="rr:ExtensionType">
+                
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="NodeType">
+        <xs:sequence>
+            <xs:element name="NodeID" type="rr:LEIType">
+                
+            </xs:element>
+            <xs:element name="NodeIDType" type="rr:NodeIDTypeEnum">
+                
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="NodeIDTypeEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <xs:enumeration value="LEI">
+                
+            </xs:enumeration>
+            <xs:enumeration value="ISO_17442_COMPATIBLE">
+                
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="RelationshipTypeEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <!-- LEVEL 2 PROJECT PHASE 1 VALUES -->
+            <xs:enumeration value="IS_DIRECTLY_CONSOLIDATED_BY">
+                
+            </xs:enumeration>
+            <xs:enumeration value="IS_ULTIMATELY_CONSOLIDATED_BY">
+                
+            </xs:enumeration>
+            <!-- KNOWN RELEVANT VALUES-->
+            <xs:enumeration value="IS_INTERNATIONAL_BRANCH_OF">
+                
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="RelationshipPeriodsType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="RelationshipPeriod" type="rr:RelationshipPeriodType">
+                
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RelationshipPeriodType">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="StartDate" type="rr:LEIDateTimeProfile">
+                
+            </xs:element>
+            <xs:element minOccurs="0" name="EndDate" type="rr:LEIDateTimeProfile">
+                
+            </xs:element>
+            <!-- WARNING: semantic type of RelationshipPeriod is called PeriodType to avoid naming clash with RelationshipPeriodType XML data type-->
+            <xs:element name="PeriodType" type="rr:PeriodTypeEnum">
+                
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="PeriodTypeEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <xs:enumeration value="ACCOUNTING_PERIOD">
+                
+            </xs:enumeration>
+            <xs:enumeration value="RELATIONSHIP_PERIOD">
+                
+            </xs:enumeration>
+            <xs:enumeration value="DOCUMENT_FILING_PERIOD">
+                
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="RelationshipStatusEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <xs:enumeration value="ACTIVE">
+                
+            </xs:enumeration>
+            <xs:enumeration value="INACTIVE">
+                
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="RelationshipQualifiersType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="RelationshipQualifier" type="rr:RelationshipQualifierType">
+                
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RelationshipQualifierType">
+        <xs:sequence>
+            <xs:element name="QualifierDimension" type="rr:QualifierDimensionEnum">
+                
+            </xs:element>
+            <xs:element minOccurs="0" name="QualifierCategory" type="rr:QualifierCategoryTypeEnum">
+                
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="QualifierDimensionEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <!-- LEVEL 2 PROJECT PHASE 1 VALUES -->
+            <xs:enumeration value="ACCOUNTING_STANDARD">
+                
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <!--  NOW STRICTLY VALIDATING   <xs:simpleType name="QualifierCategoryTypeEnum">
+        <xs:union memberTypes="rr:QualifierCategoryTypeEnum1.0 xs:string"/>
+    </xs:simpleType> -->
+    <xs:simpleType name="QualifierCategoryTypeEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <!-- LEVEL 2 PROJECT PHASE 1 VALUES -->
+            <xs:enumeration value="US_GAAP">
+                
+            </xs:enumeration>
+            <xs:enumeration value="IFRS">
+                
+            </xs:enumeration>
+            <xs:enumeration value="OTHER_ACCOUNTING_STANDARD">
+                
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="RelationshipQuantifiersType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="RelationshipQuantifier" type="rr:RelationshipQuantifierType">
+                
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RelationshipQuantifierType">
+        <xs:sequence>
+            <xs:element name="MeasurementMethod" type="rr:MeasurementMethodTypeEnum">
+                
+            </xs:element>
+            <xs:element name="QuantifierAmount" type="xs:decimal">
+                
+            </xs:element>
+            <xs:element minOccurs="0" name="QuantifierUnits" type="rr:QuantifierUnitsTypeEnum">
+                
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="MeasurementMethodTypeEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <!-- LEVEL 2 PROJECT PHASE 1 VALUES -->
+            <xs:enumeration value="ACCOUNTING_CONSOLIDATION">
+                
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="QuantifierUnitsTypeEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <!-- LEVEL 2 PROJECT PHASE 1 VALUES -->
+            <xs:enumeration value="PERCENTAGE"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="RegistrationContainerType">
+        <xs:sequence>
+            <xs:element name="InitialRegistrationDate" type="rr:LEIDateTimeProfile">
+                
+            </xs:element>
+            <xs:element name="LastUpdateDate" type="rr:LEIDateTimeProfile">
+                
+            </xs:element>
+            <xs:element name="RegistrationStatus" type="rr:RegistrationStatusEnum">
+                
+            </xs:element>
+            <xs:element minOccurs="0" name="NextRenewalDate" type="rr:LEIDateTimeProfile">
+                
+            </xs:element>
+            <xs:element name="ManagingLOU" type="rr:LEIType">
+                
+            </xs:element>
+            <xs:element name="ValidationSources" type="rr:ValidationSourcesTypeEnum">
+                
+            </xs:element>
+            <xs:element name="ValidationDocuments" type="rr:ValidationDocumentsTypeEnum">
+                
+            </xs:element>
+            <xs:element minOccurs="0" name="ValidationReference" type="rr:Tokenized500Type">
+                
+            </xs:element>
+            <xs:element minOccurs="0" name="NextVersion" type="rr:RegistrationNextVersionType">
+                
+            </xs:element>
+            <xs:element minOccurs="0" name="Extension" type="rr:ExtensionType">
+                
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="RegistrationStatusEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <xs:enumeration value="PENDING_VALIDATION">
+                
+            </xs:enumeration>
+            <xs:enumeration value="PUBLISHED">
+                
+            </xs:enumeration>
+            <xs:enumeration value="DUPLICATE">
+                
+            </xs:enumeration>
+            <xs:enumeration value="LAPSED">
+                
+            </xs:enumeration>
+            <xs:enumeration value="RETIRED">
+                
+            </xs:enumeration>
+            <xs:enumeration value="ANNULLED">
+                
+            </xs:enumeration>
+            <xs:enumeration value="TRANSFERRED">
+                
+            </xs:enumeration>
+            <xs:enumeration value="PENDING_TRANSFER">
+                
+            </xs:enumeration>
+            <xs:enumeration value="PENDING_ARCHIVAL">
+                
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ValidationDocumentsTypeEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <!-- LEVEL 2 PROJECT PHASE 1 VALUES -->
+            <xs:enumeration value="ACCOUNTS_FILING">
+                
+            </xs:enumeration>
+            <xs:enumeration value="REGULATORY_FILING">
+                
+            </xs:enumeration>
+            <xs:enumeration value="SUPPORTING_DOCUMENTS">
+                
+            </xs:enumeration>
+            <xs:enumeration value="CONTRACTS">
+                
+            </xs:enumeration>
+            <xs:enumeration value="OTHER_OFFICIAL_DOCUMENTS">
+                
+            </xs:enumeration>
+            <!-- 
+            <xs:enumeration value="ANNUAL_REGULATORY_FILING">
+                <xs:annotation>
+                    <xs:documentation>An annual regulatory filing providing public information on
+                        parent relationships.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            
+            -->
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ValidationSourcesTypeEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <!-- NULL value proposed for cases in which validation is not required; pending confirmation of use case
+            <xs:enumeration value="NULL"><xs:annotation><xs:documentation>No validation document was required for this relationship report</xs:documentation></xs:annotation></xs:enumeration>
+            -->
+            <xs:enumeration value="PENDING">
+                
+            </xs:enumeration>
+            <xs:enumeration value="ENTITY_SUPPLIED_ONLY">
+                
+            </xs:enumeration>
+            <xs:enumeration value="PARTIALLY_CORROBORATED">
+                
+            </xs:enumeration>
+            <xs:enumeration value="FULLY_CORROBORATED">
+                
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="LEIDateTimeProfile">
+        <xs:restriction base="xs:dateTime">
+            
+            <xs:pattern value="([^\.]*|([^\.]*(\.((\d){1,3})){0,1}))(Z|\+([01][0-9]|2[0-3]):([0-5][0-9])|-([01][0-9]|2[0-3]):([0-5][0-9]))"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="HeaderNextVersionType">
+        <xs:sequence>
+            <xs:any maxOccurs="unbounded" minOccurs="0" namespace="##targetNamespace" processContents="lax"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RelationshipRecordNextVersionType">
+        <xs:sequence>
+            <xs:any maxOccurs="unbounded" minOccurs="0" namespace="##targetNamespace" processContents="lax"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RelationshipNextVersionType">
+        <xs:sequence>
+            <xs:any maxOccurs="unbounded" minOccurs="0" namespace="##targetNamespace" processContents="lax"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RegistrationNextVersionType">
+        <xs:sequence>
+            <xs:any maxOccurs="unbounded" minOccurs="0" namespace="##targetNamespace" processContents="lax"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

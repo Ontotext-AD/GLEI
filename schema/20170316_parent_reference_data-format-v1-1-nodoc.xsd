@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:pni="http://www.gleif.org/data/schema/pni/2016" elementFormDefault="qualified" targetNamespace="http://www.gleif.org/data/schema/pni/2016">
+
+  
+
+<!-- Parent Reference Data format
+    
+    Change history:
+    
+    V1.1
+    
+    - Add pni:Extension to pni:PNIHeader and pni:PNIRecord
+    
+    V1.0
+    
+    The first version.
+        
+  -->
+  <xs:element name="PNIData" type="pni:PNIDataType"/>
+
+  <xs:complexType name="PNIDataType">
+    <xs:sequence>
+      <xs:element name="PNIHeader" type="pni:PNIHeaderType"/>
+      <xs:element name="PNIRecords" type="pni:PNIRecordsType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="PNIHeaderType">
+    <xs:sequence>
+      <xs:element name="ContentDate" type="xs:dateTime"/>
+      <xs:element name="Originator" type="pni:PNIType" minOccurs="0"/>
+      <xs:element name="FileContent" type="pni:FileContentEnum"/>
+      <xs:element name="DeltaStart" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="RecordCount" type="xs:int"/>
+      <xs:element name="Extension" type="pni:ExtensionType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="HeaderNextVersionType">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" namespace="##targetNamespace"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="PNIRecordsType">
+    <xs:sequence>
+      <xs:element name="PNIRecord" type="pni:PNIRecordType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="PNIRecordType">
+    <xs:sequence>
+      <xs:element name="PNI" type="pni:PNIType"/>
+      <xs:element name="Entity" type="pni:EntityType"/>
+      <xs:element name="Registration" type="pni:RegistrationType"/>
+      <xs:element name="NextVersion" type="pni:PNIRecordNextVersionType" minOccurs="0"/>
+      <xs:element name="Extension" type="pni:ExtensionType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="PNIRecordNextVersionType">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" namespace="##targetNamespace"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="EntityType">
+    <xs:sequence>
+      <xs:element name="LegalName" type="pni:NameType"/>
+      <xs:element name="OtherEntityNames" type="pni:OtherEntityNamesType" minOccurs="0"/>
+      <xs:element name="LegalAddress" type="pni:AddressType"/>
+      <xs:element name="HeadquartersAddress" type="pni:AddressType"/>
+      <xs:element name="OtherAddresses" type="pni:OtherAddressesType" minOccurs="0"/>
+      <xs:element name="BusinessRegisterEntityID" type="pni:BusinessRegisterEntityIDType" minOccurs="0"/>
+      <xs:element name="LegalJurisdiction" type="pni:JurisdictionCodeType" minOccurs="0"/>
+      <xs:element name="LegalForm" type="pni:NameType" minOccurs="0"/>
+      <xs:element name="AssociatedEntity" type="pni:AssociatedEntityType" minOccurs="0"/>
+      <xs:element name="EntityStatus" type="pni:EntityStatusEnum" minOccurs="0"/>
+      <xs:element name="EntityExpirationDate" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="EntityExpirationReason" type="pni:EntityExpirationReasonEnum" minOccurs="0"/>
+      <xs:element name="SuccessorEntity" type="pni:SuccessorEntityType" minOccurs="0"/>
+      <xs:element name="Extension" type="pni:ExtensionType" minOccurs="0"/>
+      <xs:element name="NextVersion" type="pni:EntityNextVersionType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="EntityNextVersionType">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" namespace="##targetNamespace"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="RegistrationType">
+    <xs:sequence>
+      <xs:element name="InitialRegistrationDate" type="xs:dateTime"/>
+      <xs:element name="LastUpdateDate" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="RegistrationStatus" type="pni:RegistrationStatusEnum"/>
+      <xs:element name="NextRenewalDate" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="ManagingLOU" type="pni:PNIType"/>
+      <xs:element name="ValidationSources" type="pni:ValidationSourcesEnum" minOccurs="0"/>
+      <xs:element name="NextVersion" type="pni:RegistrationNextVersionType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="RegistrationNextVersionType">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" namespace="##targetNamespace"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ExtensionType">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" namespace="##other"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AddressType">
+    <xs:sequence>
+      <xs:element name="Line1" type="pni:Token500Type"/>
+      <xs:element name="Line2" type="pni:Token500Type" minOccurs="0"/>
+      <xs:element name="Line3" type="pni:Token500Type" minOccurs="0"/>
+      <xs:element name="Line4" type="pni:Token500Type" minOccurs="0"/>
+      <xs:element name="City" type="pni:Token500Type"/>
+      <xs:element name="Region" type="pni:RegionCodeType" minOccurs="0"/>
+      <xs:element name="Country" type="pni:CountryCodeType"/>
+      <xs:element name="PostalCode" type="pni:Token500Type" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute ref="xml:lang" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="AssociatedEntityType">
+    <xs:choice>
+      <xs:element name="AssociatedLEI" type="pni:PNIType"/>
+      <xs:element name="AssociatedEntityName" type="pni:NameType"/>
+    </xs:choice>
+    <xs:attribute name="type" type="pni:AssociatedEntityTypeEnum" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="BusinessRegisterEntityIDType">
+    <xs:simpleContent>
+      <xs:extension base="pni:Token500Type">
+        <xs:attribute name="register" type="pni:BusinessRegisterEnum"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:simpleType name="JurisdictionCodeType">
+    <xs:union memberTypes="pni:CountryCodeType pni:RegionCodeType"/>
+  </xs:simpleType>
+
+  <xs:complexType name="NameType">
+    <xs:simpleContent>
+      <xs:extension base="pni:Token500Type">
+        <xs:attribute ref="xml:lang" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="OtherAddressType">
+    <xs:complexContent>
+      <xs:extension base="pni:AddressType">
+        <xs:attribute name="type" type="pni:AddressTypeEnum" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OtherAddressesType">
+    <xs:sequence>
+      <xs:element name="OtherAddress" type="pni:OtherAddressType" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:complexType name="OtherEntityNamesType">
+    <xs:sequence>
+      <xs:element name="OtherEntityName" type="pni:OtherEntityNameType" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="OtherEntityNameType">
+    <xs:complexContent>
+      <xs:extension base="pni:NameType">
+        <xs:attribute name="type" type="pni:EntityNameTypeEnum" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="SuccessorEntityType">
+    <xs:choice>
+      <xs:element name="SuccessorLEI" type="pni:PNIType"/>
+      <xs:element name="SuccessorEntityName" type="pni:NameType"/>
+    </xs:choice>
+  </xs:complexType>
+
+
+
+  <xs:simpleType name="CountryCodeType">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="2"/>
+      <xs:maxLength value="2"/>
+      <xs:pattern value="([A-Z]{2})"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="RegionCodeType">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="4"/>
+      <xs:maxLength value="6"/>
+      <xs:pattern value="([A-Z]{2}-[A-Z0-9]{1,3})"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="PNIType">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="20"/>
+      <xs:maxLength value="20"/>
+      <xs:pattern value="([0-9A-Z]{18}[0-9]{2})"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Token500Type">
+    <xs:restriction base="xs:token">
+      <xs:maxLength value="500"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  
+
+  <xs:simpleType name="FileContentEnum">
+    <xs:restriction base="xs:string">
+      <!-- Only "INTERNAL" values are allowed for Parent Reference Data records:-->
+      <xs:enumeration value="LOU_FULL_INTERNAL">
+        
+      </xs:enumeration>
+      <xs:enumeration value="GLEIF_FULL_INTERNAL">
+        
+      </xs:enumeration>
+      <xs:enumeration value="GLEIF_DELTA_INTERNAL">
+        
+      </xs:enumeration>
+      <xs:enumeration value="LOU_DELTA_INTERNAL">
+        
+      </xs:enumeration>
+      <!-- Enumeration values for published LEI data records NOT allowed for PNIs:
+      <xs:enumeration value="LOU_FULL_PUBLISHED"/>
+      <xs:enumeration value="LOU_DELTA_PUBLISHED"/>
+      <xs:enumeration value="COU_FULL_PUBLISHED"/>
+      <xs:enumeration value="COU_DELTA_PUBLISHED"/>
+      -->
+      <xs:enumeration value="QUERY_RESPONSE"/>
+      </xs:restriction>
+  </xs:simpleType>
+
+<!-- Only above values for pni:FileContent are allowed
+  <xs:simpleType name="FileContentEnum">
+    <xs:union memberTypes="pni:FileContentEnum1.0 xs:string"/>
+  </xs:simpleType>
+ -->
+  <xs:simpleType name="BusinessRegisterEnum">
+    <xs:restriction base="xs:string">
+      
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="EntityNameTypeEnum1.0">
+    <xs:restriction base="xs:string">
+      <!-- Enumeration values for 1.0: -->
+      <xs:enumeration value="OTHER_LEGAL"/>
+      <xs:enumeration value="PREFERRED_ASCII_TRANSLITERATED_LEGAL"/>
+      <xs:enumeration value="AUTO_ASCII_TRANSLITERATED_LEGAL"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="EntityNameTypeEnum">
+    <xs:union memberTypes="pni:EntityNameTypeEnum1.0 xs:string"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="AddressTypeEnum1.0">
+    <xs:restriction base="xs:string">
+      <!-- Enumeration values for 1.0: -->
+      <xs:enumeration value="LEGAL_ADDRESS"/>
+      <xs:enumeration value="HEADQUARTERS_ADDRESS"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="AddressTypeEnum">
+    <xs:union memberTypes="pni:AddressTypeEnum1.0 xs:string"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="AssociatedEntityTypeEnum1.0">
+    <xs:restriction base="xs:string">
+      <!-- Enumeration values for 1.0: -->
+      <xs:enumeration value="FUND_FAMILY"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="AssociatedEntityTypeEnum">
+    <xs:union memberTypes="pni:AssociatedEntityTypeEnum1.0 xs:string"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="EntityStatusEnum1.0">
+    <xs:restriction base="xs:string">
+      <!-- Enumeration values for 1.0: -->
+      <xs:enumeration value="ACTIVE"/>
+      <xs:enumeration value="INACTIVE"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="EntityStatusEnum">
+    <xs:union memberTypes="pni:EntityStatusEnum1.0 xs:string"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="EntityExpirationReasonEnum1.0">
+    <xs:restriction base="xs:string">
+      <!-- Enumeration values for 1.0: -->
+      <xs:enumeration value="DISSOLVED"/>
+      <xs:enumeration value="CORPORATE_ACTION"/>
+      <xs:enumeration value="OTHER"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="EntityExpirationReasonEnum">
+    <xs:union memberTypes="pni:EntityExpirationReasonEnum1.0 xs:string"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="RegistrationStatusEnum">
+    <xs:restriction base="xs:string">
+      <!-- Enumeration value for PNI: -->
+      <xs:enumeration value="PENDING_VALIDATION"/>
+      <!-- Enumeration values for LEI data records NOT allowed for PNIs:
+      <xs:enumeration value="ISSUED"/>
+      <xs:enumeration value="DUPLICATE"/>
+      <xs:enumeration value="LAPSED"/>
+      <xs:enumeration value="MERGED"/>
+      <xs:enumeration value="RETIRED"/>
+      <xs:enumeration value="ANNULLED"/>
+      <xs:enumeration value="CANCELLED"/>
+      <xs:enumeration value="TRANSFERRED"/>
+      <xs:enumeration value="PENDING_TRANSFER"/>
+      <xs:enumeration value="PENDING_ARCHIVAL"/>
+       -->
+    </xs:restriction>
+  </xs:simpleType>
+
+<!-- pni:RegistrationStatus may only take the value "PENDING_VALIDATION"
+  <xs:simpleType name="RegistrationStatusEnum">
+    <xs:union memberTypes="pni:RegistrationStatusEnum1.0 xs:string"/>
+  </xs:simpleType>
+ -->
+
+  <xs:simpleType name="ValidationSourcesEnum1.0">
+    <xs:restriction base="xs:string">
+      <!-- Enumeration values for 1.0: -->
+      <xs:enumeration value="PENDING"/>
+      <xs:enumeration value="ENTITY_SUPPLIED_ONLY"/>
+      <xs:enumeration value="PARTIALLY_CORROBORATED"/>
+      <xs:enumeration value="FULLY_CORROBORATED"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ValidationSourcesEnum">
+    <xs:union memberTypes="pni:ValidationSourcesEnum1.0 xs:string"/>
+  </xs:simpleType>
+
+</xs:schema>

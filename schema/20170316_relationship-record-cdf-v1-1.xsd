@@ -1,0 +1,1116 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+    targetNamespace="http://www.gleif.org/data/schema/rr/2016"
+    xmlns:rr="http://www.gleif.org/data/schema/rr/2016" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace"
+        schemaLocation="http://www.w3.org/2001/xml.xsd" />
+    <xs:annotation>
+        <xs:documentation>
+            <h1>Introduction</h1>
+            <br /> Documentation updated: 2017-03-16 <br /><br /> This XML schema defines a
+            reporting format for relationship records for Global Legal Entity Identifier System
+            (GLEIS) Local Operating Units (LOUs) to report relationships between two legal entities
+            (one relationship per relationship record). <br /> Types of relationship supported:<br />
+            <ul>
+                <li>LEI to LEI relationships.</li>
+                <li>LEI to (GLEIS-internal) Provisional Node Identifier (PNI) for reporting parent
+                    entities which do not yet have an LEI.</li>
+                <h2>Status of this document</h2> This section describes the status of this document
+                at the time of its publication. Later versions may supersede this document. The most
+                up to date version will always be available from www.gleif.org.<br /><br />The file
+                format references and honors the policy document published by the LEI ROC entitled
+                "Collecting data on direct and ultimate parents of legal entities in the Global LEI
+                System – Phase 1” (10 March 2016; available from www.leiroc.org).<br />
+                <h2>Terminology and Typographical Conventions</h2> The following typographical
+                conventions are used throughout the document: <ul>
+                    <li>ALL CAPS type is used for the special terms enumerated above.</li>
+                    <li><code>Monospace type</code> is used to denote programming language, UML, and
+                        XML identifiers, as well as for the text of XML documents.</li>
+                </ul>
+                <h2>Cardinalities</h2>
+                <ul>
+                    <li>The cardinality of each element (the number of times it MUST or MAY appear
+                        in an XML data file conforming to this schema) is expressed as a number
+                        range in the format {minimum occurrences, maximum occurrences} in the XML
+                        examples shown below the notes of its containing element. This notation is
+                        equivalent to the following explanations in words:</li>
+                    <ul>
+                        <li>Mandatory, unique: <code>{1,1}</code> - the element MUST appear, exactly
+                            once.</li>
+                        <li>Mandatory, repeatable: <code>{1,unbounded}</code> - the element MUST
+                            appear at least once. It may be repeated any number of times.</li>
+                        <li>Optional, unique: <code>{0,1}</code> - the element NEED NOT appear; it
+                            MAY appear once at most.</li>
+                        <li>Optional, repeatable: <code>{0,unbounded}</code> - the element NEED NOT
+                            appear. It MAY be repeated any number of times.</li>
+                    </ul>
+                </ul> Please note: <ul>
+                    <li>The default cardinality is {1,1} (mandatory, unique). This document
+                        highlights when an element differs from this either by its
+                            <code>minOccurs</code> (minimum occurrences) or <code>maxOccurs</code>
+                        (maximum occurrences) value, or both. </li>
+                    <li>XML cardinalities apply in the context of any containing elements. This
+                        means that a contained element may have a cardinality of one or more even if
+                        its containing element may be omitted, because the contained element is
+                        mandatory <strong>given</strong> the presence of the container.</li>
+                    <li>XML cardinalities enforce a minimum data quality and standards conformance.
+                        Other business rules (as explained below) and data quality checks applied by
+                        GLEIF may encourage stricter cardinalities in live implementations.</li>
+                </ul>
+                <h2>Business Rules</h2> The accompanying documentation in addition to this Technical
+                Specification specifies business rules where applicable for each element. These are
+                rules that are not enforced by validating against the XML schema, but are still
+                mandatory for all Common Data File (CDF) format files. <br /><br />
+                <h2>XML Syntax</h2> This section specifies the XML schema for an Relationship Data
+                File conforming to this standard.<br /><br />
+                <h3>XML Design Rules</h3>
+                <ul>
+                    <li>The XSD schema conforms to W3C's XML Schema specification, version 1.0.</li>
+                    <li>The XML namespace is "http://www.gleif.org/data/schema/rr/2016".</li>
+                    <li>All interior XML elements are namespace-qualified (element form =
+                        qualified).</li>
+                    <li>All XML attributes are in the null namespace (attribute form = unqualified),
+                        with the exception of <code>xml:lang</code>.</li>
+                    <li>Element names are upper camel case.</li>
+                    <li>Attribute name are lower camel case.</li>
+                    <li>XSD type names are upper camel case.</li>
+                    <li>Enumeration code list values are all caps with underscores.</li>
+                    <li>Elements are used in preference to attributes except for language and type
+                        qualifiers.</li>
+                    <li>For a data element specified as having unbounded cardinality, the XML
+                        includes a single container element whose subelements are one or more
+                        instances of the data element whose cardinality is unbounded. The name of
+                        the container element is formed as the plural of the name of the contained
+                        elements.</li>
+                </ul>
+                <h3>XML Schema</h3> An XML file conforming to this standard is valid according to
+                the following XSD 1.0 schema.<br /><br />
+            </ul>
+            <h2>Release Notes</h2>
+            <h3>Version 1.1</h3>
+            <ul>
+                <li>Corrections: <ul>
+                        <li>Corrected <code>elementFormDefault="unqualified"</code> to
+                                <code>elementFormDefault="qualified"</code>.</li>
+                    <!--    
+                    <li>Corrected <code>RelationshipQualifier</code> and
+                                <code>RelationshipQuantifier</code> cardinalities to
+                                <code>{1,unbounded}</code>.</li> -->
+                    </ul></li>
+            </ul>
+            <h3>Version 1.0</h3> The first release. <br /><br />
+            <h2>Change Management</h2> Changes to this standard that affect the data schema SHALL be
+            made by approval and publication of a new version of this document. A new version SHALL
+            be one of the following:<br /><br />
+            <hr3>Errata Version</hr3> An errata version makes corrections to the normative content
+            of the standard (excluding corrections which would change the data schema) and/or makes
+            changes to non-normative content such as explanatory material. An errata version does
+            not change the XML schema definitions, only the documentation parts, and so does not
+            affect the interoperability of systems implementing the standard. An errata version is
+            indicated by incrementing the third version number; e.g., 1.0 to 1.0.1, or 1.0.1 to 1.0.2.<br /><br />
+            <h3>Minor Version</h3> A minor version may include all changes permitted in an errata
+            version, and in addition adds one or more data elements and/or adds one or more codes to
+            a code list (“enum” data type). A minor version changes the XML schema. Minor version
+            changes to schema MUST provide for forward and backward compatibility. This allows
+            existing implementations to continue to interoperate even if they are using different
+            minor versions. A minor version is indicated by incrementing the second version number;
+            e.g., 1.0 to 1.1 or 1.1.3 to 1.2.<br /><br />
+            <h3>Major Version</h3> A major version may make any change at all, including
+            incompatible changes to the XML schema. Major version changes to schema require that the
+            new version uses a different XML namespace. This requires existing implementations to
+            separately understand both the old and new versions during a period of transition. A
+            major version is indicated by incrementing the first version number; e.g., 1.1 to
+            2.0.<br /><br /> The release of a new minor or major version shall always be accompanied
+            by a transition plan for LOUs and GLEIF, to ensure a smooth and time-bounded migration
+            to the new version.<br /><br />
+            <h3>Minor Version Changes to the XML Schema</h3> A minor version may introduce new XML
+            elements and/or adds one or more codes to a code list (“enum” data type). Minor version
+            changes to schema SHALL be made as specified below, in order to achieve forward and
+            backward compatibility.<br /><br /> Forward compatibility means that an Relationship
+            Data File which is valid according to the older version’s schema is also valid according
+            to the newer version’s schema.<br /><br /> Backward compatibility means that an
+            Relationship Data File which is valid according to the newer version’s schema is also
+            valid according to the older version’s schema.<br /><br /> New data elements may be
+            added at pre-defined extension points within the schema, each with an optional XML
+            element NextVersion. New data elements are always added within a NextVersion element.
+            When a minor version adds a new data element to a <code>NextVersion</code> element, a
+            new <code>NextVersion</code> element is also added inside the previously added
+                <code>NextVersion</code> element, to accommodate additional data elements in
+            subsequent minor versions. Each successive NextVersion element set is contained directly
+            within the previous minor version's NextVersion set.<br /><br /> As can be seen from the
+            full XML schema presented here, the following rules SHALL be observed to ensure forward
+            and backward compatibility: <ul>
+                <li>The initial XSD declaration for a <code>NextVersion</code> element SHALL use the
+                    element name "NextVersion", XML data type "lei:NextVersion1Type" and cardinality
+                    optional, unique {0,1}. The XML data type allows a sequence of any elements,
+                    each of cardinality optional, repeatable (unbounded) and with lax content
+                    processing, but in the target namespace.</li>
+                <li>The minOccurs declaration on the <code>NextVersion</code> element allows it to
+                    be omitted in files conforming to the first minor version. The schema wildcard
+                    xsd:any allows for forward compatibility: a file conforming to a new minor
+                    version still validates in the old version because the wildcard matches any new
+                    elements introduced in the new minor version.</li>
+                <li>New elements SHALL be introduced in a subsequent minor version by modifying the
+                    declaration for the above type declaration as follows: <ul>
+                        <li>A sequence of the new elements introduced in the previous version.</li>
+                        <li>A subsequent <code>NextVersionN</code> element where <code>N</code> is
+                            an index number starting at 1 and incremented by 1 with each minor
+                            version.</li>
+                    </ul>
+                    <li>Each new element SHALL be declared minOccurs=”0”, to ensure backward
+                        compatibility: a file conforming to the old version still validates in the
+                        new version because the new schema does not require the presence of elements
+                        not defined in the old version. If a new element is mandatory for
+                        conformance to the new version, this MUST be enforced outside schema
+                        validation.</li>
+                    <li>The new definition of the <code>NextVersion</code> element SHALL include a
+                        declaration of an inner <code>NextVersion</code> element, as illustrated
+                        above, to provide for additional elements in subsequent minor versions. The
+                        nesting of <code>NextVersion</code> elements is required to satisfy the
+                        “unique particle attribution” constraint of XSD 1.0.</li>
+                    <li>Each code list (Enum types) is implemented in the XML schema simply as the
+                        XSD string data type. This provides for forward compatibility because the
+                        schema for an older minor version will validate any string, including codes
+                        defined in newer minor versions. The schema for each minor version includes
+                        the list of valid codes for that minor version as a documentation annotation
+                        to the type declaration for each Enum type.</li>
+                </li>
+            </ul>
+            <h3>Major Version Changes to the XML Schema</h3> A major version may make any change to
+            the XML schema whatsoever, including incompatible changes.<br /><br /> A schema
+            introduced in a new major version SHALL use an XML namespace URI that is different from
+            the XML namespace URI defined in any other major version of this standard. The namespace
+            URI for a new major version SHOULD be the same as the namespace URI specified in this
+            standard, with the year at the end changed to the year in which the new major version is
+            introduced. If more than one major version is introduced in the same year, a letter “a”,
+            “b”, “c”, etc., may be appended to the year as needed.<br /><br /> A new major version
+            MUST be accompanied by an implementation plan which explains how implementations will
+            make the transition from the old major version to the new major version. Generally
+            speaking, such a plan typically provides for a period of transition in which an
+            implementation capable of receiving the new major version is required to also receive
+            the old major version.<br /><br />
+            <h2>Abstract Data Content</h2> This section specifies the abstract data content of a
+            data file conforming to this standard. A data file conforming to this standard SHALL
+            consist of: <ul>
+                <li>A Header.</li>
+                <li>Zero or more Relationship Records.</li>
+            </ul>
+            <h3>Relationship Data File Header</h3> The Relationship Data File Header describes the
+            context for the Relationship Records contained in the main body of the file. The header
+            exists to answer such questions as where the data came from, when it was collected into
+            this file, etc. The content of the header SHALL NOT be required to interpret the data
+            content of any Relationship Record; each Relationship Record is self-contained.
+                <h3>Relationship Record</h3> An Relationship Record describes a single LEI
+            registration. Each Relationship Record in a file conforming to this standard SHALL
+            include data elements as described below: <h4>Relationship</h4>The Relationship
+            container element identifies the two related entities and their relationship.
+                <h5>Related Entities</h5> The ISO 17442-compliant identifiers of the legal entities
+            related by this Relationship Record. <h5>Relationship Attributes</h5> Attributes
+            describing the dates, type, qualitative and quantitative aspects of the relationship
+            itself, as required. The data is supplied by the legal entity, and recorded and
+            published by the LOU. <h4>Registration</h4> Attributes describing the registration of
+            this relationship information with an LOU. The <code>Registration</code> data is
+            maintained by the LOU. <h4>Extension</h4> The optional <code>Extension</code> section of
+            a Relationship Record may be used to include additional data not defined in this
+            standard. This may include data specific to an LOU, data specific to a publisher of LEI
+            data, and so on.<br /> For example, an LOU may use <code>Extension</code> to publish
+            additional data elements it collects as part of registration.<br /> The following rules
+            MUST be observed: <ul>
+                <li>Each XML element included in the content of the <code>Extension element</code>
+                    SHALL be in an XML namespace that is not null and not equal to the XML namespace
+                    of the Relationship Data File as specified in this standard.</li>
+                <li>The XML namespace for an <code>Extension</code> element SHALL be a namespace
+                    which the creator of the extension element exclusively or jointly controls, or
+                    from which the creator re-uses existing elements and their definitions, e.g. a
+                    namespace derived from the Internet Domain Name of the creator, a namespace
+                    agreed upon by a group of trading partners, etc.</li>
+                <li>An <code>Extension</code> element SHALL NOT be defined in such a way as to
+                    require the recipient of the file to recognize the <code>Extension</code>
+                    element in order to interpret the data elements specified in this standard. A
+                    recipient of the file MUST be able to ignore all <code>Extension</code> elements
+                    and still interpret the standard content correctly.</li>
+                <li>A recipient of a data file conforming to this standard SHALL NOT reject a file
+                    solely because it contains extensions not understood by the recipient. A
+                    recipient MUST be prepared to accept a file containing extensions and ignore any
+                    it does not understand, provided that the file complies to this standard.</li>
+            </ul>
+        </xs:documentation>
+    </xs:annotation>
+    <xs:element name="RelationshipData" type="rr:RelationshipDataType">
+        <xs:annotation>
+            <xs:documentation>Contains the file structure for the whole relationship records file as
+                specified in the XML datatypes below. </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:complexType name="RelationshipDataType">
+        <xs:sequence>
+            <xs:element name="Header" type="rr:RRHeaderType">
+                <xs:annotation>
+                    <xs:documentation>Contains the file upload information for this RelationshipData
+                        file. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="RelationshipRecords" type="rr:RelationshipRecordsType">
+                <xs:annotation>
+                    <xs:documentation>Container for all of the <code>RelationshipRecord</code>
+                        container elements submitted with this file.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RRHeaderType">
+        <xs:sequence>
+            <xs:element name="ContentDate" type="rr:LEIDateTimeProfile">
+                <xs:annotation>
+                    <xs:documentation>The date and time as of which the data contained in the file
+                        is valid. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="Originator" type="rr:LEIType">
+                <xs:annotation>
+                    <xs:documentation>The LEI of the entity that created the content of this file.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="FileContent" type="rr:FileContentEnum">
+                <xs:annotation>
+                    <xs:documentation>A code describing the content of this relationship record
+                        file. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="DeltaStart" type="rr:LEIDateTimeProfile">
+                <xs:annotation>
+                    <xs:documentation>The date and time of the baseline relative to which this file
+                        contains new or changed Relationship Records. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="RecordCount" type="xs:nonNegativeInteger">
+                <xs:annotation>
+                    <xs:documentation>The number of relationship records in the file.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="NextVersion" type="rr:HeaderNextVersionType">
+                <xs:annotation>
+                    <xs:documentation>A structure for adding further elements in to the LEI data
+                        file header in anticipation of a new version, by nesting a series of XML
+                        elements with this content model within the <code>NextVersion</code>
+                        element, one for each new minor version of the schema, postpending a serial
+                        number (1,2,3...) to the element name upon each
+                        iteration.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="Extension" type="rr:ExtensionType">
+                <xs:annotation>
+                    <xs:documentation>This <code>Extension</code> element may contain any additional
+                        elements required to extend the Header container element.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="LEIType">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="20" />
+            <xs:maxLength value="20" />
+            <xs:pattern value="([0-9A-Z]{18}[0-9]{2})" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Tokenized500Type">
+        <xs:annotation>
+            <xs:documentation>An element of this type has minimum length of one character and may
+                not contain any of: the carriage return (#xD), line feed (#xA) nor tab (#x9)
+                characters, shall not begin or end with a space (#x20) character, or a sequence of
+                two or more adjacent space characters.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="500" />
+            <xs:minLength value="1" />
+            <xs:pattern value="\S+( \S+)*" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="FileContentEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <xs:enumeration value="LOU_FULL_INTERNAL">
+                <xs:annotation>
+                    <xs:documentation>The file contains all relationship records created for
+                        internal use by an LOU (all internal relationship records for which the LOU
+                        is the <code>ManagingLOU</code>) as of the date/time the file is
+                        created.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LOU_DELTA_INTERNAL">
+                <xs:annotation>
+                    <xs:documentation>The file contains those relationship records created by an LOU
+                        for internal use (all internal relationship records for which the LOU is the
+                            <code>ManagingLOU</code>) which are new or changed since the
+                            <code>DeltaStart</code> specified in the <code>Header</code>, as of the
+                        date/time the file is created.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LOU_FULL_PUBLISHED">
+                <xs:annotation>
+                    <xs:documentation>The file contains all relationship records published by an LOU
+                        (all relationship records for which the LOU is the <code>ManagingLOU</code>)
+                        as of the date/time the file is created.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LOU_DELTA_PUBLISHED">
+                <xs:annotation>
+                    <xs:documentation>The file contains those relationship records published by an
+                        LOU (all relationship records for which the LOU is the
+                            <code>ManagingLOU</code>) which are new or changed since the
+                            <code>DeltaStart</code> specified in the <code>Header</code>, as of the
+                        date/time the file is created</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GLEIF_FULL_INTERNAL">
+                <xs:annotation>
+                    <xs:documentation>The file contains all relationship records GLEIF manages
+                        internally to the GLEIS (including all internal relationship records from
+                        all LOUs) as of the date/time the file is created.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GLEIF_DELTA_INTERNAL">
+                <xs:annotation>
+                    <xs:documentation>The file contains those relationship records GLEIF manages
+                        internally to the GLEIS (including all internal relationship records from
+                        all LOUs) which are new or changed since the <code>DeltaStart</code> date
+                        specified in the <code>Header</code>, as of the date/time the file is
+                        created.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GLEIF_FULL_PUBLISHED">
+                <xs:annotation>
+                    <xs:documentation>The file contains all relationship records published by GLEIF
+                        (including all relationship records from all LOUs) as of the date/time the
+                        file is created.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GLEIF_DELTA_PUBLISHED">
+                <xs:annotation>
+                    <xs:documentation>The file contains those relationship records published by
+                        GLEIF (including all relationship records from all LOUs) which are new or
+                        changed since the <code>DeltaStart</code> date specified in the
+                            <code>Header</code>, as of the date/time the file is
+                        created.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="QUERY_RESPONSE">
+                <xs:annotation>
+                    <xs:documentation>The file contains records matching criteria specified in a
+                        query.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="ExtensionType">
+        <xs:sequence>
+            <xs:any maxOccurs="unbounded" minOccurs="0" namespace="##other" processContents="lax" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RelationshipRecordsType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="RelationshipRecord"
+                type="rr:RelationshipRecordType">
+                <xs:annotation>
+                    <xs:documentation>Contains all relationship information including identifiers
+                        referring to the related entities, the specific type and other attributes of
+                        the relationship itself, and details of the relationship's registration with
+                        the <code>ManagingLOU</code>. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RelationshipRecordType">
+        <xs:sequence>
+            <!-- WARNING: the XML type of Relationship is RelationshipContainerType so that internal XML names do not clash with rr:RelationshipType element. This does not affect the relationship data record file itself. -->
+            <xs:element name="Relationship" type="rr:RelationshipContainerType">
+                <xs:annotation>
+                    <xs:documentation>The <code>Relationship</code> container element contains the
+                        identifiers of the two entities related by the reported relationship, as
+                        well as the type of relationship, dates related to the relationship and
+                        other relationship quantifiers and qualifiers. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Registration" type="rr:RegistrationContainerType">
+                <xs:annotation>
+                    <xs:documentation>The <code>Registration</code> container element contains
+                        information specifying the LOU's administration of the relationship report.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="NextVersion" type="rr:RelationshipRecordNextVersionType">
+                <xs:annotation>
+                    <xs:documentation>A structure for adding further elements in to the
+                            <code>Registration</code> section of the Relationship Record in
+                        anticipation of a new version, by nesting a series of XML elements with this
+                        content model within the <code>NextVersion</code> element, one for each new
+                        minor version of the schema, postpending a serial number (1,2,3...) to the
+                        element name upon each iteration.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="Extension" type="rr:ExtensionType">
+                <xs:annotation>
+                    <xs:documentation>This <code>Extension</code> element may contain any additional
+                        elements required to extend the <code>RelationshipRecord</code>.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RelationshipContainerType">
+        <xs:sequence>
+            <xs:element name="StartNode" type="rr:NodeType">
+                <xs:annotation>
+                    <xs:documentation>An LEI or ISO 17442-compatible ID for the entity at the
+                        "start" of a directional relationship. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="EndNode" type="rr:NodeType">
+                <xs:annotation>
+                    <xs:documentation>An LEI or ISO 17442-compatible ID for the entity at the "end"
+                        of a directional relationship. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="RelationshipType" type="rr:RelationshipTypeEnum">
+                <xs:annotation>
+                    <xs:documentation>A unique code designating the specific category of a
+                        directional relationship between two legal entities. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="RelationshipPeriods" type="rr:RelationshipPeriodsType">
+                <xs:annotation>
+                    <xs:documentation>A collection of paired beginning and end dates relating to:
+                        the relationship itself, periods (e.g. accounting cycles) covered by
+                        documents demonstrating the relationship, or the filing date(s) of those
+                        documents. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="RelationshipStatus" type="rr:RelationshipStatusEnum">
+                <xs:annotation>
+                    <xs:documentation>The status of the legal entities' relationship itself:
+                            <code>ACTIVE</code> or <code>INACTIVE</code>. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="RelationshipQualifiers"
+                type="rr:RelationshipQualifiersType">
+                <xs:annotation>
+                    <xs:documentation>Any additional qualitative attributes that help to categorize
+                        the relationship. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="RelationshipQuantifiers"
+                type="rr:RelationshipQuantifiersType">
+                <xs:annotation>
+                    <xs:documentation>Any additional quantitative attributes that help to categorize
+                        the relationship. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="NextVersion" type="rr:RelationshipNextVersionType">
+                <xs:annotation>
+                    <xs:documentation>A structure for adding further elements in to the
+                            <code>Registration</code> section of the Relationship Record in
+                        anticipation of a new version, by nesting a series of XML elements with this
+                        content model within the <code>NextVersion</code> element, one for each new
+                        minor version of the schema, postpending a serial number (1,2,3...) to the
+                        element name upon each iteration.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="Extension" type="rr:ExtensionType">
+                <xs:annotation>
+                    <xs:documentation>This <code>Extension</code> element may contain any additional
+                        elements required to extend the <code>Relationship</code> container element.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="NodeType">
+        <xs:sequence>
+            <xs:element name="NodeID" type="rr:LEIType">
+                <xs:annotation>
+                    <xs:documentation>The identifier for the entity designated by this node.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="NodeIDType" type="rr:NodeIDTypeEnum">
+                <xs:annotation>
+                    <xs:documentation>The type of identifier used to designate this node's entity.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="NodeIDTypeEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <xs:enumeration value="LEI">
+                <xs:annotation>
+                    <xs:documentation>An LEI code taken from the LEI issuing prefix namespace of a
+                        GLEIS LOU.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ISO_17442_COMPATIBLE">
+                <xs:annotation>
+                    <xs:documentation>An ISO 17442-compatible code, not taken from the LEI issuing
+                        prefix namespace of a GLEIS LOU.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="RelationshipTypeEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <!-- LEVEL 2 PROJECT PHASE 1 VALUES -->
+            <xs:enumeration value="IS_DIRECTLY_CONSOLIDATED_BY">
+                <xs:annotation>
+                    <xs:documentation><code>StartNode</code> is directly consolidated by
+                            <code>EndNode</code>. The <code>StartNode</code> "child" entity has its
+                        accounts fully consolidated by the <code>EndNode</code> "parent" entity, in
+                        the sense given by the accounting standard(s) specified in
+                        RelationshipQualifiers; the <code>EndNode</code> entity is the closest fully
+                        consolidating parent to the <code>StartNode</code> entity in any applicable
+                        hierarchical ownership structure.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="IS_ULTIMATELY_CONSOLIDATED_BY">
+                <xs:annotation>
+                    <xs:documentation><code>StartNode</code> is ultimately consolidated by
+                            <code>EndNode</code>. The <code>StartNode</code> "child" entity has its
+                        accounts fully consolidated by the <code>EndNode</code> "parent" entity, in
+                        the sense given by the accounting standard(s) specified in
+                        RelationshipQualifiers; the <code>EndNode</code> entity is the most distant
+                        fully consolidating parent from the <code>StartNode</code> entity in any
+                        applicable hierarchical ownership structure.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <!-- KNOWN RELEVANT VALUES-->
+            <xs:enumeration value="IS_INTERNATIONAL_BRANCH_OF">
+                <xs:annotation>
+                    <xs:documentation><code>StartNode</code> is an international branch of the legal
+                        entity designated by <code>EndNode</code> (in jurisdiction country of
+                            <code>StartNode</code>). The <code>EndNode</code> is the Head Office and
+                        MUST be an LEI.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="RelationshipPeriodsType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="RelationshipPeriod"
+                type="rr:RelationshipPeriodType">
+                <xs:annotation>
+                    <xs:documentation>Contains one set of start and end dates for a particular type
+                        of period, for example, the duration of the relationship itself, the filing
+                        or validity period of any documents demonstrating the relationship, or the
+                        accounting period they refer to.<br />
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RelationshipPeriodType">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="StartDate" type="rr:LEIDateTimeProfile">
+                <xs:annotation>
+                    <xs:documentation>The start date for a particular period relevant to the
+                        relationship. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="EndDate" type="rr:LEIDateTimeProfile">
+                <xs:annotation>
+                    <xs:documentation>The end date for a particular period relevant to the
+                        relationship. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <!-- WARNING: semantic type of RelationshipPeriod is called PeriodType to avoid naming clash with RelationshipPeriodType XML data type-->
+            <xs:element name="PeriodType" type="rr:PeriodTypeEnum">
+                <xs:annotation>
+                    <xs:documentation>The particular type of period, for example, the duration of
+                        the relationship itself, the filing or validity period of any documents
+                        demonstrating the relationship, or the accounting period they refer
+                        to.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="PeriodTypeEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <xs:enumeration value="ACCOUNTING_PERIOD">
+                <xs:annotation>
+                    <xs:documentation>The dates in this instance of <code>RelationshipPeriod</code>
+                        indicate the accounting period covered by the most recent validation
+                        documents for this relationship.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="RELATIONSHIP_PERIOD">
+                <xs:annotation>
+                    <xs:documentation>The dates in this instance of <code>RelationshipPeriod</code>
+                        indicate the duration of validity of the relationship itself, as distinct
+                        from any administrative or reporting aspects.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DOCUMENT_FILING_PERIOD">
+                <xs:annotation>
+                    <xs:documentation>The dates in this instance of <code>RelationshipPeriod</code>
+                        indicate the validity period of a regulatory filing, accounting document, or
+                        other document demonstrating the relationship's validity.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="RelationshipStatusEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <xs:enumeration value="ACTIVE">
+                <xs:annotation>
+                    <xs:documentation>As of the last report or update, the reporting legal entity
+                        reported that it is legally registered and/or operating, AND that the
+                        relationship detailed in this <code>RelationshipRecord</code> is still
+                        valid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="INACTIVE">
+                <xs:annotation>
+                    <xs:documentation>It has been determined that the relationship ended, e.g.
+                        because entity that reported this relationship is no longer legally
+                        registered and/or operating; or the relationship is no longer valid for
+                        other reasons.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="RelationshipQualifiersType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="RelationshipQualifier"
+                type="rr:RelationshipQualifierType">
+                <xs:annotation>
+                    <xs:documentation>Container for all sets of relationship qualifier information.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RelationshipQualifierType">
+        <xs:sequence>
+            <xs:element name="QualifierDimension" type="rr:QualifierDimensionEnum">
+                <xs:annotation>
+                    <xs:documentation>Designates the optional list of additional qualitative
+                        attributes that help to categorize the relationship. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="QualifierCategory" type="rr:QualifierCategoryTypeEnum">
+                <xs:annotation>
+                    <xs:documentation>Specifies the additional qualitative attributes that help to
+                        categorize the relationship. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="QualifierDimensionEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <!-- LEVEL 2 PROJECT PHASE 1 VALUES -->
+            <xs:enumeration value="ACCOUNTING_STANDARD">
+                <xs:annotation>
+                    <xs:documentation>The accounting standard applied to determine the definition of
+                        e.g. ultimate or direct accounting consolidating parent for the relationship
+                        detailed in this <code>RelationshipRecord</code>. The relevant accounting
+                        standard is that applicable to the <code>EndNode</code> (the "parent"
+                        entity).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <!--  NOW STRICTLY VALIDATING   <xs:simpleType name="QualifierCategoryTypeEnum">
+        <xs:union memberTypes="rr:QualifierCategoryTypeEnum1.0 xs:string"/>
+    </xs:simpleType> -->
+    <xs:simpleType name="QualifierCategoryTypeEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <!-- LEVEL 2 PROJECT PHASE 1 VALUES -->
+            <xs:enumeration value="US_GAAP">
+                <xs:annotation>
+                    <xs:documentation>United States-Generally Accepted Accounting
+                        Principles.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="IFRS">
+                <xs:annotation>
+                    <xs:documentation>International Financial Reporting Standard (developed by the
+                        International Accounting Standards Board – IASB see
+                        http://www.ifrs.org).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OTHER_ACCOUNTING_STANDARD">
+                <xs:annotation>
+                    <xs:documentation>A financial reporting (accounting) standard not otherwise
+                        listed in the latest version of the relationship data file
+                        format.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="RelationshipQuantifiersType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="RelationshipQuantifier"
+                type="rr:RelationshipQuantifierType">
+                <xs:annotation>
+                    <xs:documentation>Specifies one additional quantitative attribute of the
+                        relationship, according to a particular measurement method.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RelationshipQuantifierType">
+        <xs:sequence>
+            <xs:element name="MeasurementMethod" type="rr:MeasurementMethodTypeEnum">
+                <xs:annotation>
+                    <xs:documentation>Specifies the method of measurement (or set of rules) used to
+                        quantitatively categorize the relationship. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="QuantifierAmount" type="xs:decimal">
+                <xs:annotation>
+                    <xs:documentation>Specifies the quantity measured as a decimal (positive or
+                        negative) number, using a <code>.</code> as the decimal point, with no
+                        spaces, and without thousand delimiters (e.g. <code>,</code>).
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="QuantifierUnits" type="rr:QuantifierUnitsTypeEnum">
+                <xs:annotation>
+                    <xs:documentation>Specifies the units, where applicable, of a measurement made
+                        on a relationship. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="MeasurementMethodTypeEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <!-- LEVEL 2 PROJECT PHASE 1 VALUES -->
+            <xs:enumeration value="ACCOUNTING_CONSOLIDATION">
+                <xs:annotation>
+                    <xs:documentation>Accounting consolidation holds when "[in the] financial
+                        statements of a group [...] the assets, liabilities, equity, income,
+                        expenses and cash flows of the parent and its subsidiaries are presented as
+                        those of a single economic entity (please see
+                        http://www.iasplus.com/en/standards/ias/ias27-2011).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="QuantifierUnitsTypeEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <!-- LEVEL 2 PROJECT PHASE 1 VALUES -->
+            <xs:enumeration value="PERCENTAGE" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="RegistrationContainerType">
+        <xs:sequence>
+            <xs:element name="InitialRegistrationDate" type="rr:LEIDateTimeProfile">
+                <xs:annotation>
+                    <xs:documentation>The date at which the relationship information was first
+                        collected by the <code>ManagingLOU</code>. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="LastUpdateDate" type="rr:LEIDateTimeProfile">
+                <xs:annotation>
+                    <xs:documentation>The date at which the information was most recently updated by
+                        the <code>ManagingLOU</code>. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="RegistrationStatus" type="rr:RegistrationStatusEnum">
+                <xs:annotation>
+                    <xs:documentation>The status of the legal entity's relationship record
+                        registration with the <code>ManagingLOU</code>. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="NextRenewalDate" type="rr:LEIDateTimeProfile">
+                <xs:annotation>
+                    <xs:documentation>The next date by which the relationship information must be
+                        renewed and re-certified by the legal entity. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ManagingLOU" type="rr:LEIType">
+                <xs:annotation>
+                    <xs:documentation>The LEI of the LOU that is responsible for administering this
+                        relationship record. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ValidationSources" type="rr:ValidationSourcesTypeEnum">
+                <xs:annotation>
+                    <xs:documentation>Level of relationship validation. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ValidationDocuments" type="rr:ValidationDocumentsTypeEnum">
+                <xs:annotation>
+                    <xs:documentation>Type of source document(s) used for validating the
+                        relationship. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="ValidationReference" type="rr:Tokenized500Type">
+                <xs:annotation>
+                    <xs:documentation>A reference to a specfic document or other source used as the
+                        basis of relationship validation for this relationship record.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="NextVersion" type="rr:RegistrationNextVersionType">
+                <xs:annotation>
+                    <xs:documentation>A structure for adding further elements in to the
+                            <code>Registration</code> section of the Relationship Record in
+                        anticipation of a new version, by nesting a series of XML elements with this
+                        content model within the <code>NextVersion</code> element, one for each new
+                        minor version of the schema, postpending a serial number (1,2,3...) to the
+                        element name upon each iteration.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="Extension" type="rr:ExtensionType">
+                <xs:annotation>
+                    <xs:documentation>This <code>Extension</code> element may contain any additional
+                        elements required to extend the <code>Registration</code> container element.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="RegistrationStatusEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <xs:enumeration value="PENDING_VALIDATION">
+                <xs:annotation>
+                    <xs:documentation>A relationship data report that has been submitted to the LOU
+                        and which is being processed and validated, prior to
+                        publication.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PUBLISHED">
+                <xs:annotation>
+                    <xs:documentation>A relationship data report that has been validated and
+                        published, and which is reported by an entity that was an operating legal
+                        entity as of the last update.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DUPLICATE">
+                <xs:annotation>
+                    <xs:documentation>A relationship data report that has been determined to be a
+                        duplicate registration of the same relationship. In many cases this will
+                        mean more than one report with e.g. the same 2 entity IDs, the same
+                        relationship type, certain status values and the same relationship date(s),
+                        but this determination will depend on the relationship type in
+                        question.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LAPSED">
+                <xs:annotation>
+                    <xs:documentation>A relationship data report that has not been renewed by the
+                            <code>NextRenewalDate</code>.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="RETIRED">
+                <xs:annotation>
+                    <xs:documentation>The relationship is considered to have ended, but the
+                        relationship report is kept in publication for historical audit trail
+                        purposes.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ANNULLED">
+                <xs:annotation>
+                    <xs:documentation>A relationship data report that was marked as erroneous or
+                        invalid after it was published. The relationship report is kept in
+                        publication for historical audit trail purposes only (so that data
+                        recipients can correct their local data).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TRANSFERRED">
+                <xs:annotation>
+                    <xs:documentation>A relationship data report that has been transferred to a
+                        different LOU as the <code>ManagingLOU</code>. A record in this state is not
+                        published, but may be used internally by the prior LOU for audit trail
+                        purposes.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PENDING_TRANSFER">
+                <xs:annotation>
+                    <xs:documentation>A relationship data report for which a transfer to another LOU
+                        has been requested. The request is being processed at the sending LOU. When
+                        the receiving LOU is ready, the status will be changed to
+                            <code>PENDING_ARCHIVAL</code> by the sending LOU prior to completion of
+                        the transfer.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PENDING_ARCHIVAL">
+                <xs:annotation>
+                    <xs:documentation>This relationship data report is about to be transferred to a
+                        different LOU, after which its registration status will revert to a
+                        non-pending status. The <code>PENDING_ARCHIVAL</code> status serves to
+                        inform recipients of LOU-provided data files that a relationship record will
+                        be removed from that LOU’s published file after the transfer is
+                        complete</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ValidationDocumentsTypeEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <!-- LEVEL 2 PROJECT PHASE 1 VALUES -->
+            <xs:enumeration value="ACCOUNTS_FILING">
+                <xs:annotation>
+                    <xs:documentation>A consolidated financial (accounting) statement, prepared and
+                        submitted to the relevant authority.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="REGULATORY_FILING">
+                <xs:annotation>
+                    <xs:documentation>An annual regulatory filing providing public information on
+                        parent relationships.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SUPPORTING_DOCUMENTS">
+                <xs:annotation>
+                    <xs:documentation>Other documents supporting the preparation of consolidated
+                        financial statements.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CONTRACTS">
+                <xs:annotation>
+                    <xs:documentation>Contract(s) attesting to the validity of the
+                        relationship.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OTHER_OFFICIAL_DOCUMENTS">
+                <xs:annotation>
+                    <xs:documentation>Other official document(s) attesting to the validity of the
+                        relationship.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <!-- 
+            <xs:enumeration value="ANNUAL_REGULATORY_FILING">
+                <xs:annotation>
+                    <xs:documentation>An annual regulatory filing providing public information on
+                        parent relationships.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            
+            -->
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ValidationSourcesTypeEnum">
+        <xs:restriction base="xs:string">
+            <!-- WARNING: Enumeration values strictly validate-->
+            <!-- NULL value proposed for cases in which validation is not required; pending confirmation of use case
+            <xs:enumeration value="NULL"><xs:annotation><xs:documentation>No validation document was required for this relationship report</xs:documentation></xs:annotation></xs:enumeration>
+            -->
+            <xs:enumeration value="PENDING">
+                <xs:annotation>
+                    <xs:documentation>The validation of the relationship data provided by the
+                        registrant has not yet occurred. Records with this
+                            <code>ValidationSources</code> value MUST not be
+                        published.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ENTITY_SUPPLIED_ONLY">
+                <xs:annotation>
+                    <xs:documentation>Based on the validation procedures in use by the LOU
+                        responsible for the record, the information associated with this record has
+                        significant reliance on the information that a submitter provided due to the
+                        unavailability of corroborating information.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PARTIALLY_CORROBORATED">
+                <xs:annotation>
+                    <xs:documentation>Based on the validation procedures in use by the LOU
+                        responsible for the record, the information supplied by the submitter can be
+                        partially corroborated by supporting sources (e.g. financial statements with
+                        other definitions of the relevant relationship type; quarterly or annual
+                        regulatory filings, contracts and other documents used in preparing
+                        financial statements).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FULLY_CORROBORATED">
+                <xs:annotation>
+                    <xs:documentation>The relationship data provided by the registrant has been
+                        validated against an explicit relationship statement found in key sources
+                        (e.g. consolidated financial statements).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="LEIDateTimeProfile">
+        <xs:restriction base="xs:dateTime">
+            <xs:annotation>
+                <xs:documentation>
+                    <ul>
+                        <li>Elements of base data type <code>rr:LEIDateTimeProfile</code> use this
+                            datatype to further restrict the ISO 8601 range of date and time format
+                            to the single format:
+                                <br /><br /><strong>YYYY-MM-DDThh:mm:ss.sssTZ</strong><br />
+                            <br /> where the components of the above string are as follows: <ul>
+                                <li>YYYY is the year</li>
+                                <li>MM is the month (01 = January, …, 12 = December)</li>
+                                <li>DD is the day of the month (01 = first day of the month)</li>
+                                <li>T is the single character ‘T’</li>
+                                <li>hh is the hour (00 – 23)</li>
+                                <li>mm is the minute</li>
+                                <li>ss.sss is the second and milliseconds. Two digits must be used
+                                    for the seconds. From one to three digits may be used for
+                                    milliseconds, or omitted entirely along with the decimal
+                                    point.</li>
+                                <li>TZ is the time zone specifier, which can be one of:</li>
+                                <ul>
+                                    <li>Z the single character ‘Z’, denoting Coordinated Universal
+                                        Time (UTC); or</li>
+                                    <li>+hh:mm denoting a positive offset from UTC; or</li>
+                                    <li>-hh:mm denoting a negative offset from UTC</li>
+                                </ul>
+                            </ul> This pattern therefore adds the restrictions, beyond the ISO 8601
+                            specification: <ul>
+                                <li>Only the specified pattern of digits, indicators and separators
+                                    may be used (no spaces or other white space characters).</li>
+                                <li>The time zone (TZ) MUST be present, although it
+                                        <strong>may</strong> be zero (Z) <strong>if</strong> all
+                                    dates and times are expressed as UTC+00:00.</li>
+                                <li>Only 3 decimal places maximum are allowed in the seconds section
+                                    (ss.sss).</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </xs:documentation>
+            </xs:annotation>
+            <xs:pattern
+                value="([^\.]*|([^\.]*(\.((\d){1,3})){0,1}))(Z|\+([01][0-9]|2[0-3]):([0-5][0-9])|-([01][0-9]|2[0-3]):([0-5][0-9]))"
+             />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="HeaderNextVersionType">
+        <xs:sequence>
+            <xs:any maxOccurs="unbounded" minOccurs="0" namespace="##targetNamespace"
+                processContents="lax" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RelationshipRecordNextVersionType">
+        <xs:sequence>
+            <xs:any maxOccurs="unbounded" minOccurs="0" namespace="##targetNamespace"
+                processContents="lax" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RelationshipNextVersionType">
+        <xs:sequence>
+            <xs:any maxOccurs="unbounded" minOccurs="0" namespace="##targetNamespace"
+                processContents="lax" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RegistrationNextVersionType">
+        <xs:sequence>
+            <xs:any maxOccurs="unbounded" minOccurs="0" namespace="##targetNamespace"
+                processContents="lax" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
