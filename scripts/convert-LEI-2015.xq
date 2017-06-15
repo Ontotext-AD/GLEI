@@ -43,6 +43,7 @@ declare function local:address($uri as xs:string, $record, $record_uri as xs:str
     construct {
         <{$record_uri}> <{$predicate}> <{$uri}>.
         <{$uri}> a fibo-fbc-fct-breg:RegistrationAddress;
+                 dc:language {$record/lei:Line1/@xml:lang/string()};
                  fibo-fbc-fct-breg:hasAddressLine1            {$record/lei:Line1};
                  fibo-fbc-fct-breg:hasAddressLine2            {$record/lei:Line2};
                  fibo-fbc-fct-breg:hasAddressLine3            {$record/lei:Line3};
