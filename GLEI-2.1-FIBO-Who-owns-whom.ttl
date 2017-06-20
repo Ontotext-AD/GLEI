@@ -1,0 +1,111 @@
+@base <http://data.ontotext.com/resource/glei/>.
+
+#<( EndNode/ NodeID)>
+#    puml:label """
+#    if ( EndNode/ NodeID == 'LEI')
+#    """;
+#    fibo-be-le-fbo:hasSubUnit <(StartNode/NodeID)>;
+#    fibo-be-le-fbo:hasSubUnit <iso-17442/(StartNode/NodeID)>.
+
+<relation/($n)>
+    puml:label """
+     RelationshipRecord at $n
+    """;
+    a fibo-fnd-ptyx-prc:RelationshipContext;
+    fibo-fnd-dt-fd:hasDatePeriod <relation/($n)/period/($k)>;
+    fibo-fnd-rel-rel:hasDenotation <relation/($n)/entry>;
+    leio:startNode <(StartNode/NodeID)>;
+    leio:startNode <iso-17442/(StartNode/NodeID)>;
+    leio:endNode <(EndNode/NodeID)>;
+    leio:endNode <iso-17442/(EndNode/NodeID)>;
+    fibo-fnd-rel-rel:hasContext <relation/type/(RelationshipType)>.
+
+<(StartNode/NodeID)>            puml:label "StartNode/NodeIDType = 'LEI'".
+<iso-17442/(StartNode/NodeID)>  puml:label "StartNode/NodeIDType = 'ISO_17442_COMPATIBLE'".
+<(EndNode/NodeID)>              puml:label "EndNode/NodeIDType = 'LEI'".
+<iso-17442/(EndNode/NodeID)>    puml:label "EndNode/NodeIDType = 'ISO_17442_COMPATIBLE'".
+
+
+<relation/type/(RelationshipType)>
+    a fibo-fnd-rel-rel:Reference;
+    rdfs:comment ".".
+
+<relation/($n)/period/($k)>
+    a fibo-fnd-tim-tim:DatePeriod;
+    puml:label """
+     RelationshipRecord at $n
+     RelationshipPeriods/RelationshipPeriod at $k
+    """;
+    fibo-fnd-dt-fd:hasStartDate "(StartDate)^^xsd:dateTime";
+    fibo-fnd-dt-fd:hasEndDate "(EndDate)^^xsd:dateTime";
+    leio:periodType <relation/period/type/(PeriodType)>.
+
+<relation/period/type/(PeriodType)>
+    a fibo-fnd-rel-rel:Reference;
+    rdfs:comment ".".
+
+<relation/($n)/entry>
+  a fibo-fbc-fct-breg:BusinessRegistryEntry;
+  fibo-be-corp-corp:hasDateOfRegistration             "(Registration/InitialRegistrationDate)"^^xsd:dateTime;
+  fibo-fbc-fct-breg:hasRegistrationStatusRevisionDate "(Registration/LastUpdateDate)"^^xsd:dateTime;
+  fibo-fbc-fct-breg:hasRegistrationStatus "(Registration/RegistrationStatus)";
+  leio:nextRenewalDate "(Registration/NextRenewalDate)"^^xsd:dateTime;
+  leio:validationStatus <validation-status/(Registration/ValidationSources)>;
+  fibo-fbc-fct-ra:isRegisteredBy <(Registration/ManagingLOU)>;
+  leio:validationDocument <validation/document/(ValidationDocuments)>.
+
+<validation/document/(ValidationDocuments)>
+    a fibo-fnd-rel-rel:Reference;
+    rdfs:comment ".".
+
+<validation-status/(Registration/ValidationSources)>
+a fibo-fnd-rel-rel:Reference; fibo-fnd-rel-rel:hasUniqueIdentifier "(ValidationSources)";fibo-fnd-rel-rel:isMemberOf <validation-status>.
+<validation-status> a fibo-fnd-arr-cls:ClassificationScheme; fibo-fnd-rel-rel:hasName "LEI validation status".
+
+<(EndNode/NodeID)> fibo-be-le-fbo:hasSubUnit <(StartNode/NodeID)>;
+                   fibo-be-le-fbo:hasSubUnit <iso-17442/(StartNode/NodeID)>.
+
+#<condition1> a rdf:Statement;
+# puml:label "IF RelationshipType = 'IS_INTERNATIONAL_BRANCH_OF'";
+# rdf:subject <(EndNode/NodeID)> ;
+# rdf:object <(StartNode/NodeID)>;
+# rdf:object <iso-17442/(StartNode/NodeID)>;
+# rdf:predicate fibo-be-le-fbo:hasSubUnit.
+
+<(EndNode/NodeID)> fibo-fnd-oac-oac:ownsAndControls <(StartNode/NodeID)>;
+                   fibo-fnd-oac-oac:ownsAndControls <iso-17442/(StartNode/NodeID)>.
+
+<iso-17442/(EndNode/NodeID)> fibo-fnd-oac-oac:ownsAndControls <(StartNode/NodeID)>;
+                             fibo-fnd-oac-oac:ownsAndControls <iso-17442/(StartNode/NodeID)>.
+
+#<condition2> a rdf:Statement;
+# puml:label "IF RelationshipType = 'IS_DIRECTLY_CONSOLIDATED_BY'";
+# rdf:subject <(EndNode/NodeID)> ;
+# rdf:object <(StartNode/NodeID)>;
+# rdf:subject <iso-17442/(EndNode/NodeID)> ;
+# rdf:object <iso-17442/(StartNode/NodeID)>;
+# rdf:predicate fibo-be-le-fbo:hasSubUnit.
+
+<(EndNode/NodeID)> skos:topConceptOf <(StartNode/NodeID)>;
+                   skos:topConceptOf <iso-17442/(StartNode/NodeID)>.
+
+<iso-17442/(EndNode/NodeID)> skos:topConceptOf <(StartNode/NodeID)>;
+                             skos:topConceptOf <iso-17442/(StartNode/NodeID)>.
+
+
+#<condition3> a rdf:Statement;
+# puml:label "IF RelationshipType = 'IS_ULTIMATELY_CONSOLIDATED_BY'";
+# rdf:subject <(EndNode/NodeID)> ;
+# rdf:subject <iso-17442/(EndNode/NodeID)> ;
+# rdf:object <(StartNode/NodeID)>;
+# rdf:object <iso-17442/(StartNode/NodeID)>;
+# rdf:predicate skos:topConceptOf.
+
+
+
+leio:startNode puml:arrow puml:up.
+leio:endNode puml:arrow puml:up.
+fibo-be-le-fbo:hasSubUnit puml:arrow puml:dashed.
+skos:topConceptOf puml:arrow puml:dashed.
+fibo-fnd-oac-oac:ownsAndControls puml:arrow puml:dashed.
+

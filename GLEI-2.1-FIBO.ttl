@@ -23,7 +23,7 @@
 /LEIData/LEIRecords/LEIRecord/
 """;
   a fibo-be-le-lp:LegalEntity;
-  fibo-fnd-aap-agt:isIdentifiedBy <(LEI)/lei>;
+  fibo-fnd-aap-agt:isIdentifiedBy <(LEI)/id/lei>;
   fibo-fnd-rel-rel:hasDenotation <(LEI)/entry>;
   fibo-fnd-rel-rel:hasLegalName "(LegalName)@(@xml:lang)";
   leio:autoAsciiTransliteratedLegalName "(TransliteratedOtherEntityNames/TransliteratedOtherEntityName\n   [@type='AUTO_ASCII_TRANSLITERATED_LEGAL'])@(@xml:lang)";
@@ -33,33 +33,35 @@
   leio:preferredAsciiTransiteratedLegalName "(TransliteratedOtherEntityNames/TransliteratedOtherEntityName\n   [@type='PREFERRED_ASCII_TRANSLITERATED_LEGAL'])@(@xml:lang)";
   fibo-fbc-fct-breg:hasHeadquartersAddress <(LEI)/address/headquarters>, <(LEI)/address/headquarters/transliterated>, <(LEI)/address/headquarters/($n)>, <(LEI)/address/headquarters/transliterated/($n)>;
   fibo-fnd-plc-adr:hasAddressOfLegalFormation <(LEI)/address/legal>, <(LEI)/address/legal/transliterated>, <(LEI)/address/legal/($n)>, <(LEI)/address/legal/transliterated/($n)>;
-  fibo-fnd-aap-agt:isIdentifiedBy <(LEI)/id/(RegistrationAuthorityID)>;
+  fibo-fnd-aap-agt:isIdentifiedBy <(LEI)/id/register/(RegistrationAuthorityID)>;
+  fibo-fnd-aap-agt:isIdentifiedBy <(LEI)/literal/register>;
   leio:legalJurisdictionCode "(LegalJurisdiction) # !! LOOKUP for fibo-be-le-lp:isOrganizedIn";
-  leio:enitityCategory "(EntityCategory)";
+  fibo-fnd-rel-rel:isClassifiedBy <category/(EntityCategory)>;
   # leio:associatedLEI <(AssociatedEntity/AssociatedLEI)>;
-  fibo-be-corp-corp:hasLegalFormAbbreviation """[!regexp(OtherLegalForm,"other|select legal form","i")]""";
+  fibo-be-corp-corp:hasLegalFormAbbreviation """[fn:not(fn:matches(., "other|select legal form"))]""";
   # fibo-fnd-aap-agt:isIdentifiedBy <(LEI)/id/($n)>;
   fibo-be-le-lp:isOrganizedIn lcc-3166-2:Alaska;
 
     # BUG https://jira.edmcouncil.org/browse/BE-141
-  leio:status "(EntityStatus)";
+  leio:status <status/(EntityStatus)>;
   leio:expirationDate "(EntityExpirationDate)"^^xsd:dateTime;
-  leio:expirationReason "(EntityExpirationReason[.!='OTHER'])";
-  # fibo-be-le-fbo:hasSubUnit <(SuccessorEntity/SuccessorLEI)>;
-  leio:nextVersion "(NextVersion)";
-  fibo-fnd-aap-agt:isIdentifiedBy <(LEI)/id/validationauthority/(Registration/ValidationAuthority/ValidationAuthorityID)>.
+  leio:expirationReason "(EntityExpirationReason[.!='OTHER'])".
+  # fibo-be-le-fbo:hasSubUnit <(SuccessorEntity/SuccessorLEI)>.
 
 <(LEI)/entry>
   a fibo-fbc-fct-breg:BusinessRegistryEntry;
-  fibo-fnd-rel-rel:comprises <(LEI)/lei>;
+  fibo-fnd-rel-rel:comprises <(LEI)/id/lei>;
   fibo-be-corp-corp:hasDateOfRegistration             "(Registration/InitialRegistrationDate)"^^xsd:dateTime;
   fibo-fbc-fct-breg:hasRegistrationStatusRevisionDate "(Registration/LastUpdateDate)"^^xsd:dateTime;
   fibo-fbc-fct-breg:hasRegistrationStatus "(Registration/RegistrationStatus)";
   leio:nextRenewalDate "(Registration/NextRenewalDate)"^^xsd:dateTime;
-  # leio:validationSources "(Registration/ValidationSources)";
+  leio:validationStatus <validation-status/(Registration/ValidationSources)>;
   # leio:otherValidationAuthorities "(OtherValidationAuthorities)";
-  leio:nextVersion "(OtherValidationAuthorities)^^xsd:dateTime";
-  fibo-fbc-fct-ra:isRegisteredBy <(Registration/ManagingLOU)>.
+  fibo-fbc-fct-ra:isRegisteredBy <(Registration/ManagingLOU)>;
+  leio:validation <(LEI)/id/register/(Registration/ValidationAuthority/ValidationAuthorityID)>;
+  leio:validation <(LEI)/literal/validation-authority>;
+  leio:validation <(LEI)/literal/validation-authority/($n)>.
+
 
 # BUG https://jira.edmcouncil.org/browse/FND-81
 #<(LEI)/date-registration> a fibo-fnd-dt-fd:Date; fibo-fnd-dt-fd:hasDateTimeValue "(Registration/InitialRegistrationDate)"^^xsd:dateTime.
@@ -69,52 +71,32 @@
   a fibo-fbc-fct-breg:BusinessRegistrationAuthority;
   fibo-fnd-rel-rel:manages glei:.
 
-<(LEI)/lei> a fibo-be-le-lei:LegalEntityIdentifier, fibo-fbc-fct-ra:RegistryIdentifier;
+<(LEI)/id/lei> a fibo-be-le-lei:LegalEntityIdentifier, fibo-fbc-fct-ra:RegistryIdentifier;
   fibo-fnd-rel-rel:hasUniqueIdentifier "(LEI)";
   fibo-fnd-arr-id:isIndexTo glei:.
 
 glei: a fibo-fbc-fct-breg:BusinessRegistry;
   fibo-fnd-rel-rel:hasName "Global GLEI register".
 
-<register/(RegistrationAuthorityID)>
-  puml:label """
-RegistrationAuthorityID/[RegistrationAuthorityEntityID!='RA888888' and RegistrationAuthorityEntityID!='RA999999']
-""";
-  a fibo-fbc-fct-ra:RegistrationAuthority;
-  dct:identifier ".";
-  fibo-fnd-rel-rel:isClassifiedBy <register> .
+#<register/(RegistrationAuthorityID)>
+#  puml:label """
+#RegistrationAuthorityID/[RegistrationAuthorityID!='RA888888'
+# and RegistrationAuthorityID!='RA999999']
+#""".
+#  a fibo-be-corp-corp:RegistryIdentifier;
+#  fibo-fnd-rel-rel:hasUniqueIdentifier ".".
 #  leio:downloadFile <glei:($n)>;
 #  fibo-fnd-rel-rel:manages glei:.
 
-<(LEI)/id/(RegistrationAuthorityID)>
-  puml:label """
-RegistrationAuthorityID/[RegistrationAuthorityEntityID!='RA888888' and RegistrationAuthorityEntityID!='RA999999' and RegistrationAuthorityEntityID]
-""";
-  fibo-fbc-fct-ra:isRegisteredBy <register/(RegistrationAuthorityID)>;
-  a fibo-be-corp-corp:RegistrationIdentifier;
-  fibo-fnd-rel-rel:hasUniqueIdentifier "(RegistrationAuthorityEntityID)".
-
-<validationauthority/(ValidationAuthorityID)>
-  puml:label """
-RegistrationAuthorityID/[RegistrationAuthorityEntityID!='RA888888' and RegistrationAuthorityEntityID!='RA999999']
-""";
-  a fibo-fbc-fct-ra:RegistrationAuthority;
-  dct:identifier ".";
-  fibo-fnd-rel-rel:isClassifiedBy <validationauthority> .
-
-<(LEI)/id/validationauthority/(Registration/ValidationAuthority/ValidationAuthorityID)>
-  puml:label """
-ValidationAuthorityID/[ValidationAuthorityEntityID!='RA888888' and ValidationAuthorityEntityID!='RA999999' and ValidationAuthorityEntityID]
-""";
-  fibo-fbc-fct-ra:isRegisteredBy <validationauthority/(ValidationAuthorityID)>;
-  a fibo-be-corp-corp:RegistrationIdentifier;
-  fibo-fnd-rel-rel:hasUniqueIdentifier "(ValidationAuthorityEntityID)".
 
 
-
-
-
-
+#<register/(ValidationAuthorityID)>
+#  puml:label """
+#RegistrationAuthorityID/[RegistrationAuthorityID!='RA888888'
+# and RegistrationAuthorityID!='RA999999']
+#""";
+#  a fibo-fbc-fct-ra:RegistryIdentifier;
+#  fibo-fnd-rel-rel:hasUniqueIdentifier ".".
 
 
 #<register/(@register)> a fibo-fbc-fct-breg:BusinessRegistry.
@@ -126,7 +108,8 @@ ValidationAuthorityID/[ValidationAuthorityEntityID!='RA888888' and ValidationAut
 HeadquartersAddress
 """;
   a fibo-fbc-fct-breg:RegistrationAddress;
-  fibo-fnd-rel-rel:isClassifiedBy <address/headquarters/preferred>;
+  fibo-fnd-rel-rel:isClassifiedBy <address/headquarters>;
+  fibo-fnd-rel-rel:isClassifiedBy <address/preferred>;
   dc:language "(@xml:lang) # !! LOOKUP for dbo:language";
   dbo:language lcc-639-1:English;
   fibo-fbc-fct-breg:hasAddressLine1 "(FirstAddressLine)@(../@xml:lang)";
@@ -144,7 +127,8 @@ HeadquartersAddress
   fibo-fbc-fct-breg:hasPostalCode "(PostalCode)".
 
 <(LEI)/address/headquarters/transliterated>
-  fibo-fnd-rel-rel:isClassifiedBy <address/headquarters/preferred/transliterated>;
+  fibo-fnd-rel-rel:isClassifiedBy <address/headquarters>;
+  fibo-fnd-rel-rel:isClassifiedBy <address/preferred/transliterated>;
   a fibo-fnd-plc-adr:RegisteredAddress;
   puml:label """
 TransliteratedOtherAddresses/TransliteratedOtherAddress
@@ -154,7 +138,8 @@ TransliteratedOtherAddresses/TransliteratedOtherAddress
 
 <(LEI)/address/headquarters/($n)>
   a fibo-fbc-fct-breg:RegistrationAddress;
-  fibo-fnd-rel-rel:isClassifiedBy <address/headquarters/other>;
+  fibo-fnd-rel-rel:isClassifiedBy <address/headquarters>;
+  fibo-fnd-rel-rel:isClassifiedBy <address/other>;
   puml:label """
 OtherAddresses/OtherAddress
 [@type='ALTERNATIVE_LANGUAGE_HEADQUARTERS_ADDRESS'] at $n
@@ -162,7 +147,8 @@ OtherAddresses/OtherAddress
 """.
 
 <(LEI)/address/headquarters/transliterated/($n)>
-  fibo-fnd-rel-rel:isClassifiedBy <address/headquarters/other/transliterated>;
+  fibo-fnd-rel-rel:isClassifiedBy <address/headquarters>;
+  fibo-fnd-rel-rel:isClassifiedBy <address/other/transliterated>;
   a fibo-fnd-plc-adr:RegisteredAddress;
   puml:label """
 TransliteratedOtherAddresses/TransliteratedOtherAddress
@@ -172,14 +158,16 @@ TransliteratedOtherAddresses/TransliteratedOtherAddress
 
 <(LEI)/address/legal>
   a fibo-fnd-plc-adr:RegisteredAddress;
-  fibo-fnd-rel-rel:isClassifiedBy <address/legal/preferred>;
+  fibo-fnd-rel-rel:isClassifiedBy <address/legal>;
+  fibo-fnd-rel-rel:isClassifiedBy <address/preferred>;
   puml:label """
 LegalAddress
 # (same data as HeadquartersAddress)
 """.
 
 <(LEI)/address/legal/transliterated>
-  fibo-fnd-rel-rel:isClassifiedBy <address/legal/preferred/transliterated>;
+  fibo-fnd-rel-rel:isClassifiedBy <address/legal>;
+  fibo-fnd-rel-rel:isClassifiedBy <address/preferred/transliterated>;
   a fibo-fnd-plc-adr:RegisteredAddress;
   puml:label """
 TransliteratedOtherAddresses/TransliteratedOtherAddress
@@ -189,15 +177,17 @@ TransliteratedOtherAddresses/TransliteratedOtherAddress
 
 <(LEI)/address/legal/($n)>
   a fibo-fnd-plc-adr:RegisteredAddress;
-  fibo-fnd-rel-rel:isClassifiedBy <address/legal/other>;
+  fibo-fnd-rel-rel:isClassifiedBy <address/legal>;
+  fibo-fnd-rel-rel:isClassifiedBy <address/other>;
   puml:label """
 OtherAddresses/OtherAddress
-[@type='LEGAL_ADDRESS'] at $n
+[@type='ALTERNATIVE_LANGUAGE_LEGAL_ADDRESS'] at $n
 # (same data as HeadquartersAddress)
 """.
 
 <(LEI)/address/legal/transliterated/($n)>
-  fibo-fnd-rel-rel:isClassifiedBy <address/legal/other/transliterated>;
+  fibo-fnd-rel-rel:isClassifiedBy <address/legal>;
+  fibo-fnd-rel-rel:isClassifiedBy <address/other/transliterated>;
   a fibo-fnd-plc-adr:RegisteredAddress;
   puml:label """
 TransliteratedOtherAddresses/TransliteratedOtherAddress
@@ -205,9 +195,13 @@ TransliteratedOtherAddresses/TransliteratedOtherAddress
 # (same data as HeadquartersAddress)
 """.
 
-<(LEI)> fibo-fnd-rel-rel:isClassifiedBy <status/(EntityStatus)>.
+# <(LEI)> fibo-fnd-rel-rel:isClassifiedBy <status/(EntityStatus)>.
 <status/(EntityStatus)> a fibo-fnd-rel-rel:Reference; fibo-fnd-rel-rel:hasUniqueIdentifier "(EntityStatus)"; fibo-fnd-rel-rel:isMemberOf <status>.
 <status> a fibo-fnd-arr-cls:ClassificationScheme; fibo-fnd-rel-rel:hasName "LEI status".
+
+<validation-status/(Registration/ValidationSources)>
+a fibo-fnd-rel-rel:Reference; fibo-fnd-rel-rel:hasUniqueIdentifier "(ValidationSources)";fibo-fnd-rel-rel:isMemberOf <validation-status>.
+<validation-status> a fibo-fnd-arr-cls:ClassificationScheme; fibo-fnd-rel-rel:hasName "LEI validation status".
 
 dbr:English_language dbo:iso6391Code "en".
 lcc-639-1:en a lcc-lr:Alpha2Code; lcc-lr:hasLanguageTag "en"; lcc-lr:identifies lcc-639-1:English.
@@ -258,6 +252,8 @@ fibo-fnd-plc-adr:hasAddress                 puml:arrow puml:up.
 fibo-fnd-rel-rel:isClassifiedBy             puml:arrow puml:up.
 fibo-fnd-rel-rel:isMemberOf                 puml:arrow puml:up.
 lcc-cr:isClassifiedBy                       a puml:InlineProperty.
+fibo-fnd-rel-rel:isClassifiedBy             a puml:InlineProperty.
 lcc-lr:isMemberOf                           a puml:InlineProperty.
 leio:originator                             a puml:InlineProperty.
+leio:validatedBy                            a puml:InlineProperty.
 

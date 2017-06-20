@@ -39,7 +39,7 @@ declare variable $input as xs:string external;
 declare option saxon:output "method=text";
 
 
-declare function local:address($uri as xs:string, $record, $record_uri as xs:string, $predicate as xs:string, $schema as xs:string){
+declare function local:address($uri as xs:string, $record, $record_uri as xs:string, $predicate as xs:string, $schema1 as xs:string, $schema2 as xs:string){
     let $x := $uri
     construct {
         <{$record_uri}> <{$predicate}> <{$uri}>.
@@ -56,7 +56,8 @@ declare function local:address($uri as xs:string, $record, $record_uri as xs:str
                  leio:addressNumber                           {$record/lei:AddressNumber};
                  leio:addressNumberWithinBuilding             {$record/lei:AddressNumberWithinBuilding};
                  leio:mailRouting                             {$record/lei:MailRouting};
-                 fibo-fnd-rel-rel:isClassifiedBy              <{$schema}>;
+                 fibo-fnd-rel-rel:isClassifiedBy              <{$schema1}>;
+                 fibo-fnd-rel-rel:isClassifiedBy              <{$schema2}>;
     }
 };
 
@@ -82,7 +83,7 @@ declare function local:registrationManaging($uri as xs:string, $record){
 declare function local:entry($uri as xs:string, $record){
     let $entry := fn:concat($uri, "/entry")
     let $registrationManaging := fn:concat("http://data.ontotext.com/resource/glei/", $record/lei:Registration/lei:ManagingLOU/text())
-    let $glei := fn:concat($uri, "/lei")
+    let $glei := fn:concat($uri, "/id/lei")
     construct {
         <{$entry}> a fibo-fbc-fct-breg:BusinessRegistryEntry;
                    fibo-be-corp-corp:hasDateOfRegistration                {$record/lei:Registration/lei:InitialRegistrationDate/text()}^^xsd:dateTime;
@@ -98,17 +99,18 @@ declare function local:LEI ($uri as xs:string, $record) {
     let $denotation := fn:concat($uri, "/entry")
     let $lei        := fn:concat($uri, "/lei")
     let $le_n       := fn:concat($uri, "/id", "/1")
+    let $glei       := "http://data.ontotext.com/resource/glei/"
+    let $category   := $record/lei:Entity/lei:EntityCategory
+    let $status     := if (fn:exists($category)) then (fn:concat($glei, "category/", $category)) else ()
     construct {
         <{$uri}> a                                          fibo-be-le-lp:LegalEntity;
                  fibo-be-corp-corp:hasLegalFormAbbreviation {$record/lei:Entity/lei:LegalForm/lei:OtherLegalForm[fn:not(fn:matches(., "other|select legal form"))]};
                  fibo-fnd-rel-rel:hasLegalName              {$record/lei:Entity/lei:LegalName};
                  leio:autoAsciiTransliteratedLegalName      {$record/lei:Entity/lei:TransliteratedOtherEntityNames/lei:TransliteratedOtherEntityName[@type='AUTO_ASCII_TRANSLITERATED_LEGAL']};
-                 leio:entityCategory                        {$record/lei:Entity/lei:EntityCategory};
+                 fibo-fnd-rel-rel:isClassifiedBy            <{$status}>;
                  leio:expirationDate                        {$record/lei:Entity/lei:EntityExpirationDate/text()}^^xsd:dateTime;
                  leio:expirationReason                      {$record/lei:Entity/lei:EntityExpirationReason};
                  leio:legalJurisdictionCode                 {$record/lei:Entity/lei:LegalJurisdiction};
-                 leio:nextVersion                           {$record/lei:Entity/lei:NextVersion};
-                 leio:status                                {$record/lei:Entity/lei:EntityStatus};
                  fibo-fnd-rel-rel:hasDenotation             <{$denotation}>.
         { local:lei_lei($lei, $record, $uri),
             for $x in $record/lei:Entity/lei:OtherEntityNames/lei:OtherEntityName
@@ -136,30 +138,36 @@ declare function local:glei_master() {
     }
 };
 
-declare function local:IdentifiedByAuthority($uri as xs:string, $record, $classifier as xs:string, $authID, $authEntityID){
-    let $glei := "http://data.ontotext.com/resource/glei/"
-    let $suffix := fn:concat($classifier, "/", $authID)
-    let $auth := fn:concat($glei, $suffix)
-    let $url := fn:concat($glei, "id/", $suffix)
+declare function local:IdentifiedByAuthority($uri as xs:string, $record){
+    let $authID := $record/lei:Entity/lei:RegistrationAuthority/lei:RegistrationAuthorityID
+    let $glei   := "http://data.ontotext.com/resource/glei/"
+    let $suffix := fn:concat("register/", $authID)
+    let $auth   := fn:concat($glei, $suffix)
+    let $url    := fn:concat($glei, "id/", $suffix)
+    let $no_id  := fn:concat($uri, "/literal/register")
+    let $authEntityID := $record/lei:Entity/lei:RegistrationAuthority/lei:RegistrationAuthorityEntityID
     return
-    if (($authID/text() = 'RA888888') or ($authID/text() = 'RA999999') or fn:not(fn:exists($authID))) then ()
-    else (let $dagoeba := ""
+    if (($authID/text() = 'RA888888') or ($authID/text() = 'RA999999') or fn:not(fn:exists($authID)))
+    then (let $dummy := ""
+          construct {
+            <{$uri}> fibo-fnd-aap-agt:isIdentifiedBy <{$no_id}>.
+            <{$no_id}> a fibo-fbc-fct-breg:BusinessRegistrationAuthority;
+                    fibo-fnd-rel-rel:hasUniqueIdentifier {$authEntityID};
+                    rdfs:comment {$record/lei:Entity/lei:RegistrationAuthority/lei:OtherRegistrationAuthorityID}.
+        })
+    else (let $dummy := ""
           construct {
             <{$uri}> fibo-fnd-aap-agt:isIdentifiedBy <{$url}>.
-            <{$url}> a fibo-be-corp-corp:RegistrationIdentifier;
+            <{$url}> a fibo-fbc-fct-breg:BusinessRegistrationAuthority;
                      fibo-fnd-rel-rel:hasUniqueIdentifier {$authEntityID};
                      fibo-fbc-fct-ra:isRegisteredBy <{$auth}>.
-            <{$auth}> a fibo-fbc-fct-ra:RegistrationAuthority;
-                     dct:identifier {$authID};
-                     fibo-fnd-rel-rel:isClassifiedBy <{fn:concat($glei, $classifier)}>.
         })
 };
 
 declare function local:status($uri as xs:string, $record){
-    let $dummy := ""
     let $node := fn:concat("http://data.ontotext.com/resource/glei/status/", $record/lei:Entity/lei:EntityStatus)
     construct {
-        <{$uri}> fibo-fnd-rel-rel:isClassifiedBy <{$node}>.
+        <{$uri}> leio:status <{$node}>.
         <{$node}> a fibo-fnd-rel-rel:Reference;
                   fibo-fnd-rel-rel:hasUniqueIdentifier {$record/lei:Entity/lei:EntityStatus};
                   fibo-fnd-rel-rel:isMemberOf <http://data.ontotext.com/resource/glei/status>.
@@ -168,6 +176,54 @@ declare function local:status($uri as xs:string, $record){
     }
 };
 
+declare function local:ValidatedByAuthority($uri as xs:string, $record){
+    let $glei   := "http://data.ontotext.com/resource/glei/"
+    let $authID := $record/lei:Registration/lei:ValidationAuthority/lei:ValidationAuthorityID
+    let $entry := fn:concat($uri, "/entry")
+    let $register := fn:concat($glei, "register/", $authID)
+    return (
+    if (($authID/text() = 'RA888888') or ($authID/text() = 'RA999999') or fn:not(fn:exists($authID)))
+    then (
+(: )if (fn:exists($authID)) then (
+            let $auth := fn:concat($uri, "/literal/validation-authority")
+                construct {
+                    <{$entry}> leio:validatedBy <{$auth}>.
+                    <{$auth}> a fibo-fbc-fct-breg:RegistrationIdentifier;
+                        fibo-fnd-rel-rel:hasUniqueIdentifier {$record/lei:Registration/lei:ValidationAuthority/lei:ValidationAuthorityEntityID};
+                        rdfs:comment {$authID};
+        })
+        else ():) )
+    else (let $auth := fn:concat($uri, "/id/register")
+            construct {
+                <{$entry}> leio:validatedBy <{$auth}>.
+                <{$auth}> a fibo-fbc-fct-breg:RegistrationIdentifier;
+                    fibo-fnd-rel-rel:hasUniqueIdentifier {$record/lei:Registration/lei:ValidationAuthority/lei:ValidationAuthorityEntityID};
+                    fibo-fbc-fct-ra:isRegisteredBy {$register}.
+    }),
+    for $other at $n in $record/lei:Registration/lei:ValidationAuthority/lei:OtherValidationAuthorityID
+    let $auth := fn:concat($uri, "/literal/validation-authority/", $n)
+    construct{
+        <{$entry}> leio:validatedBy <{$auth}>.
+        <{$auth}> a fibo-fbc-fct-breg:RegistrationIdentifier;
+            fibo-fnd-rel-rel:hasUniqueIdentifier {$record/lei:Registration/lei:ValidationAuthority/lei:ValidationAuthorityEntityID};
+            rdfs:comment {$other};
+    })
+};
+
+declare function local:validationStatus($uri as xs:string, $record, $glei as xs:string){
+    let $entry := fn:concat($uri, "/entry")
+    let $valid_schema := fn:concat($glei, "validation-status")
+    let $sources := $record/lei:Registration/lei:ValidationSources
+    let $valid := fn:concat($valid_schema, "/", $record/lei:Registration/lei:ValidationSources)
+    construct {
+        <{$entry}> leio:validationStatus <{$valid}>.
+        <{$valid}> a fibo-fnd-rel-rel:Reference;
+                fibo-fnd-rel-rel:hasUniqueIdentifier {$sources};
+                fibo-fnd-rel-rel:isMemberOf <{$valid_schema}>.
+        <{$valid_schema}> a fibo-fnd-arr-cls:ClassificationScheme;
+                          fibo-fnd-rel-rel:hasName "LEI validation status".
+    }
+};
 
 let $dummy := "FD"
 return(
@@ -182,25 +238,24 @@ return (
     local:LEI($uri, $record),
     local:entry($uri, $record),
     local:registrationManaging($uri, $record),
-    local:address($headquarters, $record/lei:Entity/lei:HeadquartersAddress, $uri, $hq_predicate,    fn:concat($glei, "address/headquarters/preferred")),
-    local:address($legal       , $record/lei:Entity/lei:LegalAddress,        $uri, $legal_predicate, fn:concat($glei, "address/legal/preferred")),
+    local:address($headquarters, $record/lei:Entity/lei:HeadquartersAddress, $uri, $hq_predicate,    fn:concat($glei, "address/headquarters"), fn:concat($glei, "preferred")),
+    local:address($legal       , $record/lei:Entity/lei:LegalAddress,        $uri, $legal_predicate, fn:concat($glei, "address/legal"),        fn:concat($glei, "preferred")),
     for $legal at $x in $record/lei:Entity/lei:OtherAddresses/lei:OtherAddress[@type="ALTERNATIVE_LANGUAGE_LEGAL_ADDRESS"] return
-        local:address(fn:concat($uri, "/address/legal/", $x), $legal, $uri, $legal_predicate,     fn:concat($glei, "address/legal/other")),
+        local:address(fn:concat($uri, "/address/legal/", $x), $legal, $uri, $legal_predicate,     fn:concat($glei, "address/legal"), fn:concat($glei, "other")),
     for $hq    at $x in $record/lei:Entity/lei:OtherAddresses/lei:OtherAddress[@type="ALTERNATIVE_LANGUAGE_HEADQUARTERS_ADDRESS"] return
-        local:address(fn:concat($uri, "/address/headquarters/", $x), $hq, $uri, $hq_predicate,    fn:concat($glei, "address/headquarters/other")),
+        local:address(fn:concat($uri, "/address/headquarters/", $x), $hq, $uri, $hq_predicate,    fn:concat($glei, "address/headquarters"), fn:concat($glei, "other")),
     for $legal at $x in $record/lei:Entity/lei:TransliteratedOtherAddresses/lei:TransliteratedOtherAddress[@type="PREFERRED_ASCII_TRANSLITERATED_LEGAL_ADDRESS"] return
-        local:address(fn:concat($uri, "/address/legal/transliterated"), $legal, $uri, $legal_predicate,     fn:concat($glei, "address/legal/preferred/transliterated")),
+        local:address(fn:concat($uri, "/address/legal/transliterated"), $legal, $uri, $legal_predicate,      fn:concat($glei, "address/legal"), fn:concat($glei, "preferred/transliterated")),
     for $hq    at $x in $record/lei:Entity/lei:TransliteratedOtherAddresses/lei:TransliteratedOtherAddress[@type="PREFERRED_ASCII_TRANSLITERATED_HEADQUARTERS_ADDRESS"] return
-        local:address(fn:concat($uri, "/address/headquarters/transliterated"), $hq, $uri, $hq_predicate,    fn:concat($glei, "address/headquarters/preferred/transliterated")),
+        local:address(fn:concat($uri, "/address/headquarters/transliterated"), $hq, $uri, $hq_predicate,     fn:concat($glei, "address/headquarters"), fn:concat($glei, "preferred/transliterated")),
     for $legal at $x in $record/lei:Entity/lei:TransliteratedOtherAddresses/lei:TransliteratedOtherAddress[@type="AUTO_ASCII_TRANSLITERATED_LEGAL_ADDRESS"] return
-        local:address(fn:concat($uri, "/address/legal/transliterated/", $x), $legal, $uri, $legal_predicate,     fn:concat($glei, "address/legal/other/transliterated")),
+        local:address(fn:concat($uri, "/address/legal/transliterated/", $x), $legal, $uri, $legal_predicate, fn:concat($glei, "address/legal"), fn:concat($glei, "other/transliterated")),
     for $hq    at $x in $record/lei:Entity/lei:TransliteratedOtherAddresses/lei:TransliteratedOtherAddress[@type="AUTO_ASCII_TRANSLITERATED_HEADQUARTERS_ADDRESS"] return
-        local:address(fn:concat($uri, "/address/headquarters/transliterated/", $x), $hq, $uri, $hq_predicate,    fn:concat($glei, "address/headquarters/other/transliterated")),
-    local:IdentifiedByAuthority($uri, $record, "register", $record/lei:Entity/lei:RegistrationAuthority/lei:RegistrationAuthorityID,
-                                                           $record/lei:Entity/lei:RegistrationAuthority/lei:RegistrationAuthorityEntityID),
-    local:IdentifiedByAuthority($uri, $record, "validationauthority", $record/lei:Entity/lei:Registration/lei:ValidationAuthority/lei:ValidationAuthorityID,
-                                                                      $record/lei:Entity/lei:Registration/lei:ValidationAuthority/lei:ValidationAuthorityEntityID),
-    local:status($uri, $record)
+        local:address(fn:concat($uri, "/address/headquarters/transliterated/", $x), $hq, $uri, $hq_predicate,fn:concat($glei, "other/transliterated"),fn:concat($glei, "other/transliterated")),
+    local:IdentifiedByAuthority($uri, $record),
+    local:ValidatedByAuthority($uri, $record),
+    local:status($uri, $record),
+    local:validationStatus($uri, $record, $glei)
 ),
 local:glei_master()
 )
