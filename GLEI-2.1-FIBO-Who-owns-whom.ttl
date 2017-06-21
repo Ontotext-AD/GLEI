@@ -65,12 +65,11 @@ a fibo-fnd-rel-rel:Reference; fibo-fnd-rel-rel:hasUniqueIdentifier "(ValidationS
 <(EndNode/NodeID)> fibo-be-le-fbo:hasSubUnit <(StartNode/NodeID)>;
                    fibo-be-le-fbo:hasSubUnit <iso-17442/(StartNode/NodeID)>.
 
-#<condition1> a rdf:Statement;
-# puml:label "IF RelationshipType = 'IS_INTERNATIONAL_BRANCH_OF'";
-# rdf:subject <(EndNode/NodeID)> ;
-# rdf:object <(StartNode/NodeID)>;
-# rdf:object <iso-17442/(StartNode/NodeID)>;
-# rdf:predicate fibo-be-le-fbo:hasSubUnit.
+<condition1> a rdf:Statement;
+ puml:label "IF RelationshipType = 'IS_INTERNATIONAL_BRANCH_OF'";
+ rdf:subject <(EndNode/NodeID)> ;
+ rdf:object <(StartNode/NodeID)>;
+ rdf:predicate fibo-be-le-fbo:hasSubUnit.
 
 <(EndNode/NodeID)> fibo-fnd-oac-oac:ownsAndControls <(StartNode/NodeID)>;
                    fibo-fnd-oac-oac:ownsAndControls <iso-17442/(StartNode/NodeID)>.
@@ -78,29 +77,11 @@ a fibo-fnd-rel-rel:Reference; fibo-fnd-rel-rel:hasUniqueIdentifier "(ValidationS
 <iso-17442/(EndNode/NodeID)> fibo-fnd-oac-oac:ownsAndControls <(StartNode/NodeID)>;
                              fibo-fnd-oac-oac:ownsAndControls <iso-17442/(StartNode/NodeID)>.
 
-#<condition2> a rdf:Statement;
-# puml:label "IF RelationshipType = 'IS_DIRECTLY_CONSOLIDATED_BY'";
-# rdf:subject <(EndNode/NodeID)> ;
-# rdf:object <(StartNode/NodeID)>;
-# rdf:subject <iso-17442/(EndNode/NodeID)> ;
-# rdf:object <iso-17442/(StartNode/NodeID)>;
-# rdf:predicate fibo-be-le-fbo:hasSubUnit.
-
-<(EndNode/NodeID)> skos:topConceptOf <(StartNode/NodeID)>;
-                   skos:topConceptOf <iso-17442/(StartNode/NodeID)>.
-
-<iso-17442/(EndNode/NodeID)> skos:topConceptOf <(StartNode/NodeID)>;
-                             skos:topConceptOf <iso-17442/(StartNode/NodeID)>.
-
-
-#<condition3> a rdf:Statement;
-# puml:label "IF RelationshipType = 'IS_ULTIMATELY_CONSOLIDATED_BY'";
-# rdf:subject <(EndNode/NodeID)> ;
-# rdf:subject <iso-17442/(EndNode/NodeID)> ;
-# rdf:object <(StartNode/NodeID)>;
-# rdf:object <iso-17442/(StartNode/NodeID)>;
-# rdf:predicate skos:topConceptOf.
-
+<condition2> a rdf:Statement;
+ puml:label "IF RelationshipType = 'IS_DIRECTLY_CONSOLIDATED_BY' or RelationshipType = 'IS_ULTIMATELY_CONSOLIDATED_BY'";
+ rdf:subject <(EndNode/NodeID)> ;
+ rdf:object <(StartNode/NodeID)>;
+ rdf:predicate fibo-be-le-fbo:hasSubUnit.
 
 
 leio:startNode puml:arrow puml:up.
