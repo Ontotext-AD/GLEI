@@ -1,0 +1,26 @@
+@base <http://data.ontotext.com/resource/glei/>.
+
+<(LEI)>
+  puml:label """
+/LEIData/LEIRecords/LEIRecord/
+""";
+  fibo-fnd-aap-agt:isIdentifiedBy <(LEI)/id/register/(RegistrationAuthorityID)>;
+  fibo-fnd-aap-agt:isIdentifiedBy <(LEI)/literal/register>.
+
+<(LEI)/id/register/(RegistrationAuthorityID)>
+  puml:label """
+RegistrationAuthorityID/[RegistrationAuthorityID!='RA888888' and
+ RegistrationAuthorityID!='RA999999' and RegistrationAuthorityEntityID]
+""";
+  fibo-fbc-fct-ra:isRegisteredBy <register/(RegistrationAuthorityID)>;
+  a fibo-be-corp-corp:RegistrationIdentifier;
+  fibo-fnd-rel-rel:hasUniqueIdentifier "(RegistrationAuthorityEntityID)".
+
+<(LEI)/literal/register>
+  puml:label """
+RegistrationAuthorityID/[(RegistrationAuthorityID='RA888888' or
+ RegistrationAuthorityID='RA999999') and RegistrationAuthorityEntityID]
+""";
+  a fibo-be-corp-corp:RegistrationIdentifier;
+  rdfs:comment ".";
+  fibo-fnd-rel-rel:hasUniqueIdentifier "(RegistrationAuthorityEntityID)".

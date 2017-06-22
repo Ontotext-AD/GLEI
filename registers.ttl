@@ -1,0 +1,31 @@
+@base <http://data.ontotext.com/resource/glei/>.
+
+<register/(Registration_Authority_Code)>
+    a fibo-fbc-fct-breg:BusinessRegistrationAuthority;
+    fibo-fbc-fct-breg:hasCountry <http://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/(Country_Code)>;
+    fibo-fnd-law-jur:appliesIn "if (Jurisdiction (country or region) != (Country)) then lcc-3166-2:(Jurisdiction (country or region)) else ()";
+    fibo-fnd-rel-rel:hasLegalName "(International_name_of_Register)@en";
+    fibo-fnd-rel-rel:hasLegalName "(Local_name_of_Register)";
+    rdfs:seeAlso <(Website)>;
+    leio:dateIPdisclaimerIncluded "(Date IP disclaimer included http://www.leiroc.org/publications/gls/lou_20131211.pdf)^^xsd:dateTime";
+    rdfs:comment "(Comments)";
+    fibo-fnd-aap-agt:isIdentifiedBy <register/(Registration_Authority_Code)/id>.
+
+<register/(Registration_Authority_Code)/id>
+    a fibo-be-corp-corp:RegistrationIdentifier;
+    fibo-fnd-rel-rel:hasUniqueIdentifier "(Registration_Authority_Code)".
+
+<organization/fn:encode-for-uri(International_name_of_Register)>
+    puml:label "fn:exists[International_name_of_Register]";
+    a fibo-fnd-org-org:Organization;
+    fibo-fnd-rel-rel:manages <register/(Registration_Authority_Code)>;
+    fibo-fnd-rel-rel:hasLegalName "."@en;
+    fibo-fnd-rel-rel:hasLegalName "Local name of organisation responsible for the Register".
+
+<organization/fn:encode-for-uri(Local_name_of_organisation_responsible_for_the_Register)>
+    puml:label "fn:not(fn:exists[International_name_of_Register])";
+    a fibo-fnd-org-org:Organization;
+    fibo-fnd-rel-rel:manages <register/(Registration_Authority_Code)>;
+    fibo-fnd-rel-rel:hasLegalName ".".
+
+rdfs:seeAlso                       a puml:InlineProperty.
