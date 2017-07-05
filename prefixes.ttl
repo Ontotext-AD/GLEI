@@ -22,6 +22,7 @@
 @prefix fibo-fnd-ptyx-prc: <http://www.omg.org/spec/EDMC-FIBO/FND/PartiesExt/PartyRoleContext/> .
 @prefix fibo-fnd-tim-tim:  <http://www.omg.org/spec/EDMC-FIBO/FND/Time/Time/> .
 @prefix fibo-fnd-oac-oac:  <http://www.omg.org/spec/EDMC-FIBO/FND/OwnershipAndControl/OwnershipAndControl/> .
+@prefix fibo-fnd-math-amt: <http://www.omg.org/spec/EDMC-FIBO/FND/Math/Amounts/> .
 @prefix lcc-3166-1:        <http://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/> .
 @prefix lcc-3166-2:        <http://www.omg.org/spec/LCC/Countries/ISO3166-2-SubdivisionCodes/> .
 @prefix lcc-639-1:         <http://www.omg.org/spec/LCC/Languages/ISO639-1-LanguageCodes/> .

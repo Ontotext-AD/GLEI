@@ -141,18 +141,17 @@ declare function local:glei_master() {
 declare function local:IdentifiedByAuthority($uri as xs:string, $record){
     let $authID := $record/lei:Entity/lei:RegistrationAuthority/lei:RegistrationAuthorityID
     let $glei   := "http://data.ontotext.com/resource/glei/"
-    let $suffix := fn:concat("register/", $authID)
-    let $auth   := fn:concat($glei, $suffix)
-    let $url    := fn:concat($glei, "id/", $suffix)
-    let $no_id  := fn:concat($uri, "/literal/register")
+    let $suffix := fn:concat("id/", $authID)
+    let $auth   := fn:concat($glei, "register/", $authID)
+    let $url    := fn:concat($glei, $suffix)
     let $authEntityID := $record/lei:Entity/lei:RegistrationAuthority/lei:RegistrationAuthorityEntityID
     return
-    if (($authID/text() = 'RA888888') or ($authID/text() = 'RA999999') or fn:not(fn:exists($authID)))
-    then (let $dummy := ""
+    if (($authID/text() = 'RA888888') or ($authID/text() = 'RA999999') or fn:not(fn:exists($authID)) or fn:matches($authID, 'document|^[na/\. \?\-x]*$|without|other'))
+    then (for $other at $n in $record/lei:Entity/lei:RegistrationAuthority/lei:OtherRegistrationAuthorityID
+          let $no_id  := fn:concat($uri, "/id/", $n)
           construct {
             <{$uri}> fibo-fnd-aap-agt:isIdentifiedBy <{$no_id}>.
             <{$no_id}> a fibo-fbc-fct-breg:BusinessRegistrationAuthority;
-                    fibo-fnd-rel-rel:hasUniqueIdentifier {$authEntityID};
                     rdfs:comment {$record/lei:Entity/lei:RegistrationAuthority/lei:OtherRegistrationAuthorityID}.
         })
     else (let $dummy := ""
@@ -180,9 +179,9 @@ declare function local:ValidatedByAuthority($uri as xs:string, $record){
     let $glei   := "http://data.ontotext.com/resource/glei/"
     let $authID := $record/lei:Registration/lei:ValidationAuthority/lei:ValidationAuthorityID
     let $entry := fn:concat($uri, "/entry")
-    let $register := fn:concat($glei, "register/", $authID)
+    let $validation := fn:concat($glei, "id/validation/", $authID)
     return (
-    if (($authID/text() = 'RA888888') or ($authID/text() = 'RA999999') or fn:not(fn:exists($authID)))
+    if (($authID/text() = 'RA888888') or ($authID/text() = 'RA999999') or fn:not(fn:exists($authID)) or fn:matches($authID, 'document|^[na/\. \?\-x]*$|without|other'))
     then (
 (: )if (fn:exists($authID)) then (
             let $auth := fn:concat($uri, "/literal/validation-authority")
@@ -193,20 +192,23 @@ declare function local:ValidatedByAuthority($uri as xs:string, $record){
                         rdfs:comment {$authID};
         })
         else ():) )
-    else (let $auth := fn:concat($uri, "/id/register")
+    else (let $auth := fn:concat($uri, "/id/validation/", $authID)
             construct {
-                <{$entry}> leio:validatedBy <{$auth}>.
-                <{$auth}> a fibo-fbc-fct-breg:RegistrationIdentifier;
+                <{$entry}> leio:validation <{$auth}>.
+                <{$auth}> a leio:Validation;
                     fibo-fnd-rel-rel:hasUniqueIdentifier {$record/lei:Registration/lei:ValidationAuthority/lei:ValidationAuthorityEntityID};
-                    fibo-fbc-fct-ra:isRegisteredBy {$register}.
+                    fibo-fnd-aap-agt:isIdentifiedBy <{$validation}>.
     }),
     for $other at $n in $record/lei:Registration/lei:ValidationAuthority/lei:OtherValidationAuthorityID
-    let $auth := fn:concat($uri, "/literal/validation-authority/", $n)
+    let $auth := fn:concat($uri, "/id/validation/", $n)
     construct{
-        <{$entry}> leio:validatedBy <{$auth}>.
-        <{$auth}> a fibo-fbc-fct-breg:RegistrationIdentifier;
+        <{$entry}> leio:validation <{$auth}>.
+        <{$auth}> a leio:Validation;
             fibo-fnd-rel-rel:hasUniqueIdentifier {$record/lei:Registration/lei:ValidationAuthority/lei:ValidationAuthorityEntityID};
-            rdfs:comment {$other};
+            rdfs:comment {$other}.
+        { if (fn:exists($record/lei:Registration/lei:ValidationAuthority/lei:ValidationAuthorityEntityID))
+            then (let $dummy := ""
+                construct {<{$auth}> a fibo-fbc-fct-breg:RegistrationIdentifier . }) else ()}
     })
 };
 
@@ -222,6 +224,19 @@ declare function local:validationStatus($uri as xs:string, $record, $glei as xs:
                 fibo-fnd-rel-rel:isMemberOf <{$valid_schema}>.
         <{$valid_schema}> a fibo-fnd-arr-cls:ClassificationScheme;
                           fibo-fnd-rel-rel:hasName "LEI validation status".
+    }
+};
+
+declare function local:association($uri as xs:string, $record, $glei as xs:string){
+    for $assoc at $n in $record/lei:Entity/lei:AssociatedEntity
+    let $association   := fn:concat($uri, "/association/", $n)
+    let $associatedLEI := fn:concat($glei, $assoc/lei:AssociatedLEI)
+    construct {
+        <{$uri}>            leio:association <{$association}>.
+        <{$association}>    a fibo-fnd-rel-rel:Reference;
+                            fibo-fnd-rel-rel:hasLegalName   {$assoc/lei:AssociatedEntityName};
+                            fibo-fnd-rel-rel:isClassifiedBy <{fn:concat($glei, "lei-type/", $assoc/@type/string())}>;
+                            leio:associatedLEI              <{$associatedLEI}>.
     }
 };
 
@@ -255,7 +270,8 @@ return (
     local:IdentifiedByAuthority($uri, $record),
     local:ValidatedByAuthority($uri, $record),
     local:status($uri, $record),
-    local:validationStatus($uri, $record, $glei)
+    local:validationStatus($uri, $record, $glei),
+    local:association($uri, $record, $glei)
 ),
 local:glei_master()
 )

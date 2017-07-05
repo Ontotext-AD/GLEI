@@ -18,17 +18,28 @@
     leio:startNode <iso-17442/(StartNode/NodeID)>;
     leio:endNode <(EndNode/NodeID)>;
     leio:endNode <iso-17442/(EndNode/NodeID)>;
-    fibo-fnd-rel-rel:hasContext <relation/type/(RelationshipType)>.
+    fibo-fnd-rel-rel:hasContext <relation/type/(RelationshipType)>;
+    leio:status <status/(RelationshipStatus)>;
+    leio:qualifier <relation/$(n)/qualifier/($k)>;
+    leio:quantifier <relation/$(n)/quantifier/($k)>.
 
 <(StartNode/NodeID)>            puml:label "StartNode/NodeIDType = 'LEI'".
 <iso-17442/(StartNode/NodeID)>  puml:label "StartNode/NodeIDType = 'ISO_17442_COMPATIBLE'".
 <(EndNode/NodeID)>              puml:label "EndNode/NodeIDType = 'LEI'".
 <iso-17442/(EndNode/NodeID)>    puml:label "EndNode/NodeIDType = 'ISO_17442_COMPATIBLE'".
 
+<status/(RelationshipStatus)>
+    a fibo-fnd-rel-rel:Reference;
+    fibo-fnd-rel-rel:hasUniqueIdentifier "(RelationshipStatus)".
 
 <relation/type/(RelationshipType)>
     a fibo-fnd-rel-rel:Reference;
-    rdfs:comment ".".
+    rdfs:comment "(RelationshipType)";
+    fibo-fnd-rel-rel:isMemberOf <relationship>.
+
+<relationship>
+    a fibo-fnd-arr-cls:ClassificationScheme;
+    fibo-fnd-rel-rel:hasName "Relationship type".
 
 <relation/($n)/period/($k)>
     a fibo-fnd-tim-tim:DatePeriod;
@@ -38,11 +49,11 @@
     """;
     fibo-fnd-dt-fd:hasStartDate "(StartDate)^^xsd:dateTime";
     fibo-fnd-dt-fd:hasEndDate "(EndDate)^^xsd:dateTime";
-    leio:periodType <relation/period/type/(PeriodType)>.
+    fibo-fnd-rel-rel:isClassifiedBy <relation/period/type/(PeriodType)>.
 
 <relation/period/type/(PeriodType)>
     a fibo-fnd-rel-rel:Reference;
-    rdfs:comment ".".
+    rdfs:comment "(PeriodType)".
 
 <relation/($n)/entry>
   a fibo-fbc-fct-breg:BusinessRegistryEntry;
@@ -83,10 +94,36 @@ a fibo-fnd-rel-rel:Reference; fibo-fnd-rel-rel:hasUniqueIdentifier "(ValidationS
  rdf:object <(StartNode/NodeID)>;
  rdf:predicate fibo-be-le-fbo:hasSubUnit.
 
+<relation/$(n)/qualifier/($k)> a leio:Qualifier;
+    puml:label """rr:RelationshipQuantifiers/rr:RelationshipQuantifier at $k""";
+    fibo-fnd-rel-rel:isClassifiedBy <qualifier/(QualifierDimension)>;
+    fibo-fnd-rel-rel:isClassifiedBy <qualifier/(QualifierCategoryType)>.
 
-leio:startNode puml:arrow puml:up.
-leio:endNode puml:arrow puml:up.
-fibo-be-le-fbo:hasSubUnit puml:arrow puml:dashed.
-skos:topConceptOf puml:arrow puml:dashed.
+<qualifier/(QualifierDimension)>
+    a fibo-fnd-rel-rel:Reference;
+    rdfs:comment "(QualifierDimension)".
+
+<qualifier/(QualifierCategoryType)>
+    a fibo-fnd-rel-rel:Reference;
+    rdfs:comment "(QualifierCategoryType)".
+
+<relation/$(n)/quantifier/($k)> a leio:Quantifier;
+    puml:label """rr:RelationshipQuantifiers/rr:RelationshipQuantifier at $k""";
+    fibo-fnd-rel-rel:isClassifiedBy <quantifier/(MeasurementMethod)>;
+    fibo-fnd-math-amt:amount "(QuantifierAmount)^^xsd:decimal";
+    fibo-fnd-rel-rel:isClassifiedBy <unit/(QuantifierUnits)>.
+
+<quantifier/(MeasurementMethod)>
+    a fibo-fnd-rel-rel:Reference;
+    rdfs:comment "(QualifierCategoryType)".
+
+<unit/(QuantifierUnits)>
+    a fibo-fnd-rel-rel:Reference;
+    rdfs:comment "(QualifierCategoryType)".
+
+leio:startNode                   puml:arrow puml:up.
+leio:endNode                     puml:arrow puml:up.
+fibo-be-le-fbo:hasSubUnit        puml:arrow puml:dashed.
+skos:topConceptOf                puml:arrow puml:dashed.
 fibo-fnd-oac-oac:ownsAndControls puml:arrow puml:dashed.
 
