@@ -1,4 +1,22 @@
-* GLEI Mapping to RDF
+#+TITLE: GLEI Mapping to RDF
+
+* Table of Contents                                 :TOC:noexport:
+ - [[#glei-xml-data][GLEI XML Data]]
+   - [[#glei-10][GLEI 1.0]]
+   - [[#clei][CLEI]]
+   - [[#glei-21][GLEI 2.1]]
+ - [[#semantic-mapping][Semantic Mapping]]
+   - [[#fibo][FIBO]]
+   - [[#makolab-collaboration][MakoLab Collaboration]]
+   - [[#leio][LEIO]]
+   - [[#glei-10-semantic-mapping][GLEI 1.0 Semantic Mapping]]
+   - [[#glei-21-semantic-mapping][GLEI 2.1 Semantic Mapping]]
+     - [[#glei-21-level2-mapping][GLEI 2.1 Level2 Mapping]]
+     - [[#glei-21-register-mapping][GLEI 2.1 Register Mapping]]
+     - [[#clei-21-mapping][CLEI 2.1 Mapping]]
+   - [[#instance-matching][Instance Matching]]
+
+* GLEI XML Data
 ** GLEI 1.0
 The GLEI 1.0 data model is not very complex.
 - [[./schema/20140620-common data format part2.pdf]], [[./schema/20140620-LEI Data File Format.pdf]]: documentation
