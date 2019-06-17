@@ -1,0 +1,29 @@
+@startuml
+hide empty methods
+hide empty attributes
+hide circle
+skinparam classAttributeIconSize 0
+class glei_register_Registration_Authority_Code_ as "glei:register/(Registration_Authority_Code)"
+glei_register_Registration_Authority_Code_ : a fibo-fbc-fct-breg:BusinessRegistrationAuthority
+class glei_register_Registration_Authority_Code_id as "glei:register/(Registration_Authority_Code)/id"
+glei_register_Registration_Authority_Code_ --> glei_register_Registration_Authority_Code_id : fibo-fnd-aap-agt:isIdentifiedBy
+class lcc_3166_1_Country_Code_ as "lcc-3166-1:(Country_Code)"
+glei_register_Registration_Authority_Code_ --> lcc_3166_1_Country_Code_ : fibo-fbc-fct-breg:hasCountry
+glei_register_Registration_Authority_Code_ : fibo-fnd-law-jur:appliesIn "if [Jurisdiction [country or region] != [Country]] then lcc-3166-2:[Jurisdiction [country or region]] else []"
+glei_register_Registration_Authority_Code_ : fibo-fnd-rel-rel:hasLegalName "[International_name_of_Register]@en",\n  "[Local_name_of_Register]"
+glei_register_Registration_Authority_Code_ : leio:dateIPdisclaimerIncluded "[Date IP disclaimer included http://www.leiroc.org/publications/gls/lou_20131211.pdf]^^xsd:dateTime"
+glei_register_Registration_Authority_Code_ : rdfs:comment "[Comments]"
+glei_register_Registration_Authority_Code_ : rdfs:seeAlso glei:[Website]
+glei_register_Registration_Authority_Code_id : a fibo-be-corp-corp:RegistrationIdentifier
+glei_register_Registration_Authority_Code_id : fibo-fnd-rel-rel:hasUniqueIdentifier "[Registration_Authority_Code]"
+class glei_organization_fn_encode_for_uri_International_name_of_Register_ as "glei:organization/fn:encode-for-uri(International_name_of_Register)"
+glei_organization_fn_encode_for_uri_International_name_of_Register_ : a fibo-fnd-org-org:Organization
+glei_organization_fn_encode_for_uri_International_name_of_Register_ --> glei_register_Registration_Authority_Code_ : fibo-fnd-rel-rel:manages
+glei_organization_fn_encode_for_uri_International_name_of_Register_ :  "fn:exists[International_name_of_Register]"
+glei_organization_fn_encode_for_uri_International_name_of_Register_ : fibo-fnd-rel-rel:hasLegalName "."@en,\n  "Local name of organisation responsible for the Register"
+class glei_organization_fn_encode_for_uri_Local_name_of_organisation_responsible_for_the_Register_ as "glei:organization/fn:encode-for-uri(Local_name_of_organisation_responsible_for_the_Register)"
+glei_organization_fn_encode_for_uri_Local_name_of_organisation_responsible_for_the_Register_ : a fibo-fnd-org-org:Organization
+glei_organization_fn_encode_for_uri_Local_name_of_organisation_responsible_for_the_Register_ --> glei_register_Registration_Authority_Code_ : fibo-fnd-rel-rel:manages
+glei_organization_fn_encode_for_uri_Local_name_of_organisation_responsible_for_the_Register_ :  "fn:not[fn:exists[International_name_of_Register]]"
+glei_organization_fn_encode_for_uri_Local_name_of_organisation_responsible_for_the_Register_ : fibo-fnd-rel-rel:hasLegalName "."
+@enduml

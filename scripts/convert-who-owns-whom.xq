@@ -15,6 +15,9 @@ prefix fibo-fnd-dt-fd: <http://www.omg.org/spec/EDMC-FIBO/FND/DatesAndTimes/Fina
 prefix fibo-fnd-plc-adr: <http://www.omg.org/spec/EDMC-FIBO/FND/Places/Addresses/>
 prefix fibo-fnd-rel-rel: <http://www.omg.org/spec/EDMC-FIBO/FND/Relations/Relations/>
 prefix fibo-fnd-law-jur: <http://www.omg.org/spec/EDMC-FIBO/FND/Law/Jurisdiction/>
+prefix fibo-fnd-ptyx-prc: <http://www.omg.org/spec/EDMC-FIBO/FND/PartiesExt/PartyRoleContext/> 
+prefix fibo-fnd-tim-tim: <http://www.omg.org/spec/EDMC-FIBO/FND/Time/Time/> 
+prefix fibo-fnd-math-amt: <http://www.omg.org/spec/EDMC-FIBO/FND/Math/Amounts/> 
 prefix lcc-3166-1: <http://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/>
 prefix lcc-3166-2: <http://www.omg.org/spec/LCC/Countries/ISO3166-2-SubdivisionCodes/>
 prefix lcc-639-1: <http://www.omg.org/spec/LCC/Languages/ISO639-1-LanguageCodes/>

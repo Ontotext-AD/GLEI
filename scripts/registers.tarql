@@ -42,7 +42,7 @@ where {
                  ?JurisdictionCountryOrRegion,
                   ?undef))) as ?jurisdiction)
  BIND(STRLANG(?International_name_of_Register, "en") as ?label_en)
- BIND(URI(?Website) as ?web)
+ BIND(URI(REPLACE(?Website,"^ *| *$","")) as ?web)
  BIND(URI(CONCAT(str(?register), "/id")) as ?id)
  BIND(URI(CONCAT("http://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/", ?Country_Code)) as ?cntry)
  # format - December 23, 2013
