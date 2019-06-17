@@ -1,42 +1,26 @@
-* GLEI Mapping to RDF
-** GLEI XML
-*** CLEI
-We capture Consolidated LEI data. Eg:
-#+BEGIN_SRC xml
-<lei:LEIData 
-    xmlns:lei="http://www.leiroc.org/data/schema/leidata/2014" 
-    xmlns:clei="http://ns.c-lei.org/leidata/1" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <lei:LEIHeader>
-    <lei:ContentDate>2016-11-21T04:11:23-06:00</lei:ContentDate>
-    <lei:Originator>52990034RLKT0WSOAM90</lei:Originator>
-    <lei:Extension>
-     <clei:LOUFiles>
-        <clei:LOUFile>
-          <clei:DownloadDate>2015-11-18T04:01:33-06:00</clei:DownloadDate>
-          <clei:DownloadURL>https://www.geiportal.org/customer/download_xml.php?file=GEI_Full_20151118_cf1.zip</clei:DownloadURL>
-          <clei:ContentDate>2015-11-18T01:30:08</clei:ContentDate>
-          <clei:Originator>5299000J2N45DDNE4Y28</clei:Originator>
-          <clei:RecordCount>62648</clei:RecordCount>
-          <clei:ManagingLOUCount managingLOU="5299000J2N45DDNE4Y28">62637</clei:ManagingLOUCount>
-          <clei:ManagingLOUCount managingLOU="EVK05KS7XY1DEII3R011">10</clei:ManagingLOUCount>
-          <clei:ManagingLOUCount managingLOU="213800D1EI4B9WTWWD28">1</clei:ManagingLOUCount>
-          <clei:SchemaValid>true</clei:SchemaValid>
-        </clei:LOUFile>
-     </clei:LOUFiles>
-    </lei:Extension>
-  </lei:LEIHeader>
-</lei:LEIData>
-#+END_SRC
-This fragment says that ~52990034RLKT0WSOAM90~ (the GLEI Foundation) 
-has aggregated a file from ~5299000J2N45DDNE4Y28~ (one Local Operating Unit or LOU)
-which includes info about 62637 companies from this LOU, as well as info from two others (10 from ~EVK05KS7XY1DEII3R011~ and 1 from ~213800D1EI4B9WTWWD28~).
+#+TITLE: GLEI Mapping to RDF
 
-As of Dec 2016, LEIF has consolidated data on 500k companies .
+* Table of Contents                                 :TOC:noexport:
+ - [[#glei-xml-data][GLEI XML Data]]
+   - [[#glei-10][GLEI 1.0]]
+   - [[#clei][CLEI]]
+   - [[#glei-21][GLEI 2.1]]
+ - [[#semantic-mapping][Semantic Mapping]]
+   - [[#fibo][FIBO]]
+   - [[#makolab-collaboration][MakoLab Collaboration]]
+   - [[#leio][LEIO]]
+   - [[#glei-10-semantic-mapping][GLEI 1.0 Semantic Mapping]]
+   - [[#glei-21-semantic-mapping][GLEI 2.1 Semantic Mapping]]
+     - [[#glei-21-level2-mapping][GLEI 2.1 Level2 Mapping]]
+     - [[#glei-21-register-mapping][GLEI 2.1 Register Mapping]]
+     - [[#clei-21-mapping][CLEI 2.1 Mapping]]
+   - [[#instance-matching][Instance Matching]]
 
-*** GLEI
-The GLEI data model is not very complex.
-- [[./LEIDatafile-20140415.rnc]]: GLEI XML schema in RelaxNG Compact syntax
+* GLEI XML Data
+** GLEI 1.0
+The GLEI 1.0 data model is not very complex.
+- [[./schema/20140620-common data format part2.pdf]], [[./schema/20140620-LEI Data File Format.pdf]]: documentation
+- [[./schema/LEIDatafile-20140415.rnc]]: XML schema in RelaxNG Compact syntax
 
 Sample company data:
 #+BEGIN_SRC xml
@@ -74,7 +58,59 @@ Sample company data:
   </lei:Registration>
 </lei:LEIRecord>
 #+END_SRC
-In addition to the above, GLEI data includes some relations (eg Funds of the same family, Fund manager, etc).
+
+In addition, GLEI 1.0 includes some relations (eg Funds of the same family, Fund manager, etc).
+- [[./GLEI-1.0-outline.txt]]: outline of the XML nesting
+
+** CLEI
+We capture Consolidated LEI data. Eg:
+#+BEGIN_SRC xml
+<lei:LEIData 
+    xmlns:lei="http://www.leiroc.org/data/schema/leidata/2014" 
+    xmlns:clei="http://ns.c-lei.org/leidata/1" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <lei:LEIHeader>
+    <lei:ContentDate>2016-11-21T04:11:23-06:00</lei:ContentDate>
+    <lei:Originator>52990034RLKT0WSOAM90</lei:Originator>
+    <lei:Extension>
+     <clei:LOUFiles>
+        <clei:LOUFile>
+          <clei:DownloadDate>2015-11-18T04:01:33-06:00</clei:DownloadDate>
+          <clei:DownloadURL>https://www.geiportal.org/customer/download_xml.php?file=GEI_Full_20151118_cf1.zip</clei:DownloadURL>
+          <clei:ContentDate>2015-11-18T01:30:08</clei:ContentDate>
+          <clei:Originator>5299000J2N45DDNE4Y28</clei:Originator>
+          <clei:RecordCount>62648</clei:RecordCount>
+          <clei:ManagingLOUCount managingLOU="5299000J2N45DDNE4Y28">62637</clei:ManagingLOUCount>
+          <clei:ManagingLOUCount managingLOU="EVK05KS7XY1DEII3R011">10</clei:ManagingLOUCount>
+          <clei:ManagingLOUCount managingLOU="213800D1EI4B9WTWWD28">1</clei:ManagingLOUCount>
+          <clei:SchemaValid>true</clei:SchemaValid>
+        </clei:LOUFile>
+     </clei:LOUFiles>
+    </lei:Extension>
+  </lei:LEIHeader>
+</lei:LEIData>
+#+END_SRC
+This fragment says that ~52990034RLKT0WSOAM90~ (the GLEI Foundation) 
+has aggregated a file from ~5299000J2N45DDNE4Y28~ (one Local Operating Unit or LOU)
+which includes info about 62637 companies from this LOU, as well as info from two others (10 from ~EVK05KS7XY1DEII3R011~ and 1 from ~213800D1EI4B9WTWWD28~).
+
+As of Dec 2016, LEIF has consolidated data on 500k companies .
+
+** GLEI 2.1
+GLEI 2.1 makes some changes to the basic (Level 1) data:
+- [[./20170321_lei-cdf-v2-1.pdf]]: documentation
+- [[./20170321_lei-cdf-v2-1-nodoc.rnc]]: XML schema in RelaxNG Compact syntax
+
+It also adds Level 2 data:
+- [[./20170316_relationship-record-cdf-v1-1.pdf]], [[./20170316_reporting-exceptions-format-v1-1.pdf]]: 
+  Parents (Who owns Whom) and other Relations (eg Fund Family, Fund Manager(
+- [[./20160826_parent_reference_data_format_v1-1.pdf]], [[./20170316_parent_reference_data-format-v1-1-nodoc.rnc]]:
+  If the parent is not GLEI-registerd, this is pared-down data about the parent
+- [[./20170316_relationship-record-cdf-v1-1-nodoc.rnc]], [[./20170316_reporting-exceptions-format-v1-1-nodoc.xsd]]:
+  A company may use several excuses (exceptions) if it doesn't report its parents, and this specifies info about them
+
+See these working notes on the changes compared to GLEI 1.0
+- [[./notes-GLEI-1.0-to-2.1.txt]], [[./notes-GLEI-1.0-to-2.1-more.txt]]
 
 * Semantic Mapping
 ** FIBO
@@ -103,22 +139,26 @@ However, it has various shortcomings and defects as well, eg:
   - Some DnB data has 6 and 8 address lines so 4 is not enough
   - It's better to have 1 field and can use ~\n~ in the RDF literal
 
-** LEIO
-In Nov 2016 the Polish company MakoLab made a proposal for extending FIBO to adequately represent GLEI: https://github.com/edmcouncil/fibo/pull/248. MakoLab is selected by EDC to develop schema.org extensions for some parts of FIBO.
-Ontotext did a detailed code review of this submission (see the above link).
-
-In Dec 2016 Ontotext developed a draft FIBO extension for GLEI that we called LEIO:
-- [[./prefixes.ttl]]
-- [[./leio.ttl]] (TODO: generate documentation)
+** MakoLab Collaboration
+In Nov 2016 the Polish company MakoLab made a proposal for extending FIBO to adequately represent GLEI:
+https://github.com/edmcouncil/fibo/pull/248. 
+MakoLab developed schema.org Financial extensions inspired by FIBO, tasked by the FIBO creators (EDC).
+Ontotext did a detailed code review of this submission (see the above link), since it has some defects and discrepancies with FIBO.
 
 After discussions with MakoLab, the two companies agreed to work together to:
-- Harmonize the two FIBO GLEI extensions
+- Harmonize the MakoLab FIBO GLEI extension with the LEIO ontology proposed by Ontotext (see below)
 - Work with EDC to fix FIBO defects at the basic levels of representing company and person data
 - Get EDC's approval & engagement for this work
 
-** Semantic Mapping
-[[./GLEI-FIBO.ttl]]: mapping model using [[http://vladimiralexiev.github.io/pres/20161128-rdfpuml-rdf2rml/][rdfpuml]]\\
-[[./GLEI-FIBO.png]]
+** LEIO
+
+In Dec 2016 Ontotext developed a draft FIBO extension for GLEI that we called LEIO:
+- [[./prefixes.ttl]] are the FIBO and custom prefixes we use
+- [[./leio.ttl]] is the ontology (TODO: generate documentation)
+
+** GLEI 1.0 Semantic Mapping
+[[./GLEI-1.0-FIBO.ttl]]: mapping model using [[http://vladimiralexiev.github.io/pres/20161128-rdfpuml-rdf2rml/][rdfpuml]]\\
+[[./GLEI-1.0-FIBO.png]]
 
 Explanation:
 - top row: various addresses (only the top-left one is shown in full)
@@ -128,7 +168,30 @@ Explanation:
   and ~OrganizationIdentifier~ (registration number in a national registry).
   Unfortunately ~BusinessRegisterEntityID/@register~ is not a controlled list: there are tens of thousands of values, so we map it to a mere comment.
 - also: the GLEI register and its contributing LOUs (~BusinessRegistrationAuthority~)
-- bottom right: CLEI info
+- bottom middle: CLEI info (see next)
+
+** GLEI 2.1 Semantic Mapping
+The GLEI 2.1 mapping models use XPath expressions in many cases to state where the data is obtained from
+
+[[./GLEI-2.1-FIBO.ttl]]: mapping model\\
+[[./GLEI-2.1-FIBO.png]]
+
+*** GLEI 2.1 Level2 Mapping
+Parent and other relations
+[[./GLEI-2.1-FIBO-Who-owns-whom.ttl]]: mapping model\\
+[[./GLEI-2.1-FIBO-Who-owns-whom.png]]
+
+*** GLEI 2.1 Register Mapping
+Additional (non-GLEI) registers, eg National registers
+
+[[./registers.ttl]]: mapping model\\
+[[./registers.png]]
+
+*** CLEI 2.1 Mapping
+Consolidated CLEI (CLEI) includes some metadata about which records were downloaded from which LOU when.
+
+[[./GLEI-CLEI.ttl]]: mapping model\\
+[[./GLEI-CLEI.png]]
 
 ** Instance Matching
 [[./GLEI-lookup.ru]] is a SPARQL update that makes the dashed arrows in the above diagram. They use data props to lookup in appropriate datasets, and thus connect literals to resources, producing object props:

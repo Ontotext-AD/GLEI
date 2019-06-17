@@ -1,0 +1,76 @@
+﻿GLEI-2.1-FIBO_identifiedBy.png
+- node on the left: "register/" is parasitic. This node is an id, not a register [DONE]
+- node on the right:
+-- rdfs:comment should specify OtherRegistrationAuthorityID [DONE]
+-- URL (LEI)/literal/register is wrong because it would collapse several id's of that kind and mentions "register" instead of "id".
+  Should be (LEI)/id/($n) [DONE]
+
+GLEI-2.1-FIBO_validatedBy.png
+- node on the right:
+-- URL should be (LEI)/id/validation/($n) [DONE]
+- node on the right:
+-- URL should be (LEI)/id/(...ValidationAuthorityID). [DONE]
+  This will ensure that if the registration and validation agencies are the same, we'll make the same node
+-- remove the filter ValidationAuthorityEntityID. [DONE]
+  Even if this is not filled out (it's an optional field), we want to record the fact of validation
+- both nodes:
+-- add class leio:Validation [DONE]
+-- if ValidationAuthorityEntityID is present, THEN
+   add class RegistrationIdentifier and fibo-...:isIdentifiedBy [DONE]
+
+Merge these pictures, together with (LEI)/entry from the main picture (and you got 2 stray isIdentifiedBy there).
+Then we can better compare all those identifiers, and the main picture will get less complicated [DONE]
+
+Main picture: put the hasHeadquartersAddress info below the entity instead of to the right, to use the space better [DONE] Placed it to the left
+  Vladimir: please reorganize the diagrams as described above for better comprehension
+
+GLEI-2.1-FIBO-Who-owns-whom.png
+- you should also map le-cdf AssociatedEntity (which now can only be FUND_FAMILY) 
+    Plamen: Included to GLEI-2.1-FIBO [DONE]
+- what is the ISO_17442 standard? Isn't it exactly LEI? Please inspect some values
+    These are the only available values:
+    <rr:NodeID>64500026Q3SLD450YZ30</rr:NodeID>
+    <rr:NodeID>645000FRWUBERI83WT08</rr:NodeID>
+    <rr:NodeID>645000PRN2HRR5LX1T05</rr:NodeID>
+    <rr:NodeID>6450009FHF0O12IFTU64</rr:NodeID>
+    <rr:NodeID>645000ZFB0M7ZSHMY734</rr:NodeID>
+    <rr:NodeID>645000L4Z3YUF1XXF454</rr:NodeID>
+  Vlado: are these the same structure as LEIs?
+- I suspect ISO_17442 indicates parents that don't have a LEI record yet.
+  You need to convert 20170316_parent_reference_data-format-v1-1.xsd for them.
+  That data is fairly similar to but simpler than LEI CDF (version 1)
+    Plamen: Is it necessary for 6 records?
+    Vlado: no. Just make LEI URLs for these 6 parents (i.e. treat this ID field as the LEI ID field), and those will be missing resources
+- don't use rdf:Statement to attach conditions to links: you don't have any payload data in that statement.
+  (Did you mean just to illustrate that the links depend on those conditions?)
+    Plamen: Yes, I wanted to illustrate it. I couldn't figure out another way to do it.
+        If I remove the rdf:Statement the node doesn't connect with the arrow.
+        Should I leave it as it is, if not which would be the best way to represent it in a diagram?
+    Vlado: describe the condition in notes in README. You can't represent it with rdfpuml.
+- RelationshipType is a lookup? Then I think you should map it to Classification (just like entity status) [DONE]
+- I don't see RelationshipStatus, RelationshipQualifiers, RelationshipQuantifiers. Put them in the same /relation node. [DONE]
+- The type RelationContext doesn't sound right; isn't there a class called simply Relation?
+    Plamen: In FND/Relations/Relations there's only the Reference class
+    this is the snippet with the class definition. When reading the explanation it seems appropriate to me. Though I might be wrong.
+    fibo-fnd-ptyx-prc:RelationshipContext
+	a owl:Class ;
+	rdfs:subClassOf _:blank1 ;
+	rdfs:label "relationship context"@en ;
+	skos:definition "Any context in which Parties are defined."@en ;
+	fibo-fnd-utl-av:explanatoryNote
+		"For example when someone says that a Fund has a party, such as a fund manager that party is really party to the broader context of fund management, but the assertion is made with reference to the Fund. In that sense saying that the fund has a party is a synechdocal way of saying that the fund is the context in which there is that party."@en ,
+Vlado: should be "synecdochal" http://www.dictionary.com/browse/synecdoche
+		"For example, a contractual relationship, transaction etc. This is any relationship in which something is defined as being party to something. It is from this context that it is possible to extract what are the parties involved, and, from those, what are the types of entity which may fulfil those roles."@en
+		;
+	.
+-- If there is, use fibo links instead of leio:startNode, leio:endNode
+    Plamen: I looked-up the existing FIBO relation predicates. 
+        The problem is that they're too narrow (e.g. isUsedBy, isProvidedBy).
+        I couldn't find predicates that disregard the type of connection itself and address only the problem A -> B.
+        I use the FIBO predicates for the dashed arrows from endNode -> startNode.
+- use isClassifiedBy instead of periodType [DONE]
+
+
+
+
+
